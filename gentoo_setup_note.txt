@@ -1,0 +1,37 @@
+启动安装光盘
+boot: gentoo dopcmcia
+
+加载内核模块
+modprobe 8139too
+
+修改root
+passwd 
+
+创建一个新用户
+useradd -m -G users zhufeng
+passwd zhufeng
+
+启动/etc/init.d/sshd start
+
+查看目前分区
+df -h 
+
+启动fdisk  对主硬盘进行分区
+fdisk /dev/sda
+
+手动配置内核
+cd /usr/src/linux
+make enuconfig
+
+
+lrwxrwxrwx 1 root root 19 Jun 29 03:50 /usr/src/linux -> linux-3.8.13-gentoo
+kernel-3.8.13-gentoo
+
+
+Error udev-mount failed to start 
+> It's not a udev problem. You need to recompile your kernel with 
+> devtmpfs support. 
+> It can be found in device-drviers -> generic driver options. 
+http://www.gossamer-threads.com/lists/gentoo/user/264060
+
+

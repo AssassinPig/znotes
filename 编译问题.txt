@@ -1,0 +1,12 @@
+通常在软件编译时出现的usr/bin/ld: cannot find -lxxx的错误，主要的原因是库文件并没有导入的ld检索目录中。
+解决方式：
+1。确认库文件是否存在，比如-l123, 在/usr/lib, /usr/local/lib,或者其他自定义的lib下有无lib123.so, 如果只是存在lib123.so.1,
+那么可以通过ln -sv lib123.so.1   lib123.so，建立一个连接重建lib123.so.
+2。检查/etc/ld.so.conf中的库文件路径是否正确，如果库文件不是使用系统路径，/usr/lib, /usr/local/lib, 那么必须在文件中加入。
+3。ldconfig 重建ld.so.cache文件，ld的库文件检索目录存放文件。尤其刚刚编译安装的软件，必须运行ldconfig，才能将新安装的
+库文件导入ld.so.cache.
+4。测试，gcc -l123 --verbose
+
+主要是注意/etc/ld.so.conf中有没有/usr/local/lib类似的文件夹
+然后运行ldconfig重建ld.so.cache文件
+其次就是注意一下库的名字

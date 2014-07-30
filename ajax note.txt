@@ -1,0 +1,31 @@
+ajax
+XMLHttpRequest对象
+var xmlhttp;
+if (window.XMLHttpRequest)
+{
+	xmlhttp=new XMLHttpRequest();
+}
+else
+{
+	xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+}
+
+向服务器发送请求
+xmlhttp.open("GET", "test1.txt", true);
+xmlhttp.send();
+
+http://www.w3school.com.cn/ajax/ajax_xmlhttprequest_send.asp
+
+xmlhttp对象
+open(method, url, async)
+method 可以是"GET" "POST"
+url 文件在server上的位置
+xmlhttp.open("GET", "demo_get.asp", true);
+
+send(string)
+string 在post的时候使用
+xmlhttp.send();
+
+GET和POST的区别
+GET更简单而且更快
+

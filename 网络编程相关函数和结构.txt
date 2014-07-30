@@ -1,0 +1,50 @@
+﻿网络编程相关
+地址结构
+sockaddr_in IPV4套接字的地址结构
+sockaddr 	通用套接字地址结构
+
+网络本机字节序转换函数
+#include <sys/types.h>
+#include <netinet/in.h>
+#include <inttypes.h>
+uint32_t htonl(unint_32_t hostlong);
+uint16_t htons(uint16_t hosthort);
+uint32_t ntohl(uint32_t netlong);
+uint16_t ntohs(uint16_t netshort);
+
+IP地址转换函数
+#include <arpa/inet.h>
+in_addr_t inet_addr(const char *cp);
+int inet_aton(const char* cp, struct in_addr* addrp);
+char* inet_ntoa(struct in_addr inaddr);
+
+
+套接字地址信息函数
+getsockname获得本地套接字信息
+getpeername获得远程套接字信息
+应用场景：
+TCP客户端不调用bind而直接调用connect函数 此时应调用getsockname函数才能获得由系统分配给该链接的ip地址和端口号
+调用bind函数，且端口参数设为0（让内核选择相应的端口），调用getsockname来获得本地端口号
+TCP服务器调用bind函数 且IP地址参数为INADDR_ANY 则嗲用getsockname函数来获得由内核分配的本地IP地址
+在子进程中，由于执行了exec函数而丢失了原内存的数据，则调用getpeername来获得远程的套接字的地址信息
+
+套接字信息函数
+主机名转换为IP地址
+struct hostent* gethostbyname(const char* name);
+gethostbyname_r 多线程可重入版本
+
+IP地址转换为主机名函数 gethostbyaddr
+#include <netdb.h>
+struct hostent *gethostbyaddr(const char*addr, int len, int type);
+gethostbyaddr_r
+
+获得服务的端口号
+getservbyname函数
+端口号转换为服务名 
+getservbyport
+
+
+
+
+
+

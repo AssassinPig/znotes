@@ -1,0 +1,18 @@
+﻿epoll
+new category1
+
+http://yaocoder.blog.51cto.com/2668309/888374
+http://hi.baidu.com/yangyingchao/item/45a0a4274840f98c9d63d14d
+http://www.ccvita.com/515.html
+
+
+epoll_wait中 传入的接受epoll事件的数组epoll_event大小无所谓
+
+如果是多线程程序则传入1都可以
+这个epoll_event是用来传递事件与内核通讯使用的， 与内核中的fd数组没有关系
+
+如果内核中产生事件需要处理， 且event_fd的个数大于这个接受epoll_event的话， 则应该分多次返回epoll_wait
+
+如果想发送数据，则需要使用epoll_ctrl(ADD)或者epoll_ctl(MOD) 通知内核对fd的设置
+
+内核会在合适的时机进行epoll_wait的通知

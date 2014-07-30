@@ -1,0 +1,10 @@
+在命令行下用命令runas来提升管理员权限
+
+步骤：
+
+一、首先用命令lusrmgr.msc打开[本地用户和组]，保证adminstrator开启状态，以及不是空密码。
+
+二、在命令行下用命令runas /user:administrator cmd.exe运行即可。
+
+至此命令行就获得管理员权限也就可以运行更多的命令了。
+

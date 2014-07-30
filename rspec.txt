@@ -1,0 +1,22 @@
+﻿Rspec
+rails generate rspec:install	#设置rails 使用RSpec而不用Test::Unit
+
+bundle exec rspec spec/requests/static_pages_spec.rb	#注意路径
+bundle exec rspec spec/features/static_pages_spec.rb
+
+require 'spec_helper'
+describe "User pages" do
+	subject {page}
+	
+	describe "signup page" do
+		before { visit signup_path }
+		it { should have_selector('h1', text:"xxxx")}
+		it { should have_selector('title', text:"xxxx")}
+	end
+end
+
+/hello/
+      /features
+      /spec
+      
+cucumber features

@@ -1,0 +1,235 @@
+代码文件编码
+.rb使用utf-8编码
+#encoding: utf-8
+
+基本类型
+数字	
+Fixnum 可以容纳比本机字节长度少一位
+Bignum 仅收到内存限制
+
+进制前缀
+0 八进制
+0d 十进制
+0x 十六进制
+0b 二进制
+
+在ASCII字符前面加?可以得到对应的字符数值
+
+浮点数  基本不分float 带小数点就是浮点数
+
+字符串
+''不进行替换
+""可以进行#{v}的替换
+
+\a	bell/alert
+\b	backspace
+\e	escape
+\f	
+\n	newline
+\r	return
+\s	space
+\t	tab
+\v	vertical tab
+
+
+正则表达式
+/pattern/
+/pattern/option
+%r{pattern}
+%r{pattern}options
+Regexp.new{'pattern'[, option]}
+
+命名规则
+ruby 使用一种命名他管理来区分名称的用途： 名称的第一个字符显示这个名称如何被使用
+局部变量 方法参数和方法名称都必须以小写字母或者下划线开始  rails中使用了小写字母开头
+全局变量使用美元符号($)为前缀
+实例变量使用@开始
+类变量使用2个@符号开始(静态变量???)
+最后类名称，模块名称和常量都必须以一个大写字母开始
+
+puts "sdfsdf"
+puts作用的副作用，会先在目前的屏幕上打印出来，之后才返回字符串常量值
+puts会在输出字符串之后添加一个"\n"
+
+print 之上两点都不会
+
+字符串方法
+"".empty?  测试字符串是否为空
+
+所有的object包括函数都可以调用to_s方法，包括nil，来返回一个字符串
+
+nil.to_s
+""
+nil.to_s.empty?
+true
+
+测试一个对象是否为空nil?
+"foo".nil?
+false
+"".nil?
+false
+
+nil.nil?
+true
+
+
+基本上所有ruby的对象的布尔值都是真 ，只有nil是false
+包括0也是真
+if 0
+	true
+else 
+	false
+end
+true
+
+
+数组常用方法
+a.sort
+a.sort! bang改变了数组的内部数据
+a.shuffle	
+a.reverse
+
+"foo bar a".split
+["foo", "bar", "a"]
+
+"fooxbarxa".split('x')
+["foo", "bar", "a"]
+
+a=[42, 8, 17 ,7, "foo", "bar"]
+a.join
+"428177foobar"
+
+a.join(',')
+"42,8,17,7,foo,bar"
+
+
+range 和 数组
+(0..9).to_a		由range生成一个数组 包括9
+(0...9).to_a	由range生成一个数组 不包括9
+
+a=%w[foo bar baz quux]		#创建一个元素为字符串的数组
+["foo", "bar", "baz", "quux"]
+
+('a'..'e').to_a
+["a", "b", ... "e"]
+
+block
+(1..5).each do |number|		#针对range
+	puts 2* number
+	puts '--'
+end
+其中 do ~ end之间就是一个block 它接受|number|作为传入的参数 之后做puts的操作
+
+3.times { puts "abc" }		#针对单个次数
+其中{}就是一个block 
+默认单行block就使用{} 多行的话就使用do end 并且{}优先级较高
+
+(1..5).map { |i| i**2 }		#针对range或者数组
+
+def call_back
+	yield
+	yield
+end
+def call_back
+	yield
+	yield
+end
+
+call_back { puts "in block"}
+call_back { |i| print "#{i}\n" }
+
+
+hash 和 symbol
+h1 = { :name => "abc", :email => "xxx@gmail.com"}
+h2 = { name : "abc", email: => "xxx@gmail.com"}		#新形式，逐渐推荐使用
+h1 == h2
+true
+其中 :name 叫做symbol 可以看做是一个没有约束的字符串，symbol当比较的时候，不需像字符串一样逐个字符进行比较，所以是hash的key的不二选择	
+
+
+flash = { success:"it works!", error:"it failed"}		
+flash.each do |key, value|									#调用了hash的each方法
+	puts "key #{key.inspect} has value #{value.inspect}"
+end
+
+inspect 返回一个数组的字符形式
+puts (1..5).to_a
+1
+2
+3
+4
+5
+
+puts (1..5).to_a.inspect
+[1,2,3,4,5]
+
+因为inspect输出对象的方式经常使用，为此还有一个专门的快捷方式 p
+p :name #等价于 puts:name.inspect
+:name 
+
+类
+s="foobar"	#默认构造函数调用
+s.class 	#返回类的类型
+String
+
+s = String.new("foobar")	#使用类名.new来生成一个类
+"foobar"
+s.class
+String
+s == "foobar"				
+true
+
+a = Array.new([1,3,2])
+[1,3,2]
+
+h = Hash.new			#注意hash如果给new函数参数，则这个参数的值是给未初始值得默认值
+{}
+h[:foo]
+
+h = Hash.new(0)
+{}
+h[:foo]
+0							#初始值的默认值变成了0
+
+mass assignment
+
+mixin
+module Trig
+	PI = 3.14			#模块中定义常量
+	def Trig.sin(x)		#模块中定义函数
+	end
+	def Trig.cos(x)
+	end
+end
+
+使用
+require 'trig'
+y=Trig.sin(xxxxz)
+	
+mix in
+使用sha256保存密码
+salt = Array.new(10){ rand(1024).to_s(36) }.join
+hashed_password=Digest::SHA256.hexdigest(pass+salt)
+
+ruby的自省
+程序能够在程序内部检查程序自己的方方面面，这种能力叫做反射 也叫内省
+在内省的时候可能发现如下信息
+包含哪些对象
+类的层次结构
+对象的属性和方法
+有关方法的信息
+
+irb中直接load example.rb
+然后可以直接调用example.rb中的方法
+
+Symbol和String的互转
+String#to_sym() String#intern()
+Symbol#to_s() Symbol#id2name()
+
+异常处理
+begin 
+	rescue e
+		#失败时候抛出异常e
+	ensure
+		#此处无论成功失败都执行
+end

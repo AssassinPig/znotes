@@ -1,0 +1,46 @@
+﻿更新portage树
+emerge --sync
+
+查找名字中包含有pdf的软件包
+emerge --search pdf
+
+查找与pdf相关的软件包
+emerge --searchdesc pdf
+
+安装名为gnumeric的软件
+emerge gnumeric
+emerge --pretend gnumeric
+下载源代码包
+emerge --fetchonly gnumeric
+
+删除gnumeric的软件
+emerge --unmerge gnumeric
+
+更新系统
+emerge --update --ask world
+
+更新整个系统
+emerge --update --deep world
+
+执行完整的更新
+emerge --update --deep --newuse world
+
+当前可用的全局USE标记列表可以在网上或者本机的/usr/portage/profiles/use.desc文件里找到
+当前可用的局部USE标记列表可以在本机的/usr/portage/profiles/use.local.desc 文件里找到
+
+/etc/make.profile
+/etc/make.conf
+
+emerge --info
+根据新添加的use来更新系统
+emerge --update --deep --newuse world
+
+删除不需要的包(慎重)
+只列举而不删除
+emerge -p --depclean
+
+安装gentoolkit
+emerge gentoolkit
+
+
+

@@ -1,0 +1,668 @@
+﻿元编程是写出编写代码的代码
+在运行时询问结构的问题，这称之为内省(introspection)
+
+c++的模板在编译之前会编译成一个普通的c++代码，然后再进行编译
+而动态元编程(dynamic metagramming)则是可以在运行时改变自身操作代码
+
+class Greeting
+  def initialize(text)
+    @text = text
+  end
+  def welcome
+    @text
+  end
+end
+my_object=Greeting.new
+my_object.class				Greeting
+my_object.class.instance_methods(false)	[:welcome]
+my_object.instance_variables		[:@text]
+
+Ruby类和方法查找 
+运行时创建方法 插入方法调用 把调用转发给其他对象 调用一个不存在的方法
+块和lambda 领域专属语言
+作用域 eigenclass(单件类)
+综合eval方法和拦截对象模型中的回调方法
+
+对象模型
+ruby的语言构件 比如类class 模块module 以及实力变量instance vairable等
+元编程metaprogramming操作的就是这些语言构件
+所有这些语言构件存在其中的系统称为对象模型object model
+
+打开类
+class String
+  def to_alphanumeric
+    gsub /[^\w\s]/, ''
+  end
+end
+这样就是打开了String类然后添加了一个to_alphanumeric方法
+
+3.times do
+  class C
+    puts "Hello"
+  end
+end
+output:
+Hello
+Hello
+Hello
+输出了3次Hello 并不是定义了三个同名类
+
+class D
+  def x
+    'x'
+  end
+end
+class D
+  def y
+    'y'
+  end
+end
+obj=D.new
+obj.x	"x"
+obj.y	"y"
+第一次class是定义了这个类,第二次使用class是重新打开了这个类并定义了一个y函数
+从某种意义上来说 Ruby的class关键字更像是一个作用域操作符而不是一个类型声明语句
+
+打开类所带来的问题
+如果String类中原本就存在一个to_alphanumeric方法，并且在工程中的其他地方依赖于这个方法了,就不能覆盖了
+这样的情况叫做猴子补丁
+[].methods.grep  /^re/  查找Array类中以re开头的方法
+
+对象中有什么
+class MyClass
+  def my_method
+    @v=1
+  end
+end
+obj=MyClass.new
+obj.class
+obj.instance_variables	[]
+obj.my_method
+obj.instance_variables	[:@v]
+调用my_method之后才有@v生成,
+但是在initialize()方法中如果有变量的话，就会在new的时候生成
+可以把实例变量的名字和值理解为hash中的键值对 每一个对象的键/值都可能不同
+
+实例变量和方法存放的地方
+实例变量存放在Object的instance之中， 而方法存放在Object.class之中
+区分Object Object.instance Object.class
+ClassName.instance_methods == ClassInstanceObject.methods
+
+类本身也是对象
+"hello".class => String
+inherited=false
+Class.instance_methods(inherited)	#返回非继承的方法
+
+类就是一个对象Class类的一个实例 外加一组实例方法和一个对其超类的引用
+
+类的继承
+String.superclass		Obejct
+Object.superclass		BasicObject
+BasicObject.superclass	nil
+
+Class.superclass		Module
+Module.superclass		Object
+所以说Class就是一个加强的Module 增加了3个方法new allocate superclass
+
+模块的优点 与类的对比
+一个模块基本上就是一组实例方法， 而类是一个增加了若干新的功能(一个superclass()一个new()方法)的模块
+通常希望它应该在别处被包含include时或者当成命名空间时候应该选择使用模块
+当希望他可以被实例化和继承的时候应该选择类
+
+module MyModule
+	MyConstant = 'Outer constant'
+	class MyClass
+		MyConstant = 'Inner constant'
+	end
+end
+MyModule::MyConstant			'Outer constant'
+MyModule::MyClass::MyConstant	'Inner constant'
+
+module M
+	Y='another constant'
+	class C
+		::M::Y			"another constant"
+	end
+end
+
+当调用一个方法的时候 Ruby会做两件事
+1找到这个方法 这个过程称之为方法查找	Method Lookup
+2执行这个方法 为做到这一点Ruby需要一个叫做self的东西 Method Execution
+receiver接受者
+接受者就是你调用方法所在的对象 例如my_string.reverse()中 my_string就是接受者
+ancestors chain祖先链	
+观察任意一个Ruby类 移动到它的超类 然后再移动到超类的超类 依次类推到达Object类 在这个过程中经过的路径就是祖先链 ancestors chains
+可以使用ancestors()方法来获得一个类的祖先链
+MySubclass.ancestors() [MySubclass, MyClass, Object, Kernel, BasicObject]
+当然祖先链中也包括模块
+
+module M
+	def my_method
+	end
+end
+class C
+	include M
+end
+class D < C
+end
+D.new.my_method
+D.ancestors => [D,C,M,Object,Kernel, BasicObject]
+注意M ，它插入到了D的ancestor chain中
+还有Kernel它被Object类include了，所以你可以在任何类的实例调用print函数
+
+动态的方法调用
+class MyClass
+	def my_method(my_arg)
+		my_arg*2
+	end
+end
+obj=MyClass.new
+obj.send(:send, 3)
+利用send方法可以实现 Dispatch技术
+私有性问题，使用send可以调用private的函数, 可以使用public_send()来保证私有性
+
+动态的定义方法
+Module#define_method()
+只要为其提供一个方法名和一个充当方法主体的块即可
+class MyClass
+	define_method :my_method do |my_arg|
+		my_arg * 3
+	end
+end
+第一步:添加动态派发
+class Computer
+	def initialize(computer_id, data_source)
+		@id = computer_id
+		@data_source = data_source
+	end
+	def mouse
+		component :mouse
+	end
+	def cpu
+		component :mouse
+	end
+	def keyboard
+		component :mouse
+	end
+	
+	def component(name)
+		info = @data_source.send "get_#{name}_info", @id
+		price = @data_source.send "get_#{name}_price", @id
+		result = "#{name.to_s.capitalize}: #{info} ($#{price})"
+		return "* #{result}" if price >= 100
+ 	end
+end
+
+第二步：动态创建方法
+class Computer
+	def initialize(computer_id, data_source)
+		@id = computer_id
+		@data_source = data_source
+	end
+	
+	def self.define_component(name)
+		method_define(name) {
+			info = @data_source.send "get_#{name}_info", @id
+			price = @data_source.send "get_#{name}_price", @id
+			result = "#{name.to_s.capitalize}: #{info} ($#{price})"
+			return "* #{result}" if price >= 100
+		}
+	end
+	define_component :mouse
+	define_component :cpu
+	define_component :keyboard
+end
+
+第三步用内省(introspection)的方式缩减代码
+class Computer
+	def initialize(computer_id, data_source)
+		@id=computer_id
+		@data_source=data_source
+		data_source.methods.grep(/^get_(...)_info$/) { |m| Computer.define_component }
+	end
+	
+	def self.define_component(name)
+		...
+	end
+end
+
+block代码块
+def a_method(a,b)
+	a + yield(a,b)
+end
+a_method(1,2) { |x,y|  (x+y)*3} #=>10
+一般情况下如果是只有一行的块 使用{},  如果是多行的情况使用do end
+只有在调用一个方法的时候才定义一个块。块会直接被传递给这个方法，在方法中使用yield关键字来回调这个块
+
+当前块
+询问当前调用的方法调用是否 包括一个块
+def a_method
+  return yield if block_given?
+  "no block"
+end
+
+a_method						#=>"no block"
+a_method { "here is a block!" }
+
+块不仅仅是一段可以浮动的代码，不可能在真空之中运行代码。当代码运行的时候，它需要一个执行环境:局部变量，实例变量，self...这些都是绑定在对象上的名字，就可以把他们 简称为绑定binding。块的要点在与他们是完整的，可以立刻运行的。他们既包含代码，也包含一组绑定。
+创建块的时候会回去局部绑定，然后把块连同它自己的绑定传递给一个方法。
+
+Closures闭包
+Scope作用域
+块作用域
+切换作用域
+
+v1=1
+class MyClass
+  v2=2
+  local_variables			#=> [:v2]
+  def my_method	
+    v3=3
+    local_variables		
+  end
+  local_variables			#=> [:v2]
+end
+obj=MyClass.new		
+obj.my_method				#=> [:v3]
+obj.my_method				#=> [:v3]
+local_variables 			#=> [:v1, :obj]
+
+程序一旦切换作用域就会使用新作用域的binding来替换旧的binding
+程序会在如下三个地方关闭一个作用域 同时打开另外一个新的作用域
+1,类作用域	class
+2,模块定义	module
+3,方法		def
+其中class/module与def之间的区别就是在类和模块定义中的代码会被立刻执行，但是方法中定义的代码只会在方法被调用的时候执行
+
+扁平化作用域
+Flattengin the Scope
+my_var = "Success"
+MyClass = Class.new do 
+	puts "#{my_var}"				#=>可以使用my_var
+	
+	define_method :my_method do 
+		puts "#{my_var}"			#=>可以使用my_var
+	end
+end
+使用Class.new替代class 使用Module.new替代module
+
+共享作用域
+def define_methods
+	shared = 0
+	Kernel.send :define_method, :counter do 
+		shared
+	end
+	
+	Kernel.send :define_method, :inc do  |x|
+		shared += x
+	end
+end
+
+define_methods
+counter			#=>0
+inc(4)
+counter			#=>4
+使用动态分发send在Kernel中定义两个方法
+
+instance_eval在一个对象的上下文中执行一个块
+class MyClass
+	def initialize
+		@v=1
+	end
+end
+obj=MyClass.new
+obj.instance_eval do
+	self			#=>#<MyClass:0x3340dc @v=1>
+	@v				#=>1
+end
+
+甚至调用私有变量
+v=2
+obj.instance_eval { @v=v }
+obj.instance_eval { @v }	#=>2
+可以把传递给instance_eval的 方法的块成为一个上下文探针(Context Probe)
+instance_exec
+
+Callable Objects可调用对象
+从底层来看，使用块需要分为两步
+第一步，打包代码
+第二步，调用块通过yield来执行代码
+1,使用proc
+2,使用lambda
+3,使用方法
+
+Proc对象
+尽管Ruby中大多数是对象，但是块不是，为解决这个问题，标准库提供了一个名为Proc的类来存储一个块
+通过Proc.new来创建一个Proc，使用Proc#call方法来执行
+inc = Proc.new { |x| x+1 }
+inc.call(2)
+这种技术被称为延迟执行(Deferred Evaluation)
+
+Ruby还提供两个内核方法(Kernel Method)用于把块转换为Proc:lambda()和proc() 
+dec = lambda { |x| x-1 }
+dec.class 	#=>Proc
+dec.call(2)	#=>1
+
+&操作符
+块就像是方法的额外匿名参数，但是在绝大多数条件下载方法中是可以通过一个yield语句直接运行一个块的，但是在如下两个情况中，yield将力不从心
+1，想把这个块传递给另外一个方法
+2，想把这个块转化为一个Proc并随后调用
+
+把块传递给另外一个函数
+def math(a,b)
+	yield(a,b)
+end
+def teach_math(a,b, &operation)
+	puts "Let's do the math:"
+	puts math(a,b,&operation)
+end
+teach_math(2,3) { |x,y| x*y } #=>6
+
+把块转换为一个Proc并传递
+def my_method(&the_proc)
+	the_proc
+end
+p=my_method { |name| "Hello, #{name}!" }
+puts p.class			#=>Proc
+puts p.call("Bill")		#=>"Hello, Bill"
+
+将Proc转换为块
+def my_method(greeting)
+	puts "#{greeting}, #{yield}!"
+end
+my_proc=proc{"Bill"}
+my_method("Hello", &my_proc)
+
+Methods
+class MyClass
+	def initialize(value)
+		@x = value
+	end
+	
+	def my_method
+		@x
+	end
+end
+object=MyClass.new(1)
+m=object.method :my_method
+m.call						#=>1
+
+在需要编译的语言之中,定义一个class之后，知道有对应的对象创建出来，调用它的方法才有实际的工作
+而在ruby之中，类的定义是有所不同的，当使用class关键字 的时候，并非是指定对象的未来行为，相反是在运行代码
+定义ruby类的时候实际上是在运行一段普通的代码，这样理解就会使你拥有一些强大的法术。
+
+类宏Class Macro	修改类的方法
+环绕别名 Around Alias
+单件类singleton class (也就是eigenclass)
+
+牢记类只是一个增强的模块
+Ruby对象模型
+class MyClass
+	puts "hello!"
+end
+result=class MyClass 
+	self
+end
+result #=> MyClass
+以上代码表明，在class或者module定义的时候，class充当了当前的self的角色
+不管处在Ruby程序的哪个位置 总是存在一个当前对象self
+类似的,也总有一个当前类或者模块存在，当定义一个方法的时候，该方法将成为当前类的一个实例方法
+class MyClass
+  #当前类是MyClass
+  def my_method
+    #这里是MyClass的一个实例方法
+  end
+end
+
+以下是使用class_eval来给a_class新增一个方法m
+def add_method_to(a_class)
+  a_class.class_eval do
+    def m;  'Hello!';  end
+  end
+end
+
+class MyClass
+  def method_one
+    def method_two
+    	'Hello!';		
+    end
+  end
+end
+obj=MyClass.new
+obj.method_one
+obj.method_two	#在执行method_one之后才有def method_two的
+
+Module#class_eval()
+Object#instance_eval()
+instance_eval仅仅会修改self
+class_eval会同时修改self和当前类 实际上是重新打开了该类 正如class关键字所做的一样 
+如果打开的不是类，那么可以使用instance_eval()方法
+如果想打开一个类并且用def关键字定义方法则选择class_eval()
+而且两者都可以扁平化作用域来防止重新绑定
+
+类实例变量
+class MyClass
+	@my_var=1
+	def self.read; @my_var; end
+	def write; @my_var =2; end
+	def read; @my_var; end
+end
+obj=MyClass.new
+obj.write			#=>2
+obj.read			#=>2
+MyClass.read		#=>1
+相当于说给MyClass Class类增加一个普通变量
+而不是给MyClass实例出来的对象添加
+
+不同的是类似静态变量的做法,要尽量避免
+class C
+	@@v=1
+end
+这样@@可以供C的子类来获取使用，所以这样更类似于编译链接型语言的静态变量
+
+单件方法Singleton Method
+str="abcasdfdsf"
+def str.title?
+	self.upcase == self
+end
+str.title? 					#=> false
+str.methods.grep(/title?/)	#=> ["title?"]
+str.singleton_methods		#=> ["title?"]
+
+以下三种都是一样的定义方法
+def obj.my_method
+end
+def MyClass.my_method
+end
+class MyClass
+	def self.my_method
+	end
+end
+
+类宏Class Macro
+例子attr_accessor
+class MyClass
+  attr_accessor :my_attribute
+end
+声明一个attr_accessor会对应生成两个函数 my_attribute() 和 my_attribute=(new_value)
+class Book
+  def title
+  def subtitue
+  def lend_to(user)
+  def self.deprecate(old_method, new_method)	
+    define_method(old_method) do |*args, &block|
+      warn "warning, this method #{old_method}() is deprecated, Use #{new_method}()"
+      send(new_method, *args, &block)
+    end
+  end
+  
+  deprecate :GetTitle, :title
+  deprecate :xxxx, :subtitue
+  deprecate :old_lend_to, :lend_to
+end
+
+Eigenclass
+进入Eigenclass作用域
+class << an_object
+end
+
+获得一个eigenclass的引用
+obj=Object.new
+eigenclass = class << obj
+	self
+end
+
+eigenclass.class #=> class	
+每个eigenclass只有一个实例(这也就是被称之为单件类的原因) 并且不能被继承
+所以说eigenclass是一个对象的单件方法的存活之所
+def obj.my_singleton_method 
+end
+eigenclass.instance_methods.grep(/my_/) #=>["my_instance_method"]
+
+大一统理论
+1, 只有一种对象--要么是普通对象，要么是模块
+2，只有一种模块--可以是普通模块 类 eigenclass或代理类
+3，只有一种方法，它存在于一种模块中--通常是类中
+4，每个对象包括类都有自己真正的类，要么是普通类，要么是eigenclass
+5,除了BasicObject类，无超类外，每个类有且只有一个超类，这意味着从任何类只有一条向上知道basicobject的祖先链
+6,一个对象eigenclass的超类是这个对象的类, 一个类的eigenclass就是这个类的超类的eigenclass
+7,当调用一个方法的时候，ruby会先向右迈一步进入接受者真正的类，然后向上进入祖先链
+
+三种定义类方法的语法
+class MyClass
+	def self.my_method
+	end
+end
+
+def MyClass.my_other_method 
+end
+
+class MyClass
+	class << self
+		def my_method
+		end
+	end
+end
+
+类扩展
+module MyModule
+	def my_method
+	end
+end
+
+class MyClass
+	class << self
+		include MyModule
+	end
+end
+这样就使MyClass获得了模块的方法,而不是获得模块对象的方法,不同于mixin
+
+类扩展Object#extend
+module MyModule
+	def my_method
+	end
+end
+
+obj=Object.new
+obj.extend MyModule
+obj.my_method
+
+class MyClass
+	extend MyClass
+end
+
+MyClass.my_method
+
+方法别名alias
+def MyClass
+	def my_method
+	end
+	alias :m :my_method		#中间么有逗号
+end
+obj=MyClass.new
+obj.m			#=> 就是调用my_method
+环绕别名
+ailas :m :my_method
+这样之后，重新定义my_method，再调用m()其实还是最初版本的my_method， 这意味着说当一个方法被定义的时候，方法体会有类似引用计数的概念，只要还有alias指向着，就不会消失，alias和方法体的绑定也没有解开
+
+Kernel#eval
+namespace :deploy do
+  task :update do
+	
+  end
+end
+
+map = {
+	"update" => "deploy:update",
+	"restart" => "deploy:restart",
+	"cleanup" => "deploy:cleanup"
+}
+
+map.each do |old, new|
+  eval "task{#{old.inspect}}" do
+    warn "#{old.inspect} is deprecated"
+    find_and_execute_task(#{new.inspect})
+  end
+end
+
+绑定对象 Binding类
+class MyClass
+  def my_method
+    @x = 1
+    binding
+  end
+end
+b = MyClass.new.my_method
+eval "@x", b  # => 1
+
+顶级作用域绑定
+TOPLEVEL_BINDING
+
+class Class
+  def attr_checked(attribute, &validation)
+    define_method "#{attribute}=" do |value|
+      raise 'Invalidate' unless validation.call(value)
+      instance_vairable_set("@#{attribute}", value)
+    end
+    
+    define_method attribute do
+      instance_variable_get "@#{attribute}"
+    end
+  end
+end
+
+Hook方法
+class String
+  def self.inherited(subclass)
+    puts "#{self} was inherited by #{subclass}"
+  end
+end
+
+class MyString < String
+end
+
+String was inherited by MyString
+
+module CheckAttributes
+  def self.included(base)
+    base.extend ClassMethods
+  end
+  
+  module ClassMethods
+    def attr_checked(attribute, &validation)
+      define_method "#{attribute}=" do |value|
+        raise 'Invalidate' unless validation.call(value)
+        instance_vairable_set("@#{attribute}", value)
+      end
+          
+    define_method attribute do
+      instance_variable_get "@#{attribute}"
+    end
+  end
+end
+
+class Person
+  include CheckAttributes
+end
+这样在include CheckAttributes的类之中就可以使用attr_checked的类宏了
+

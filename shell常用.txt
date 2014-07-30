@@ -1,0 +1,117 @@
+﻿printf 
+printf("%-4s, %-5s", "No", "Name\n");
+output:
+No  Name \n
+
+%-4s表示打印一个长度为4的字符串，-表示左对齐(如果不是用-则默认使用右对齐方式)
+%-4.2f表示打印一个整数部分长度为4， 小数部分长度为2的float类型数值
+
+pgrep vim
+显示vim进程的pid
+
+cat /proc/$PID/environ
+显示pid进程的环境
+
+cat /proc/$PID/environ | tr '\0' '\n'
+将\0替换成\n
+
+var=value --赋值操作
+var = value --是否相等操作
+
+HTTP_PROXY=http://xxxxx
+export HTTP_PROXY
+设置环境变量 
+
+echo $PATH
+export PATH="$PATH:/home/user/bin"
+如果已有同名环境变量，需要在其后面增加一个值的做法
+
+HOME 
+PWD
+USER
+UID
+SHELL
+常用环境变量
+
+length=${#var}
+echo length
+echo ${#var}
+打印出字符串var的长度
+
+echo #SHELL
+打印出是什么shell
+
+0-stdin
+1-stdout
+2-stderr
+
+cmd 2>stderr.txt 1>stdout.txt
+重定向标准错误到stderr.txt中 标准输出到stdout.txt中
+
+date
+date +"%s" 以秒显示时间戳
+
+find . -name "example" -print
+find . -iname "example" -print
+忽略大小写
+
+find . \( -name "*.txt" -o -name "*.pdf" \) -print
+使用\(\)将 匹配多个条件 中间使用-o
+
+find /home/users/ -path "*slynux*" -print
+使用-path表示使用通配符进行整体匹配
+/home/users/list/slynux.txt
+/home/users/slynux/xxx
+
+-regex表示使用正则表达式进行路径匹配
+-iregex表示忽略正则表达式大小写
+
+find . -regex "\( \.py | \.sh \)$"
+
+find . ! -name "*.txt" -print
+
+xrags
+cat example.txt
+1 2 3 4 5 6
+7 8 9 0 
+11 12
+
+单行转换成多行输出
+cat example.txt | xargs
+
+转换成多行输出 指定最大的参数数量n
+cat example.txt | xargs -n 3
+1 2 3
+4 5 6
+7 8 9
+10 11 12
+
+xargs -d 界定操作符 
+echo "splitXsplitXsplitXsplitXsplitXsplitX" | xargs -d X
+split split split split split split 
+
+与-n连用
+echo "splitXsplitXsplitXsplitXsplitXsplitX" | xargs -d X -n 2
+split split 
+split split
+split split 
+
+cat args.txt
+arg1
+arg2
+arg3
+
+使用-I进行替换
+cat args.txt | xargs -I {} ./cecho.sh -p {} -l
+-p arg1 -l #
+-p arg2 -l #
+-p arg3 -l #
+
+cat args.txt | xargs -I {} ./cecho.sh -p {} -l
+-p arg1 -l arg1#
+-p arg2 -l arg2#
+-p arg3 -l arg3#
+
+find . -type f -name "*.txt" -print0 | xargs -0 rm -f
+-print0 文件命中可以有空格
+-0 以\0作为输入定界符号

@@ -1,0 +1,48 @@
+﻿factory girl
+生成ActiveRecord对象
+
+group :test do
+	
+	gem 'factory_girl_rails', '4.1.0'
+	
+end
+
+Factory Girl生成的预构建都保存在spec/factories.rb中
+rspec会自动加载这个文件
+spec/factories.rb
+FactoryGirl.define do
+	factory :user do
+		name "xxxx"
+		email "xxxxx"
+		password "xxxxx"
+		password_confirmation "xxxx"
+	end
+end
+
+
+让Ruby和Rake帮我来创建用户
+1.在Gemfile中加入faker
+  gem 'faker'
+
+2.添加一个Rake任务
+lib/takes/sample_data.rake
+namespace :db do
+  desc "Fill database with sample data"
+  task populate: :environment do
+    User.create!(name: "Example User",
+		 email: "example@railstutorial.org",
+		 password: "foobar")
+    99.times do |n|
+      name = Faker::Name.name
+      email = "example-#{n+1}@gmail.com"
+      password = "password"
+      User.create!(name: name,
+		   email: email,
+		   password: password)			
+    end
+  end
+end
+
+3.bundle exec rake db:reset
+  bundle exec rake db:populate
+  bundle exec rake db:test:prepare

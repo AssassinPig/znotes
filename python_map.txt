@@ -1,0 +1,50 @@
+﻿字典dict
+创建和使用
+phonebook = {'Alice':'2341', 'Beth':'9102', 'Ceil':3258}
+
+items = [('name', 'Gumby'), ('age', 42)]
+d = dict(items)
+
+
+字典操作
+len(d)返回d中项(键值对)数量
+d[k]返回关联到键k的值
+d[k] = v  给d[k]赋值
+
+del d[k]删除键为k的项
+k in d检查d中是否有含有键为k的项
+
+字典方法
+clear清除所有项，原地操作
+
+copy 返回一个新字典，浅复制shallow copy
+deepcopy 深复制
+
+fromkeys
+{}.fromkeys(['name', 'age'])
+
+get 如果访问的项不存在时候，使用get比[]更好，不会出现异常错误
+
+has_key 3.0里面没有了
+
+items iteritems以列表形式返回map
+d = {xxxxx}
+d.items()
+
+it = d.iteritems()
+it
+list(it)
+
+keys iterkeys将map中的key以列表的形式返回
+
+values itervalues
+
+pop(key)从map中删除对应key的项
+popitem随机删
+
+setdefault
+update 使用一个字典更新另外一个字典
+d={xxxx}
+x={bbbb}
+x.update(d)
+

@@ -1,0 +1,34 @@
+性能监控
+1.四个指标
+cpu
+memory
+io
+network
+这四个子系统相互影响彼此牵制
+
+2.确定应用类型
+IO Bound 一般是高负荷内存和存储系统
+CPU Bound 一般是高符合cpu占用
+
+3.根据基准统计
+vmstat 1
+可以根据idle来判断cpu的使用是否需要优化
+
+tool
+vmstat	all purpost performance tool
+mpstat	provides statistics per CPU
+sar		all purpost performace monitoring tool
+iostat	provides dis statistics 
+netstat	provides network statistics
+dstat	
+iptraf
+netperf	network bandwidth tool
+ethtool	reports on Ethernet interface configuration
+iperf	network bandwidth tool
+tcptrace packet analysis tool
+
+cpu篇
+Interrupts 中断 - 设备通知内核，他们完成一次数据处理的过程
+Kernel process 内核处理过程 - 所有内核处理过程就是控制优先级别
+User process - 这块在内核调度机制中处于低优先级
+

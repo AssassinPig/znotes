@@ -1,0 +1,190 @@
+http://www.nodebeginner.org/index-zh-cn.html
+https://github.com/ManuelKiessling/NodeBeginnerBook/tree/master/code/application
+http://martinfowler.com/articles/injection.html
+http://felix.apache.org/site/index.html
+https://www.byvoid.com/project/node
+
+nodejs特点
+优点:
+单线程
+异步I/O
+事件驱动
+
+缺点:
+编程方式
+
+层次:
+____________
+javascript  |
+------------
+c/cpp | v8  |
+------------
+
+
+事件
+	Nodejs所有事件异步I/O 操作完成时都会发送一个事件到事件队列
+	在开发者看来 事件由EventEmitter提供
+	Nodejs的事件处理机制的底层是由libev
+	Nodejs的事件循环对开发者而言也是不可见的
+	类似ev_io ev_signal ev_idle ev_timer等事件均由vEentEmitter封装
+	libev事件循环的每一次迭代 在nodejs中就是一次tick
+=====================================================
+ECMAScript变量包括两种不同类型
+1.基本数据类型
+2.引用数据类型
+对于引用数据类型，可以围棋添加动态属性和方法，也可以改变和删除其属性和方法
+不能给基本数据类型的值添加属性
+
+基本数据类型 赋值操作的时候对应开辟新的空间 各自存储value
+引用数据类型 赋值操作之后对应的空间仅有一个value而已, 而各自拥有一个引用
+=====================================================
+所有的函数参数传值都是传值的
+function addTen(num) {
+	num += 10;
+	return num;
+}
+
+var count = 10;
+var result = addTen(count);	
+alert(count);	//count => 10	没有变动
+alert(result);	//result => 20
+
+function setName(obj) {
+	obj.name = "Nicholas";
+}
+
+var person = new Object();
+setName(person);			//这里传入的是引用，所以在函数处理过程中添加的name属性会加到唯一的value上
+alert(person.name);			
+
+function setName(obj) {
+	obj.name = "Nicholas";
+	obj = new Object();		//这里被new的对象，在离开函数范围之后被销毁了
+	obj.name = "Greg";
+}
+var person = new Object();
+setName(person);
+alert(person.name);			//output: "Nicholas";
+
+====================================================
+简单的类表示
+var User = function(attribute1) {
+	this.attribute1 = attribute1;
+}
+
+User.get = function(...) {
+	...	
+}
+
+User.prototype.save = function(...) {
+	...
+}
+
+var user = new User(...);
+get()仅能使用User.get()来调用
+save()则由user.save()来调用
+
+====================================================
+javascript的规范
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide?redirectlocale=en-US&redirectslug=JavaScript%2FGuide
+
+http://expressjs.com/
+//安装必要的make以及gcc,gcc-c++编译器
+yum -y install make gcc gcc-c++
+//获取源码
+wget http://nodejs.org/dist/v0.8.14/node-v0.8.14.tar.gz
+//解压源码
+tar -zxvf node-v0.8.14.tar.gz
+//进行编译及安装
+cd node-v0.8.14
+./configure
+make && make install
+//创建链接,使用node时就不需要加入路径
+ln -s /usr/local/bin/node /usr/bin/node
+//运行安装npm的脚本
+curl https://npmjs.org/install.sh | sudo sh
+
+全局安装express
+sudo npm install -g express
+sudo npm install -g express-generator
+
+新建
+express -t ejs microblog
+express -e ejs blog
+express -e ejs microblog 
+cd microblog && npm install
+运行
+node app.js
+
+express -e blog
+cd blog & npm install
+node app
+
+mongodb.bat
+mongod -dbpath d:\mongodb\blog
+d:\mongodb\bin\mongod.exe -dbpath d:\mongodb\blog
+
+app.bat 
+node d:\blog\app
+
+var connect = require('connect');
+var session = require('express-session');
+var MongoStore = require('connect-mongo')(connect);
+
+app.use(session({
+    secret: settings.cookieSecret,
+    store: new MongoStore({
+    db: settings.db
+    })
+}));
+
+调试Debug
+node debug debug.js
+
+============================================================
+mongodb
+mongod -dbpath d:\mongodb\blog
+d:\mongodb\bin\mongod.exe -dbpath d:\mongodb\blog
+
+mongo
+use blog
+db.users.find()
+
+http://docs.mongodb.org/manual/tutorial/install-mongodb-on-ubuntu/
+启动关闭等操作
+sudo /etc/init.d/mongod start
+/var/log/mongodb/mongod.log
+sudo /etc/init.d/mongod stop
+sudo /etc/init.d/mongod restart
+
+索引
+文档是mongodb中的基本单元 非常类似于行, 但可以复杂很多
+集合可以看作是没有模式的表
+单个mongodb的实例 可以容纳多个独立的库 每个都有自己的集合和权集
+自带简洁的javascript shell
+每一个文档都有特殊键"_id" 它在文档集合中是唯一的
+
+文档
+1.多个kv关联放在一起就是文档
+文档中的键值对是有序的
+{"greeting":"Hello"; "foo":3}
+{"foo":3; "greeting":"hello"}
+
+2.键不能含有'\0' 这个字符用来表示键的结尾
+. 和 $ 有特别意义
+以"_"开头的键是保留的，但是并不严格要求
+{"foo":3}
+{"Foo":3}	这两行不同
+
+{"foo":"3"}
+{"foo": 3}	这两行不同
+
+不能有重复的键
+
+集合
+集合就是一个文档 类比于表
+集合是无模式的
+{"greet":"hello"}
+{"foo":5}
+可以放到一个集合中
+============================================================

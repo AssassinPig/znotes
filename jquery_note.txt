@@ -1,0 +1,145 @@
+﻿<div class="poem-stanza">
+	...
+</div>
+
+.highlight {
+	font-style: italic;
+}
+
+在document加载的时候触发
+$(document).ready(function() {
+	$('.poem-stanza').addClass('highlight');
+});
+
+给class为poem-stanza的标签加上hightlight样式
+
+addClass
+removeClass
+
+$()函数(JQuery()函数的别名)返回特别的javascript对象, 它包含着与选择器相匹配的DOM元素的数组
+当完成一组操作之后，他会返回相同的一组元素，提供给下一个操作
+$("div.notLongForThisWorld").fadeOut().addClass("removed")
+这些jquery链可以无限延续，没有必要进行循环的操作
+
+$("div.fillMeIn").html("I have")
+var elements = $("div.fillMeIn");
+for(i=0; i<elements.length; i++)
+{
+	elements[i].innerHTML = "I have added some text to a group nodes";
+}
+
+$()				工厂函数
+$('p')			取得文档中所有的段落
+$('#somd-id')	取得文档中ID为some-id的一个元素
+$('.some-class')取得文档中为some-class的所有元素
+
+
+$(document).ready(function() {
+	$('selected-plays > li').addClass('horizontal');
+	$('selected-plays li:not(.horizontal)').addClass('sub-level');
+});
+1,获取ID为selected-plays的元素下的所有li子元素
+2,取得如下条件的列表项
+	ID为selected-plays的元素(#selected-plays)的后代元素
+	没有horizontal类(:not(.horizontal))
+
+自定义选择符
+$('div.horizontal:eq(1)') javascript的数组是从0开始的编号方式，eq(1)取得是集合中第2个元素,	而CSS中则是从1开始的，因此CSS选择符$('div.nth-child(1)')取得的是作为父元素的第一个元素的所有div(也可以使用$('div:first-child')来替代
+
+进行奇偶行的选择 :odd :even 使用javascript内置的索引，从0开始编号，所以第一行为0(偶数)
+$('tr:odd').addClass('alt');
+
+$('a').filter(function() {
+	return this.hostname && this.hostname != location.hostname;
+}.addClass('external');
+其中filter方法会迭代所有匹配的元素
+
+除法任何事件处理程序时，关键字this引用的都是携带相应行为的DOM元素，$()可以将一个DOM元素作为参数，而关键字正是这个功能
+
+隐藏当前HTML元素
+$(this).hide()
+
+隐藏id="test"的元素	
+$("#test").hide()
+
+隐藏所有<p>元素
+$("p").hide()
+
+隐藏所有class="test"元素
+$(".test").hide()
+
+$(selector).action()
+
+jquery事件
+$(document).ready(function)
+$(selector).click(function)
+$(selector).dbclick(function)
+$(selector).focus(function)
+$(selector).mouseover(function)
+
+hide show
+$(selector).hide(speed, callback);
+$(selector).show(speed, callback);
+speed-隐藏显示速度
+callback-隐藏或者显示完成之后所执行的函数
+
+$seletor.toggle()
+$seletor.toggle(speed, callback)
+
+选择所有偶数的<p>元素
+$("p:even");
+
+选择每个表格的第一行
+$("tr:nth-child(1)");
+
+选在<body>下面直接子节点<div>
+$("body > div");
+
+选择指向pdf的超链接
+$("a[href$=pdf]")
+
+选择作为body直接子节点的，包含超链接的 div元素
+$("body > div:has(a)")
+
+常用工具函数
+删除字符串前后空格的函数
+$.trim(something)
+jQuery.trim(something)
+
+浏览器延时执行onload函数
+创建html新元素
+$("<p>Hi there!</p>")
+这样就可以直接创建了一个p元素了
+
+
+方法
+.ready()		当DOM完全加载后运行的函数
+.click()		为匹配元素集设置click事件处理函数
+.ajax()			jQuery的Ajax工具函数
+.addClass()		
+.removeClass()
+.attr()			获取或设置指定属性的值
+.html()			获取或设置的第一个元素的HTML内容
+.type()			判断一个对象在javascript内部的类型
+
+.type()
+.isEmptyObject()	是否是一个空对象
+.isPlainObject()	是否包含属性
+.extend()
+	var obj1 = {"1":"property 1"};
+	var obj2 = {"2":"property 2"};
+	var obj3 = {"3":"property 3"};
+	$.extend(obj1, obj2, obj3);
+	obj1也拥有了"2","3"属性
+.isFunction()		检查一个对象是否是一个函数 去掉函数名的圆括号
+.noop()	
+
+.isArray()			是否是一个数组
+.makeArray()		
+.merge()
+.inArray()			检查数组中存在指定的值
+.unique()			从DOM元素的数组中移除重复的元素
+.each(numArray, function(index,value){...})	第一个参数是要遍历的集合,第二个参数是一个回调函数.回调函数中的参数：第一个是索引，第二个是对应的值
+.map(numArray, function(value, index){...}) 第一个参数是要遍历的集合，第二个参数是一个回调函数，回调的参数:第一个是索引对应的值，第二个是索引
+
+.trim()移除字符串首位的空格

@@ -1,0 +1,8 @@
+﻿ubuntu 
+配置dns
+/etc/resolv.conf中添加
+nameserver 10.203.104.1
+如果总是被overwrite的话
+编辑/etc/networking/interface 添加
+dns-nameservers 10.203.104.1
+如果还是不行就要看dns了

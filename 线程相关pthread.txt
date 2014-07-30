@@ -1,0 +1,36 @@
+﻿#include <pthread.h>
+初始化mutex
+pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
+
+互斥量用于上锁， 条件变量用于等待
+int pthread_cond_wait(pthread_cond_t* cptr, pthread_mutex_t* mptr);
+int pthread_cond_signal(pthread_cond_t* cptr); //只唤醒一个等待的线程
+
+定时等待和广播
+pthread_cond_broadcast(pthread_cond_t* cptr)		//可唤醒多个等待的线程
+pthread_cond_timewait(pthread_cond_t* cptr, pthread_mutex_t* mptr, const struct timespec* abstime)
+
+
+同一进城中的线程共享如下内容
+全局变量
+堆数据
+打开的文件描述符
+当前工作目录
+用户及用户组ID
+
+线程独立的有
+线程ID
+栈
+errno变量(需要多线程lib支持)
+优先级
+
+pthread_create
+pthread_join
+pthread_detach (其他线程就无法join了，但是在自己的线程处理函数里面可以detach自己)
+pthread_exit
+pthread_self
+pthread_cancel
+
+在多线程程序中使用线程安全函数
+一般在有关静态变量的函数都有一个_r的版本，这个版本就是线程安全的例如gmtime_r rand_r
+

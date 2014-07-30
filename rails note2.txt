@@ -1,0 +1,860 @@
+﻿Depot应用程序
+incremental development
+
+rails new depot
+rails generate scaffold  Product title:string description:text image_url:string price:decimal
+rake db:migrate
+
+rails g controller store index
+
+image_tag(url)
+
+sanitize(product.description) 可以在描述中安全的引用html写法
+
+number_to_currency(product.price)
+
+rails generate scaffold cart
+rails db:migrate
+
+rails generate scaffold line_item product_id:integer cart_id:integer
+rails db:migrate
+
+rails generate migration add_quantity_to_line_item quantity:integer
+
+加入jquery-ui
+app/assets/javascripts/application.js
+//= require jquery
+//= require jquery-ui
+//= require jquery_ujs
+//= require_tree
+
+<%= hidden_div_if(@cart.line_items.empty?, id:'cart') do %>
+	<%= render @cart %>
+<% end %>
+module ApplicationHelper
+	def hidden_div_if(condition, attributes={}, &block)
+		if condition
+			attributes["style"] = "display: none"
+		end
+		content_tag("div", attributes, &block)
+	end
+end
+
+app/assets/javascripts/store.js.coffee
+$->
+	$('.store .entry > img').click ->
+	 $(this).parent().find(':submit').click()
+coffeescript是另一个预处理程序，他能是编写素材assets变的更加容易,这里coffeescript帮你用更简洁的方式来表示 javascript。与jquery结合起来就能产生事半功倍的效果。
+以上脚本定义了一个在页面加载时执行的函数，第一行->就是定义了一个函数并把它传递给$函数,这样在页面加载的时候它就能让jquery安排代码运行。第二行来查找class="entry"的元素的下一级图片,而"entry"元素又是class="store"的元素的下一级
+
+rails generate scaffold order name:string address:text \
+email:string pay_type:string
+
+rails generate migration  add_order_id_to_line_item \
+order_id:integer
+
+rake db:migrate
+
+form_for @xxx do |f|
+	f.label
+	f.test_field	size:30
+	f.select :type, Order::PAYMENT_TYPES, prompt:"select a payment method"
+	f.email_field
+	f.password
+	f.submit
+end
+
+其中下拉框
+class Order < ActiveRecord::Base
+	PAYMENT_TYPES = ["Check", "Credie card", "Purchase order"]
+end
+
+E-mail Configuration
+在config目录下,如果你希望在开发测试和生产环境中使用同样的配置则可以在config/environment.rb中直接配置
+否则就必须在config/evnironments目录下对应环境文件中配置
+config.action_mailer.deliver_method = :smtp | :sendmail | :test
+
+config.action_mailer.smtp_settings = {
+	address: "smtp.gmail.com",
+	port: 587,
+	domain: "domain.of.sender.net",
+	authentication: "plain",
+	user_name: "dave",
+	password: "secret",
+	enable_starttls_auto: true
+}
+
+rails generate mailer OrderNotifier received shipped
+
+rails generate scaffold User name:string password_digest:string
+rake db:migrate
+
+app/models/user.rb
+class  User < ActiveRecord::Base
+	validates :name, presence:true, uniqueness: true
+	has_secure_password
+end
+
+Gemfile中
+gem 'bcrypt-ruby', '~> 3.0.0'
+bundle install
+其中has_secure_password是验证密码所用的，在表单上输入一次密码然后再输入一次确认的密码，Rails可以帮你校验这两次是否相同
+
+rails generate controller Sessions new create destroy
+rails generate controller Admin index
+
+rails generate controller Sessions new create destroy
+rails generate controller Admin index
+
+<%= form_tag do %>
+	<fieldset>
+		<legend>please Login</legend>
+	</fieldset>
+	<div>
+		<%= label_tag :name, 'Name:' %>
+		<%= text_field_tag :name, params[:name] %>
+	</div>
+	
+	<div>
+		<%= label_tag :password, 'password:' %>
+		<%= text_field_tag :password, params[:password] %>
+	</div>
+	
+	<div>
+		<%= submit_tag "Login" %>
+	</div>
+<% end %>
+
+form_tag与form_for的区别
+form_tag只是生成了一普通的HTML而已, 在表单内部又用到text_field_tag和password_field_tag方法
+
+Controller中的filter和skip_filter
+在ApplicationController中定义before_filter 会把所有controller的action都加上filter的，所以在具体的controller之中可以加上skip_before_filter来跳过
+before_filter
+skip_before_filter
+
+ActiveRecord的钩子方法
+共有16种
+使用after_destroy来进行事务的回滚
+app/models/user.rb
+after_destroy :ensure_an_admin_remains
+private  
+	def ensure_an_admin_remains
+		if User.count.zero?
+			raise "can't delete last uesr"
+		end
+	end
+app/controllers/users_controller.rb
+def destroy
+	@user=User.find(params[:id])
+	begin
+		@user.destroy
+		flash[:notice] = "User #{@user.name} deleted"
+	rescue Exception => e
+		flash[:notice] = e.message
+	end
+end
+但是仍然有问题使最后两名管理员同时删除掉对方
+
+国际化
+config/initializers/i18n.rb
+I18n.default_locale = :en
+LANGUAGES  = [
+	['Englist', 'en'],
+	["Espa&ntitlde;ol".html_safe, 'es']
+]
+
+部署工具capistrano
+phusion passenger
+mysql> CREATE DATABASE depot_production
+GRANT ALL  PRIVILEGES ON depot_production.*
+	TO 'username'@'localhost' INDENTIFIED BY 'password';
+	EXIT
+	
+数据库迁移
+rake db:setup RAILS_ENV="production"
+
+log文件处理
+config/environments/production.rb
+config.logger = Logger.new(config.paths['log'].first, 'daily')
+
+ActiveRecord
+默认情况下所有模型都有id, create_at和update_at这三个属性
+属性的type类型 
+string
+integer
+text
+decimal
+reference/forengin
+
+has_many
+belongs_to
+
+ActiveView
+
+ActiveController
+可以以多种方式与model交互，包括差查找，取出数据并把它放进实例变量中一直到修改模型并通过表单保存数据
+完成之后我们不仅可以重新定向到其他的action，而且还可以渲染一个试图，试图可以按照HTML,Json和Atom格式来渲染
+可以使用will_paginate来进行现实的分页
+
+生成文档
+rake doc:app
+统计代码
+rake stats
+
+rake -T 现实预设rake任务
+rake -D 能看到某个特定任务的一般信息
+
+在运行应用之前，rails会先载入并执行config/environment.rb和config/application.rb
+这些文件会自动设置标准环境，并将一下目录纳入应用程序的装载路径
+
+以特定模式运行server
+rails server -e development
+				test
+				production
+按模块划分控制器
+rails generate controller Admin:Book action1 action2
+
+ActiveRecord
+每个ActiveRecord::Base的子类都封装了不同的数据库表
+在默认情况下 ActiveRecord会认为与某个类相关的数据库表的名字应该是类的复数形式
+如果包含多个大写字母，表明中就应该用下划线分割多个单词
+
+如果处理一个遗留的数据库，或者不喜欢这样的方式，可以自己控制与某个模型相关的表名
+class Sheep < ActiveRecord::Base
+	self.table_name = "sheep"
+end
+
+Order.column_names
+Order.column_hash["pay_type"]
+
+SQL Type   				Ruby Class 		
+int,integer				Fixnum			
+decimal, numeric		BigDecimal		当Decimal和numeric小数位为0的时候映射为整数
+interval,date			Date
+clob,blob,text			String
+float, double			Float
+char, varchar, string	String
+datetime,time			Time
+boolean					see text
+
+一些特殊列名
+create_at created_on update_at updated_on
+lock_version
+type
+id
+xxx_id	外键
+xxx_count	为子表维护寄存器缓存
+
+指定主键, 只是指定了数据库中的主键，类中的还是id
+class LegacyBook < ActiveRecord::Base
+	self.primary_key = "xxxx"
+end
+
+一对一 one-to-one
+一对多 one-to-many
+多对多 many-to-many
+在model类中需要指定
+has_one
+has_many
+belongs_to
+has_and_belongs_to_many
+
+one-to-one
+invoices
+id
+order_id		#foreign key from orders id
+
+orders
+id
+name
+
+class Invoice < ActiveRecord::Base
+	belongs_to :order
+end
+
+class Order < ActiveRecord::Base
+	has_one :invoice
+end
+
+one-to-many
+line_items
+id
+order_id		#foreign key from orders is
+
+order
+id
+name
+
+class LineItem < ActiveRecord::Base
+	belongs_to :order
+end
+
+class Order < ActiveRecord::Base
+	has_many :line_items
+end
+
+many-to-many
+categories
+id
+name
+
+categories_products
+category_id			#foreign key from categroies
+product_id			#foreign key from products
+
+products
+id
+name
+
+class Category < ActiveRecord::Base
+	has_and_belongs_to_many :products
+end
+
+class Product < ActiveRecord::Base
+	has_and_belongs_to_many :categories
+end
+rails的多对多关系是借助一张连接表来中介实现的。这张表分别指向两张目标表的外键。默认情况下，ActiveRecord认为连接表的名字categories_products
+
+CRUD
+creating
+reading
+updating
+deleting
+
+rails中数据库表与类对应，而表中的记录则对应于对象。
+动态查询dynamic finder
+find(id)其实表示我们知道了id并且确认这个记录是存在的情况下,所以当没有对应的记录存在的时候,rails会抛出RecordNotFound异常
+而where().first 表示我们并不知道是否有对应条件的记录存在，所以结果完全可能为nil
+
+其他的find_by_xxxx函数会被转换为where(xxxx:"").first
+find_all_by_xxxx转换成where(xxxx:"").all
+find_last_by_xxxx转换成where(xxxx:"").last
+
+此外带！的方法 find_by_name!("xxxx")如果没有找到对应的记录不返回nil而是抛出ActiveRecord::RecordNotFound异常
+
+如果你想始终得到一个模型对象，如果数据库里面没有这么一个对象就马上创建一个
+find_or_initialize_by或者find_or_create_by开头,如果找不到对应的符合条件的记录就会调用模型类new()或create()，而不是返回一个nil
+
+使用where
+使用?作为占位符
+name=params[:name]
+pos = Order.where(["name=? and pay_type = 'po'", name])
+
+命名占位符
+name=params[:name]
+pay_type=params[:pay_type]
+pos=Order.where("name= :name and pay_type = :pay_type"， pay_type: pay_type, name: name)
+
+直接使用hash
+pos=Order.where("name = :name and pay_type = :pay_type", params[:order])	#
+pos=Order.where(params[:order])												#匹配params中所有的key/value对
+
+pos=Order.where(name: params[:name], pay_type: params[:pay_type])
+
+使用like
+user.where("name like ?", params[:name]+"%")
+
+ActiveRecord::Relation
+查询返回的是ActiveRecord::Relation
+拥有的方法
+.first()
+.all()		#数组
+.each()
+.map()
+
+order	如果没有明确的指定，rails会返回任意排序的数据
+orders=Order.where(name: 'Dave').order("pay_type, shipped_at DESC")
+
+limit
+选择name为'Dave'的记录并按照字段pay_type的升序排序，再按照shipped_at的降序排序，之后只去前10条
+orders=Order.where(name: 'Dave').order("pay_type, shipped_at DESC").limit(10)
+
+offset
+从第几条记录开始
+def Order.find_on_page(page_num, page_size)
+	order(:id).limit(page_size).offset(page_num*page_size)
+end
+
+select
+默认情况下ActiveRecord::Relation会取出数据库中所有的字段, 实际上就是执行了select * from ...
+可以使用:select选项指定取出哪些字段
+list=Talks.find(:all, :select=>"title, speaker, recorded_on")
+等价于select title, speaker, recoreded_on from xxxx
+
+joins
+LineItem.select('li.quantity').
+where("pr.title = Programming Ruby 1.9'" ).
+joins("as li inner join products as pr on li.product_id = pr.id")
+
+readonly
+
+group
+summary=LineItem.select("sku, sum(amount) as amount").group("sku")
+
+lock
+共享锁
+Acount.transaction do 
+	ac = Acount.where(id: id).lock("LOCK IN SHARE MODE").first
+	ac.balance -= amout if ac.balance > amount
+	ac.save
+end
+只要借助事务就可以避免使用互斥锁
+
+获取统计字段信息
+average = Order.average(:amount)	#获取平均数
+max=Order.maximun(:amount)			#最大值
+min=Order.minmum(:amount)			#最小值
+total=Order.sum(:amount)			#总计
+number=Order.count					#行数
+
+Scope范围的使用
+class Order < ActiveRecord::Base
+	scope :last_n_days, lambda { |days|  where('updated < ?', days) }
+end
+orders = Order.last_n_days(7)
+
+class Order < ActiveRecord::Base
+	scope :checks, where(pay_type: :check)
+end
+
+orders = Order.checks.last_n_days(7)
+
+in_house=Order.where('email LIKE "%pragprog.com"')
+
+in_house=checks.last_n_days(7)
+
+更新记录
+order=Order.find(123)
+order.name="sdf"
+order.save
+
+orders=Order.find_by_sql("select id, name, pay_type, form orders where id=123")
+first=orders[0]
+first.name="xxx"
+first.save
+
+order=Order.find(123)
+order.update_attribute(:name, "Barney")
+order=Order.find(321)
+order.update_attributes(name:"Barnery", email:"barnery@bedrock.com")
+
+update
+update_all
+order=Order.update(12, name:"Barnery", email:"barnery@bedrock.com")
+result=Product.update_all("price=1.1*price", "title like '%Java%'")
+
+save
+save!
+create
+create!
+一般情况的函数成功的时候返回true，失败的时候返回nil
+带有!号的函数版本成功时候返回true 失败的时候抛出异常
+if order.save
+	#all ok
+else
+	@validation failed
+end
+
+begin 
+	order.save!
+resuce RecordInvalid  => error
+	#validation failed
+end
+
+删除记录
+Order.delete(123)
+User.delete([2,3,4,5])
+Product.delete_all(["price > ?", @expensive_price])
+
+order=Order.find_by_name("Dave")
+order.destroy
+order.destroy_all(["shipped_at < ?", 30.days.ago])
+
+new record				update record					destroy
+before_validation		before_validation				
+validation operatios	validation operations
+after_validation		after_validation
+
+before_save				before_save						before_destroy
+before_create			before_update					delete_operation
+insert operation		update operation				after_destroy
+after_create			after_update
+after_save				after_save
+
+after_find 和 after_initialize
+因为有性能的考虑，所以只能做为函数出现而不能作为block
+
+把验证回调放到一个类之中
+class Encrypter
+	def initialize(xxx)
+		@xxx=xxx
+	end
+	
+	def before_save(xxx)
+	end
+	
+	def after_save(xxx)
+	end
+end
+
+require 'encrypter'
+class Order < ActiveRecord::Base
+	encrypter = Encrypter.new(xxx)
+	before_save	encrypter
+	after_save encrypter
+end
+
+ActiveRecord观察期observer可以把自己透明的连接到模型类,将自身注册为回调
+class OrderObserver < ActiveRecord::Observer
+	def after_save(an_order)
+		an_order.logger.info("order #{an_order.id} created")
+	end
+end
+这个类会自动观察Order模型的，并在save的时候执行after_save
+
+如果不想使用默认的观察方式,则需要使用observe来指定需要观察的model
+class AuditObserver < ActiveRecord::Observer
+	observer Order, Payment, Refund
+	def after_save(model)
+		model.logger.info("[Audit] #{model.class.name} #{model.id} created")
+	end
+end
+在Rails应用中使用观察器,需要在application.rb中列出
+config.active_record.observers = :order_observer, :audit_observer
+在独立的ActiveRecord应用中使用observer，需要自己创建实例
+OrderObserver.instance
+AutidObserver.instance
+
+Transcations
+Account.transacation do
+	account1.deposit(10)
+	account2.withdraw(10)
+end
+
+ActionPack是Rails的核心 由三个模块组成
+ActionDispatch 
+ActionController
+ActionView 
+
+ActionDispatch 将请求路由到控制器
+ActionController将请求转为相应
+然后用ActionView格式化相应
+
+routes配置
+Depot::Application.routes.draw do |map|
+	resources :products
+	resources :comments, except: [:update, :destroy] #还可以使用only: [:action]来过滤
+end
+
+控制器环境
+action_nname
+cookies
+headers
+params
+request
+	request_method
+	method
+delete?
+get?
+head?
+post?
+put?
+
+xml_http_request? xhr?
+url()
+protocol() host() port() path() query_string()
+protocol://host:port/path?query_string
+
+port_string()
+ssl?()
+
+remote_ip()
+env()	请求的环境
+
+accepts()	请求头中的accept的mime类型
+
+format()
+
+content_type
+
+headers()
+
+body()		请求的实体部分 是一个I/O流
+
+content_length() 实体长度
+
+response	
+session	一个hash对象呢
+
+渲染
+名为controller的 控制器中有action这么一个方法， 那么他的默认模板就应该是app/views/controller/action.type.xxx文件
+其中type可以是html atom js
+xxxx可以是erb builder coffee scss slim
+
+app/views是默认路径
+可以通过修改配置来改变 ActionController.prepend_view_path dir_path
+
+render()方法是整个rails 中模板渲染机制的核心
+他接受一个hash作为参数,可以指定渲染那个模板，如何渲染
+
+在没有任何参数的情况下，render会渲染当前的action
+如果在controller中没有指定调用render，则也会渲染对应action的模板
+
+render(text:"Hello") 把指定字符串发回给客户端
+
+render(action:action_name)
+render(template:name, 'controller/action')
+render(partial:xxxx)
+render(nothing:true)什么都不渲染
+render(xml:stuff)
+其他参数:status	默认是200 ok 但是重定向的话使用的是redirect()
+		:layout	如果是false则不使用任何的布局模板 					
+				如果值为nil或true则只有在当前action有默认的布局与其对应作为布局模板的名称
+				如果是一个字符串，则对应渲染该字符串的模板
+		:content_type	
+
+可以使用render_to_string()方法来获得渲染的内容，不会发送给客户端
+
+发送文件和其他数据
+send_data(data, options...)
+:disposition	string
+:file 		  	string
+:status 		string
+:type			string	默认是application/octet-stream 保存文件类型
+:url_based_filename	boolean	
+
+send_file(path, options)
+:buffersize		string
+:disposition	string
+:filename		string
+:status			string
+:stream			true/false
+:type			string
+
+重定向
+redirect_to 重定向到一个action
+redirect_to(action:..., options...)
+
+redirect_to重定向到一个URL
+redirect_to(path)
+
+Session
+session storage session的存储
+使用ActiveRecord::Base的session_store属性来指定存储机制
+session_store=:cookie_store
+session_store=:active_record_store
+session_store=:drb_store
+session_store=:mem_cache_store
+
+Flash:Action之间的通讯
+falsh的数据是存储在session中的，所有session的规则同样使用于flash.尤其需要注意的是，放入其中的对象必须是可序列化的。所以建议在flash中传递的简单对象
+
+Filters
+过滤器
+过滤器种类
+before	前置 
+after	后置
+around	环绕
+
+过滤器继承
+如果你继承了一个controller，他有过滤器声明，那么这些过滤器对于子类对象同样有效，但是反过来，子类中声明的过滤器对父类无效
+如果要在 子类中禁用某个过滤器，可以使用skip_before_filter 和 skip_after_filter
+这两个声明也接受:only :except参数
+
+模板
+模板能够访问controller的所有实例变量 这正是action向模板传递数据的途径
+模板能够访问controller中的flash headers param requrest response session
+一般而言view不应该直接使用这些对象的 但是调试时候很有用 
+<% debug(session) %>
+<% debug(params) %>
+<% debug(response) %>
+通过controller属性可以访问当前的控制器
+通过base_path属性可以访问当前模板的根路径
+
+form_for常用
+f.label
+f.test_field :input, :placeholder => 'Enter text here...' %>
+
+f.lable
+f.text_area :address, :rows => 3, :cols =>40 
+
+f.label
+f.radio_button	:color, 'red'
+f.radio_button	:color, 'green'
+f.radio_button	:color, 'yellow'
+
+f.check_box :value1
+f.check_box :value2
+f.check_box :value3
+
+f.select :priority, (1..10)
+
+f.date_select :start
+f.time_select :alarm
+
+除此以外search_field telephone_field url_field email_field number_field range_field
+
+Upload Files
+class CreatePrictures < ActiveRecord::migration
+	def change
+		create_table :picture do |t|
+			t.string :comment
+			t.string :name
+			t.string :content_type
+			t.binary :data, :limit => 1.megabyte	#加上限制大小，mysql默认blob是64k
+		end
+	end
+end
+
+app/views/upload/get.html.erb
+form_for(:picture,
+			url: {action: 'save'},
+			html: {multipart: true}) do |form| 
+			form.text_field("comment")
+			form.file_field("uploaded_picture")
+	submit_tag("Update file")
+end
+上传的图片会话放在update_picture属性中,但是数据库没有这么一个字段,所以需要一些处理
+class Picture < ActiveRecord::Base
+	validates_format_of :content_type,
+						with: /^image/,
+						message: "---you can only upload pictures"
+						
+	def uploaded_picture=(picture_field)
+		self.name = base_part_of(picture_field.original_filename)
+		self.content_type = picture_field.content_type.chomp
+		self.data = picture_field.read
+	end
+	
+	def base_part_of(file_name)
+		File.basename(file_name).gsub(/[^\w._-]/, '')
+	end
+end
+
+def save 
+	@picture=Picture.new(params[:picture])
+	if @picture.save
+		redirect_to(action: 'show', id:@picture.id)
+	else
+		render(action: :get)
+	end
+end
+在controller中
+def picture
+	@picture = Picture.find(params[:id])
+	send_data(@picture.data,
+				filename: @picture.name,
+				type: @picture.content_type,
+				disposition: "inline")
+end
+
+def show
+	@picture = Picture.find(params[:id])
+end
+
+在view中显示
+<h3><%= @picture.comment %></h3>
+<img src="<%= url_for(:action => 'picture', :id=>@picture.id) %>" />
+
+Helper
+Fromatting Helpers
+distance_of_time_in_words(Time.now, Time.local(2010,12,25))
+time_ago_in_words
+number_to_currency
+number_to_human_size
+number_to_percentage
+number_to_phone
+number_with_delimiter
+number_with_precision
+
+debug(params)
+
+simple_format(@trees)			#格式化字符串, 自动插入换行和分段
+excerpt(@trees, "lovely", 8)	#
+highlight(@trees, "tree")
+
+truncate(@trees, length:20)	#
+
+pluralize(1, "person")	#根据数量返回字符串
+
+current_cycle reset_cycle
+
+Markdown
+Textile
+
+链接到别的页面或资源	ActionView::Helpers::AssetTagHelper 
+										::UrlHelper
+link_to "xxx", new_comments_path
+link_to "delete", product_path(@product), {class:"dangerous", method:'delete'}
+
+#当前页面以文本显示，其他页面以超链接显示
+<% %w{ create list edit save logout }.each do |action| %>
+	<%= link_to_unless_current(action.capitalize, :action=>action) %>
+<% end %>
+
+image_tag("xxxx", class:"bevel", size:"80*120")
+
+mail_to
+stylesheet_link_tag  	包含样式
+javascript_include_tag	include javascript 默认导入jquery.js
+csrf_meta_tag			
+
+指定layout文件
+class StoreController < ApplicationController
+	layout "standard" 			#可以使用:only和:except修饰来指定
+end
+
+render(layout: false) 			#never use a layout
+render(layout: "layouts/simple)
+
+给局部模板传递数据
+<% content_for(:sidebar) do %>
+	xxxxxx
+<% end %>
+这样打包了一个局部模板:sidebar
+
+在主模板中可以这样使用
+<%= yield :sidebar %>
+
+局部模板
+_article.html.erb
+<div class="artcle">
+	<%= article.body %>
+</div>
+在其他模板中可以这样使用
+<%= render(partial: "article", object: @an_object %>
+可以传递多个变量
+render(partial: 'article', object: @an_article, locals: {authorized_by: session[:user_name], from_ip: request.remote_ip})
+
+其中partial允许我们使用局部模板来定义单个条目的格式
+collection允许把这个局部模式用于集合中的每一个成员
+render(partial: "article", collection:@article_list)
+
+在每一个局部视图渲染之后插入spacer_template模板
+render(partial: "animal",
+		collection: %w{ ant bee cat dog el},
+		spacer_template: "spacer")
+
+app/views/partial/_animal.html.erb
+<p> xxx <%= animal %></p>
+app/views/partial/_spacer.html.erb
+<hr />
+
+共享模板
+如果传递给render方法的第一个选项是:partial参数是一个简单的名字, Rails会到控制器的视图目录下寻找目标模板，但是如果提供的参数包含"/"字符, Rails就会认为最后一个/之前的部分是目录名字，之后是模板名字，并从app/views下开始查找对应模板
+<%= render("shared/header", title: @artical.title) %>
+<%= render(partial: "shared/post", object:@article) %>
+
+使用布局渲染局部页面
+<%= render partial: "user", layout:"administrator" %>
+<%= render layout: "administartor" do %>
+	#...
+<% end %>
+
+Rails的三种缓存方式
+page caching页面缓存
+action caching action 缓存
+fragment caching 片段缓存
+
+

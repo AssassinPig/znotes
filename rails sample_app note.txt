@@ -1,0 +1,109 @@
+﻿rails sample_app
+
+rails new sample_app --skip-test-unit	#不生成Unit测试代码
+cd sample_app
+
+Gemfile
+group: development, :test do
+	gem 'sqlite3', '1.3.5'
+	gem 'rspec-rails', '2.11.0'
+end
+
+group :asserts do
+	gem 'sass-rails', '3.2.5'
+	gem 'coffee-rails', '3.2.2'
+	gem 'uglifier', '1.2.3'
+end
+
+group :test do
+	gem 'capybara', '1.1.2'		#允许使用类似英语中的句法编写模拟与应用程序交互的代码
+end
+
+group :production do 
+	gem 'pg', ''
+end
+
+bundle install --without production	#禁止安装production环境所需的gem,这个选项会被记住
+
+rails generate rspec:install	#设置rails 使用RSpec而不用Test::Unit
+rails generate integration_test authentication_pages
+
+rails generate migration add_admin_to_users admin:boolean	#添加一个新的boolean字段
+db/migrate/[timestamp]_add_admin_to_users.rb
+class AddAdminToUsers < ActiveRecord::Migration
+	def	change
+		add_column :users, :admin, :boolean, default: false
+	end
+end
+
+rails generate model Micropost content:string user_id:integer
+db/migrate/[timestamp]_create_microposts.rb
+class CreateMicroposts < ActiveRecord::Migration
+	def	change
+		create_table :microposts do |t|
+		t.string :content
+		t.integer :user_id
+		t.timestamps
+	end
+	
+	add_index :microposts, [:user_id, :create_at]	#为user_id和create_at加入索引,放在一个数组之中意思是多键索引multiple key index
+end
+
+为Micropost设定排序规则
+app/models/microposts.rb
+class Micropost < micropost.rb
+	...
+	default_scope order: 'microposts.created_at DESC'	#设定按字段create_at的DESC顺序排列
+	...
+end
+
+设置关系依赖	当对应user被删除的时候所有依赖关系下的microposts都被删除
+app/models/user.rb
+class User < ActiveRecord::Base
+...
+	attr_accessible :name, :email, :password, :password_confirmation
+	has_secure_password
+	has_many :microposts, dependent: :destroy	#设置依赖关系
+...
+end
+
+把following和follower加入到路由中
+SampleApp::Application.routes.draw do
+	resources :users do
+		member do
+			get :following, :followers
+		end
+	end
+end
+这样得到的url应该是这样 /user/1/following /user/1/followers
+并且相应Get请求 
+使用member的意思是加上id, 使用collection就没有对应id被添加了
+resources :users do
+	collection do
+		get :tigers
+	end
+end
+就得到/user/tigers的get的请求
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

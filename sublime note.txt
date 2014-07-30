@@ -1,0 +1,29 @@
+多光标指向
+ctrl + D
+ctrl + D
+出现2次光标
+退出光标指向 esc
+
+ctrl + click + click 多个光标
+
+命令提示框
+ctrl + shift + p
+
+查找
+ctrl + f
+
+同ctrlp控件一样的功能
+ctrl + p
+
+ctrl + P
+usercon@create 打开user_controllers 并把光标停留在create 方法上
+css @ body		打开css并停留在body上
+
+打开sublime的console
+ctrl + ` 
+
+~/.config/sublime/package
+包管理工具
+package control
+
+tutsplus.com

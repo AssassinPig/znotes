@@ -1,0 +1,94 @@
+﻿print 'hello, %s' % 'name'
+>>>hello, name
+
+
+序列包
+scoundrel = {'name':'Robin', 'girlfriend':'Marion'}
+key, value = scoundrel.popitem()
+key
+value
+
+布尔值
+False None 0 "" () [] {}
+以上都被看做是False
+
+x is y		x和y同对象
+x is not y  x和y不同对象
+x in y		x在y容器之中
+x not in y	x不在y容器之中
+
+x == y		判断xy的值是否相等 包括list等
+x is y		判断xy是否是一个对象
+
+断言
+if not condition:
+	crash program
+	
+if xxx :
+else if xxx:
+	xxxx
+else :
+	xxxx
+	
+while xxxx:
+	xxxx
+	
+words = ['this', 'is', 'a', 'array]
+for w in words:
+	print w
+
+numbers = [0,1,2,3,4,5,6,7,8,9]
+for n in numbers:
+	print n
+
+整数数组可以使用range直接来打印一段数字
+for n in range(1,10):
+	print n
+	
+循环遍历字典
+d={}
+for key in d:
+	print key , d[key]
+	
+for key, value in d.items():
+	print key , value
+
+并行迭代
+names = ['a', 'b', 'c']
+ages = [1, 2, 3]
+for i in range(len(names)):
+	print names[i] , age[i]
+	
+zip(names, ages)
+>>>[('a',1), ('b',2), ('c',3)]
+可以针对不定长的两个数组，只出合并处理到最短长度
+
+编号迭代
+index = 0
+for string in strings:
+	if 'xxx' in string:
+		string[index] = '[censdxxx]'
+index += 1
+
+fro index, string in enumerate(strings):
+	if 'xxx' in string:
+	strings[index] = '[sxdsds]'
+	
+排序和反转
+sorted([])
+reversed('xxxxx') 返回数组
+
+continue
+break
+
+pass	什么都不做，相当于跳过
+
+del 删除的是名称，如果x={xxx} y=x 则del a in x不会影响到y中x的值，因为删除的是名称而不是值，python会在特殊的时候删除掉这个值，即python自己进行内存管理
+
+exec "xxxx" 执行xxxx内容的脚本
+eval "xxxx" 计算xxxx内容的脚本返回的值
+
+
+
+
+

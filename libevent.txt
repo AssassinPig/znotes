@@ -1,0 +1,77 @@
+libevent is divided into following components:
+evutil api 
+event and event_base  heart of libevent
+bufferevent     maybe stream conception such as input/output	
+evbuffer	buffer for bufferevent
+evhttp
+evdns
+evrpc
+
+bufferevent
+
+evbuffer
+struct evbuffer *evbuffer_new(void);
+void evbuffer_free(struct evbuffer *buf)
+
+int evbuffer_enable_locking(struct evbuffer *buf, void *lock);
+void evbuffer_lock(struct evbuffer *buf);
+void evbuffer_unlock(struct evbuffer *buf);
+
+size_t evbuffer_get_length(const struct evbuffer *buf);
+
+size_t evbuffer_get_contiguous_space(const struct evbuffer *buf);
+
+int evbuffer_add(struct evbuffer *buf, const void *data, size_t datlen);
+int evbuffer_add_printf(struct evbuffer *buf, const char *fmt, ...)
+int evbuffer_add_vprintf(struct evbuffer *buf, const char *fmt, va_list ap);
+
+int evbuffer_expand(struct evbuffer *buf, size_t datlen);
+
+int evbuffer_add_buffer(struct evbuffer *dst, struct evbuffer *src);
+int evbuffer_remove_buffer(struct evbuffer *src, struct evbuffer *dst,
+    size_t datlen);
+
+Adding data to the front of an evbuffer
+int evbuffer_prepend(struct evbuffer *buf, const void *data, size_t size);
+int evbuffer_prepend_buffer(struct evbuffer *dst, struct evbuffer* src);
+
+Peeking at the first N bytes
+unsigned char *evbuffer_pullup(struct evbuffer *buf, ev_ssize_t size);
+
+Removing data from an evbuffer
+int evbuffer_drain(struct evbuffer *buf, size_t len);
+int evbuffer_remove(struct evbuffer *buf, void *data, size_t datlen);
+
+Copying data out from an evbuffer
+ev_ssize_t evbuffer_copyout(struct evbuffer *buf, void *data, size_t datlen);
+ev_ssize_t evbuffer_copyout_from(struct evbuffer *buf,
+     const struct evbuffer_ptr *pos,
+     void *data_out, size_t datlen);
+
+Line-oriented input
+enum evbuffer_eol_style {
+        EVBUFFER_EOL_ANY,
+        EVBUFFER_EOL_CRLF,
+        EVBUFFER_EOL_CRLF_STRICT,
+        EVBUFFER_EOL_LF,
+        EVBUFFER_EOL_NUL
+};
+char *evbuffer_readln(struct evbuffer *buffer, size_t *n_read_out,
+    enum evbuffer_eol_style eol_style);
+
+Searching within an evbuffer
+struct evbuffer_ptr evbuffer_search(struct evbuffer *buffer,
+    const char *what, size_t len, const struct evbuffer_ptr *start);
+struct evbuffer_ptr evbuffer_search_range(struct evbuffer *buffer,
+    const char *what, size_t len, const struct evbuffer_ptr *start,
+    const struct evbuffer_ptr *end);
+struct evbuffer_ptr evbuffer_search_eol(struct evbuffer *buffer,
+    struct evbuffer_ptr *start, size_t *eol_len_out,
+    enum evbuffer_eol_style eol_style);
+
+Network IO with evbuffers
+int evbuffer_write(struct evbuffer *buffer, evutil_socket_t fd);
+int evbuffer_write_atmost(struct evbuffer *buffer, evutil_socket_t fd,
+        ev_ssize_t howmuch);
+int evbuffer_read(struct evbuffer *buffer, evutil_socket_t fd, int howmuch);
+

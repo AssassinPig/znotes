@@ -1,0 +1,33 @@
+关闭ICMP重定向
+注册表KEY_LOCAL_MACHINE_SYSTEM/CurrentControlSet/Services/Tcpip/Parameters
+EnableICMP Redirect双字节  设置为0
+
+禁用ICMP进行通讯，如果使用ICMP进行通讯的话，会制作出不需要TCP/UDP端口的木马，那么在网络中传输重要的信息就会被截取到
+HKEY_LOCAL_MACHINE/SYSTEM/CurrentcontrolSet/Services/Tcpip/Parameters/Interfaces
+子键  新建/双字节  PerformRouteDiscoser 0
+
+禁止IE操作本地文件
+HKEY_CURRENT_USER/Software/Microsoft/Windows/CurrentVersion/InternetSettings/Zone/0     Flags(二进制) 设置为1
+
+防范硬盘被非法共享
+首先查看HKEY_LOCAL_MACHINE/Software/Microsoft/Windows/CurrentVersion/Network/LanMan 是否有键值 如RWC$，则需要检查共享名为RWC$是否是你设置的，如果不是就要删除掉，然后把windows/system下面的Vserver.vxd(Microsoft网络上文件与打印机共享，虚拟设备驱动程序)删掉，接着再进入到注册表编辑界面，将位于分支HKEY_LOCAL_MACHINE/System/CurrentControlSet/Services/VxD下所属的Vserver键值删除掉
+
+dll木马的清除
+通过rundll32.exe启动木马是简单的方法
+rundll32.exe是系统自带的动态连接库工具，可以用来在命令下执行动态链接库中的某个函数。
+首先终止rundll32.exe进程, 然后再到注册表启动键之后，删除跟在rundll32.exe之后陌生的dll文件，并记下该dll文件路径和文件名。最后根据记下的路径，在系统中找到该dll文件删除即可。
+
+pwdump 导出hash过的密码
+L0pht 挂接字典 或者Brute Force
+web邮箱暴力破解 溯雪 流光
+
+SQL注入工具 明小子 挖掘鸡
+
+
+cookie基本格式
+cookiename+cookievalue;expire=expirationdategmt;path=urlpath;domain=sitedomain
+
+
+
+
+

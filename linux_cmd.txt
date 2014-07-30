@@ -1,0 +1,147 @@
+﻿tar
+-c create
+-x 解压缩
+-z 是否需要gzip
+-v 压缩过程之中显示档案
+-f 指定文档名 在f后面直接加文件名，不能再加参数
+解压和压缩的区别是x
+
+scp [可选参数] file_source file_target
+-r 拷贝目录
+从本地到远程
+scp file_source root@www.xxxx.com:/home/xxxx
+scp -r file_dir root@www.xxxx.com:/home/xxxx/
+如果成功的话相当于在远程有/home/xxxx/file_dir/目录
+从远程到本地
+scp root@www.xxx.com:/home/xxxx file_source
+scp -r root@www.xxx.com:/home/xxxx/ ~/file_dir/
+如果成功的话相当于在本地有/home/xxxx/file_dir/目录
+
+grep 
+grep [option] pattern [filename]
+
+-v 不包含patttern的内容
+-c 显示含有pattern的行数
+-cv 不包含pattern的行数 
+
+-i 搜索的时候忽略大小写
+
+-n 显示行数
+-r 在子目录中查找
+-l 只显示含有pattern的文件名
+
+find
+find path 约束条件
+
+find /etc -name "content"	//含有content的文件
+find / -type f -size +100M	//文件大小100M的文件
+find . -mtime +60			//最近60天没有修改过的文件
+find . -mtime -2			//最近2天被修改过的文件
+
+多个条件并用
+find / -type f -name *.tar.gz -size +100M -exec ls -l {} \;
+find / -type f -name *.tar.gz -size +100M -exec rm -f {} \;
+
+find /home/zhu	-type f -mtime +60 | xargs tar -cvf /tmp/'data'+%d%m%Y'_archive.tar'
+
+xargs
+find ~ -name "*.log" -print0 | xargs -0 rm -f
+find /etc -name "*.conf" | xargs ls -l
+
+pgrep vim
+显示vim进程的pid
+
+ssh
+ssh-keygen 
+.ssh/
+	id_rsa
+	id_ras.pub  交给server
+	known_host
+
+登陆另外一个server 添加
+authorized_keys
+
+
+yum的用法
+列出所有可更新的软件清单
+命令：yum check-update
+2
+安装所有更新软件
+命令：yum update
+3
+仅安装指定的软件
+命令：yum install <package_name>
+4
+仅更新指定的软件
+命令：yum update <package_name>
+5
+列出所有可安裝的软件清单
+命令：yum list
+
+删除安装的文件
+yum remove
+rpm -e
+make uninstall
+
+
+netstat的用法
+http://linux.cn/thread/12158/1/1/
+net config 显示当前的网络配置
+
+net config Workstation 显示Workstation的网络配置
+
+net send {hostname/domain[name]} message 向主机hostname或者域name发送消息message
+要发送message之前必须要先运行信使服务，可以使用命令net start messager
+
+net start/net stop  service
+启动或者关闭service服务
+
+net statistics [workstation|server] 统计记录
+workstation 本地工作站
+service 本地服务器服务
+
+net share 
+新建，删除或者显示共享资源
+
+net continue 
+重新激活已经挂起的服务
+
+net time
+使本地计算机与指定计算机的时间同步
+
+netstat
+-a   或者机器当前的所有网络链接 包括用户当前连接，其他用户的连接和系统进程的连接
+-n   以ip的形式直接显示连接的机器
+-b   显示通过打开的端口进行通信的应用程序进程
+-r   显示本机路由表
+-s   按各个协议分别统计其数据
+
+ipconfig 
+显示ip配置信息
+ipconfig /all 
+显示详细ip配置信息
+ipconfig /release 
+归还dhcp分配的ip地址
+ipconfig /renew
+重新获得dhcp分配的ip地址
+
+route
+route print
+显示路由信息
+route add 
+添加静态路由  
+例子 添加一条 157.0.0.0 下一跳是 157.55.80.1 从本地连接转发的静态表项
+route add 157.0.0.0 mask 255.0.0.0 157.55.80.1 metric 3 IF "本地连接"
+
+route delete 
+例子 route delete 157.0.0.0 mask 255.0.0.0 157.55.80.1 metric 3 IF
+
+route change
+
+netsh
+复杂的配置壳程序
+
+arp
+arp -a 显示系统mac表中的记录
+arp -d 删除mac表中的所有记录
+arp -s 手动添加静态mac记录

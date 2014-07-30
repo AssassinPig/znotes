@@ -1,0 +1,21 @@
+﻿rails 操作命令
+
+controller
+rails generate controller FooBars baz quux
+rails desctroy controller Foobars baz quux
+
+model
+rails generate model Foo bar:string baz:integer
+rails destroy model Foo
+
+db
+rake db:migrate
+rake db:rollback
+rake db:migrate VERSION=0
+
+rsepc
+rails generate integration_test static_pages
+
+precompile in production env
+rake assets:precompile --trace RAILS_ENV=production
+rails s --environment=production

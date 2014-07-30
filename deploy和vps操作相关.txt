@@ -1,0 +1,78 @@
+﻿//更新一下软件列表源
+apt-get update
+
+adduser deployer --ingroup sudo
+sudo apt-get -y install git
+
+git clone .git  //取下代码
+
+===============================
+安装rbenv
+install rbenv 
+install rbenv ruby-build as plugin
+
+rbenv install -l
+rbenv install 2.1.1
+rbenv global 2.1.1
+ruby  -v
+
+gem install bundle
+
+================================================
+添加ppa仓库 并更新软件源 之后执行安装nginx
+sudo add-get-repository ppa:nginx/stable
+sudo apt-get install python-software-properties
+sudo apt-get update
+sudo apt-get -y install nginx
+
+新建sudo adduesr deployer --ingroup sudo
+su deployer
+
+========================================
+puma方面
+
+puma -d -C ./config/puma.rb -e production
+kill -9 $(cat tmp/pids/puma.pid)
+============================================================
+安装heroku
+https://toolbelt.heroku.com/debian
+https://devcenter.heroku.com/articles/getting-started-with-rails4
+
+gem install heroku
+
+简单部署
+git clone git://github.com/heroku/ruby-sample.git
+cd ruby-sample
+
+新建
+heroku create		
+git push heroku master
+heroku open
+
+heroku keys:add
+
+heroku create 
+git push heroku master
+heroku run rake db:migrate	在heroku上进行数据库迁移
+
+在浏览器中打开
+heroku open
+
+查看heroku log
+heroku logs
+
+重命名工程之后 找不到工程的情况
+git remote rm heroku
+git remote add heroku git@heroku.com:yourappname.git
+
+git clone git://github.com/heroku/ruby-sample.git
+cd ruby-sample
+heroku create
+git push heroku master
+heroku open
+
+reset数据库
+heroku config | grep POSTGRESQL
+heroku pg:reset HEROKU_POSTGRESQL_IVORY_URL
+
+heroku restart -a app_name

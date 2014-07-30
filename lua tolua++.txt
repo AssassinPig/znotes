@@ -1,0 +1,129 @@
+下载scons
+	http://www.scons.org/
+	version = 2.3
+	
+	阅读README 
+	python setup.py install
+	进行安装
+	
+下载tolua++ 5.1
+    阅读READM5.1.ME 按要求修改custom.py
+	scons all
+	scons all isntall
+	
+之后确保 /usr/local/include 下面有 lua.hpp lualib.h luaconf.h luaxlib.h tolua++.h等头文件(没有的去lua和tolua的目录下考就是了，以上代码不一定都有，只要考过来就行了)
+		/usr/local/lib 下面有liblua.a libtolua++5.1.a就可以了
+		
+cd ./src/tests/	 目录下
+
+编译
+	tolua++ -o test.c tarray.pkg
+	生成test.c
+	
+	gcc test.c tarray.h -c
+	
+	新建test.lua 内容如下:
+	for i=1,10 do
+		print(a[i - 1])
+	end
+
+	for i=2,10 do
+		print(p[i - 1].x)
+	end
+	
+	修改tarray.c
+	//lua_dofile(L,"tarray.lua");
+	luaL_dofile(L,"test.lua");
+	
+	gcc tarray.c -c			//拥有main
+		
+最后编译生成tarray.out
+	gcc -o tarray.out tarray.o test.o -llua -ltolua++5.1 -lm
+		
+运行tarray.out 可见结果
+	随意修改test.lua 不用再做任何其他操作 就可以得到想要的结果了
+	
+使用cpp
+新建tclass.pkg
+	$#include "tclass.h"
+	$cfile "tclass.h"
+	
+新建tclass.h
+  1 #ifndef TCLASS_H
+  2 #define TCLASS_H
+  3 // 简单的类
+  4 class A                     //tolua_export
+  5 {                           //tolua_export
+  6     public:
+  7         int a;
+  8 
+  9         A( int nTemp );     //tolua_export
+ 10         int Get();          //tolua_export
+ 11         void Set(int n);    //tolua_export
+ 12         static A* GetA();   //tolua_export
+ 13 
+ 14         static A* ms_instance;
+ 15 };                          //tolua_export
+ 16 
+ 17 void setdata(A* a, int data);  //tolua_export
+ 18 
+ 19 #endif
+	其中//tolua_export是帮助tolua++来导出时候做标志的，单行有效
+	
+运行tolua++ 生成binding代码
+	tolua++5.1 -o tclasslua.cpp  tclass.pkg
+
+新建main.cpp
+  1 extern "C" {
+  2 #include "lua.h"
+  3 #include "lualib.h"
+  4 #include "lauxlib.h"
+  5 }
+  6 
+  7 #include "tolua++.h"
+  8 #include "tclass.h"
+  9 #include <string>
+ 10 
+ 11 TOLUA_API int  tolua_tclass_open (lua_State* tolua_S);
+ 12 int main ()
+ 13 {
+ 14     lua_State* L = lua_open();
+ 15     luaopen_base(L);
+ 16 
+ 17     tolua_tclass_open( L );
+ 18     // 调用脚本过程
+ 19     // 在脚本中就可以随意的使用这个类型
+ 20     //std::string str = "obj = A:new(2); print(obj:Get()); obj:Set(3); print(obj:Get());";
+ 21     //lua_dostring( L,str.c_str() );
+ 22 
+ 23     A* b = A::GetA();
+ 24 
+ 25     luaL_dofile(L,"test.lua");
+ 26     lua_close(L);
+ 27 
+ 28     printf("b->Get() = %d\n", b->Get());
+ 29 
+ 30     return 0;
+ 31 }	
+
+直接编译	
+	g++ main.cpp tclass.cpp tclasslua.cpp -llua -lm -ltolua++5.1
+
+运行结果 a.out
+2
+3
+6
+test end
+b->Get() = 6
+	
+实例使用
+	在初始化的时候加载所有的lua到一个map中
+	调用的时候使用函数lua_pushfuncion入栈
+	调用tolua_pushXXXX参数入栈
+	然后使用lua_pcall进行调用
+	在lua中回调更新接口 通知cpp即可
+	
+	
+	
+	
+	

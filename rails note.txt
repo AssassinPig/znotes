@@ -1,0 +1,353 @@
+Install
+http://ruby-china.org/wiki/install_ruby_guide
+
+rvm 是ruby 运行的虚拟机
+gem 是各种包的管理工具
+bundle是检查及安装工具
+
+先安装rvm
+curl -L https://get.rvm.io | bash -s stable
+To start using RVM you need to run `source /etc/profile.d/rvm.sh`
+
+使用rvm安装ruby
+rvm install 2.0.0
+
+rvm autolibs rvm_pkg
+rvm requirements
+
+gem install rails //安装rails
+gem install sqlite3        
+yum install sqlite-devel
+bundle install (在Gemfile中注明要安装的包)
+	如gem 'execjs'
+	gem 'therubyracer', :platforms => :ruby
+	
+针对于bundle的问题
+直接uninstall了很多东西	
+https://github.com/bundler/bundler/blob/master/ISSUES.md
+
+update rails 
+rvm reinstall ruby
+gem install ruby  /reinstall ruby
+bundle update
+
+====================================
+在安装 rails中出现openssl找不到
+reference https://coderwall.com/p/tptocq
+
+# For Debian-based systems
+apt-get install libyaml-dev
+
+# For Fedora/CentOS/RHEL systems
+yum install libyaml-devel
+
+# For Mac with Homebrew
+brew install libyaml
+
+rvm pkg install openssl
+rvm install 2.0.0 \ 
+    --with-openssl-dir=$HOME/.rvm/usr \
+    --verify-downloads 1
+rvm use 2.0.0
+
+====================================
+rails只会执行还没有执行的migrations
+
+查看安装和调试信息，需要在开发目录下使用
+rake about
+bundle exec rake about
+
+指定使用webrick作为web server程序
+rails server webrick
+
+查看iptables防火墙状态
+/etc/rc.d/init.d/iptables status 
+/etc/rc.d/init.d/iptables save
+/etc/rc.d/init.d/iptables stop
+/etc/rc.d/init.d/iptables start
+
+rake test			//测试
+rake db:seed		//reload 
+rake db:rollback	//回滚
+
+rake test:units		//进行单元测试
+rails generate controller Store index
+
+ruby -w 设置warning level
+================================================
+rails g migrateion add_status_to_events
+
+tail -f log/develop.log
+
+<%= debug(@event) %>
+
+logger.debug 除錯用的訊息，Production環境會忽略
+logger.info 值得記錄的一般訊息
+logger.warn 值得記錄的警告訊息
+logger.error 錯誤訊息，但還不到網站無法執行的地步
+logger.fatal 嚴重錯誤到網站無法執行的訊息
+
+Rails.logger.debug("event: #{@event.inspect}")
+
+rails c production
+rails c --sandbox
+
+rails s
+rails s -p 4000 -e production
+
+检查路由
+rake routes
+
+config/database.yml
+development:
+	adapter: mysql2
+	database: myblog
+	pool:5
+	username: zhufeng
+	encoding: utf8
+	host: localhost
+	
+添加StaticPages 控制器
+rails generate controller StaticPages home help
+rails destroy controller StaticPages home help
+
+rails generate model Foo bar:string baz:integer
+rails destroy model Foo
+
+rake db:migrate
+rake db:rollback
+rake db:migrate VERSION=0	#回到版本0
+bundle exec rake -T db查看所有rake的任务
+bundle exec 保证后续的命令运行在Gemfile指定的环境之中
+
+添加StaticPages控制器中的home help 动作路由
+config/routes.rb
+get 'static_pages/home'
+get 'static_pages/help'
+	
+在layouts/application.html.erb 中添加模板
+使用<%= yield(:title) %>
+
+修改 static/home.html.erb 
+添加<% provide(:title, 'Home')%>
+
+rails generate controller Users new --no-test-framework
+rails generate model User name:string email:string
+注意：controller 使用的是复数 Users
+      model 使用单数即可 User
+	  
+rake db:migrate
+
+几种常见的 数据验证
+存在性	validates :name, :presence => true, :length => {:maximum=>50}
+长度
+格式 	:format     => { :with => email_regex },
+唯一性	:uniqueness => { :case_sensitive => false }
+二次确认 :confirmation => true,
+		:length => { :within => 6..40 }
+
+添加migration 用于调整数据库model字段
+rails generate migration add_index_to_users_email	
+修改db/migrate/[timestamp]_add_index_to_users_email.rb
+class AddIndexToUsersEmail <  ActiveRecord:Migration
+	def change
+		add_index: users, :email, unique: true #注意unique没有":"
+	end
+end
+rake db:migrate
+
+app/models/users.rb
+
+创建安全性验证
+rails generate migration add_password_digest_to_users password_digest:string
+db/migrate/[ts]_add_password_digest_to_users.rb
+class AddPasswordDigestToUsers < ActiveRecord::Migration
+	def change
+		add_column :users, :password_digest, :string
+	end
+end
+调用add_column 向users表中添加password_digetst字段 其类型为string
+
+最终实现的安全密码机制
+app/models/user.rb
+class User < ActiveRecord::Base
+	attr_accessible :name, :email, :password, :password_confirmtion
+	has_secure_password
+
+    before_save { |user| user.email = email.downcase }
+ 
+    validates :name, presence: true, length: {maximum: 50}
+ 
+    VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
+    validates :email, presence: true, format: { with:VALID_EMAIL_REGEX },
+                uniqueness: { case_sensitive: false }
+ 
+    validates :password, presence: true, length: { minimum: 6 }
+    validates :password_confirmation, presence: true
+end
+
+在console中测试
+User.new(name:"zhufeng", email:"xxx@xxx.com", password:"xxxx", password_confirmation:"xxxx")
+User.find(index)
+User.find_by_name()
+User.find_by_email()
+u=User.first
+u.save
+u.destroy
+u.authenticate("password"); #验证password密码
+
+rails 的三个环境 developmen test production
+rails console
+Rails.env
+Rails.env.development?
+Rails.env.test?
+启动rails 在特定环境下(production)
+rails server --environment production
+
+为测试环境重新设置BCrypt耗时因子
+config/environments/test.rb
+SampleApp::Application.configure do
+	require 'bcrypt'
+	silence_warnings do
+		BCrypt::Engine::DEFAULT_COST = BCrypt::Engine::MIN_COST
+	end
+end
+
+toggle!(:admin)
+只有通过attr_accessible属性设置的才能通过mass assignment
+
+使用belongs_to 和 has_many之后 rails会自动创建如下几个方法
+micropost.user				返回该微博对应的所有用户对象
+user.microposts				返回该用户的所有微博数组
+user.microposts.create(arg)	创建一篇微博(user_id = user.id)
+user.microposts.create!(arg) 创建一个微博(失败的时候抛出异常)
+user.microposts.build(arg) 生成一个新的微博对象(user_id = user.id)
+
+bundle install --without production
+
+添加resources: sessions之后
+new和create的区别
+form_for :obj, :url=>new_controller_path, :method => :get do |f|
+使用get发送到new_controller_path
+form_for :obj, :url=>controllers_path, :method => :post do |f|
+使用post发送到controllers_path
+
+form_for :obj
+如果obj存在的话， 如果不存在就新建
+
+form_tag
+
+下拉框
+<%= f.select :answer, options_for_select([['答案A', 'A'], ['答案B', 'B'], ['答案C', 'C'], ['答案D', 'D'], ['答案E', 'E']]) %>
+
+makedown标记
+http://ruby-china.org/topics/474
+
+http://www.sitepoint.com/rails-4-quick-look-strong-parameters/
+
+1,浏览器向/users发起一个请求
+2,rails路由将/user分配到Users控制器的index动作
+3,index动作像User模型获取所有用户的(User.all)
+4,User模型从数据库中将所有的用户读取出来
+5,User模型将所有的用户返回给控制器
+6,控制器将获得所有用户数据赋予@users变量 然后传递给index的视图
+7,视图使用内嵌Ruby代码的模板渲染成HTML
+8,控制器讲生成的HTML发送回浏览器
+
+关于表单
+<%= form_for(@user) do |f| %>
+<% end %>
+
+form_for(@user)
+form_for(:session, url:sessions_path) #指定填充的资源和指向的url
+form_tag
+表单提交之后会产生一个params的hash 其中params[:session][:xxxx] 就是提交的内容值
+
+helper的module可以打包一些处理函数，以方便在view和controller中使用
+例如SessionHelper的模块被自动引入到了Rails视图之中了
+
+添加token
+rails generate migration add_remember_token_to_users
+class AddRememberTokenToUsers < ActiveRecord::Migration
+	def change
+		add_columm :users, :remember_token, :string		#添加列(参数依次是表名字/字段名/字段类型)
+		add_index :users, :remember_token				#对remeber_token添加索引
+	end
+end
+
+cookies和session机制
+module SessionHelper
+	def sign_in(user)
+		cookies.permanent[:remember_token] = user.remember_token
+		self.current_user = user
+	end
+end
+其中cookies是rails提供的可以把他看成是hash,其中每一个元素又都是一个hash
+cookies[:remember_token]={ value: user.remember_token, 
+							expires: 20.years.from_now.utc}
+
+在model中可以设定before_save
+before_save { |user| user.email = email.downcase }
+before_save :create_remember_token
+
+在controller中可以设定before_filter 
+before_filter :correct_user, only: [:edit, :update]
+
+分页显示will_panigate
+在视图中
+<%= will_paginate %>
+	<ul class="xxxs">
+	<% @users.each do |user| %>
+	<li>
+		<%= xxxx %>
+	</li>
+<%= will_paginate %>
+
+will_paginate会自动寻找名为@users的对象，然后显示一个分页导航链接
+will_paginate需要的是ActiveRecored::Relation类的对象,所以在controller中需要使用paginate方法来获取, 其中:page是需要显示的页数
+def UsersController < ApplicationController
+...
+	def index
+		@users = User.paginate(:page => params[:page])
+	end
+...
+end
+
+attr_accessible再探
+对于admin属性来说
+使用了toggle!(:admin)来进行设定, 为什么没有直接在User.create!的参数中设定呢,原因是直接指定admin: true不起作用, rails就是这样设计的，只有通过attr_accessible指定的属性才能通过mass assignment赋值,而admin并不是直接可以访问的值，因为如果有人使用put /users/17?admin=1这样的请求，就会把id为17的人设定为管理员
+
+attr_accessor为一个成员属生成read write操作
+
+在user中has_many microposts
+Micropost.create
+Micropost.create!
+Micropost.new
+user.microposts.create
+user.microposts.create!
+user.microposts.build
+
+Layout and render
+调用3个函数可以渲染并返回response
+1. render
+2. redirect_to
+3. head
+
+render nothing: true	
+render 'edit'	#这将会渲染对应edit.html.erb
+render :edit	#使用symbol的一样效果
+
+render "products/show" 			#使用其他controller的template来渲染
+render template: "products/show"	#使用template来显示表明
+
+render '/u/apps/warehouse_app/xxx/views/products/view'	#使用外部view来渲染
+render file: 'xxxxx'
+
+render action: :edit
+render layout: "special_layout"
+render layout: false
+render status: 500
+
+
+
+

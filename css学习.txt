@@ -1,0 +1,145 @@
+﻿css学习
+css学习
+连接到外部css
+<head>
+<link rel="stylesheet" type="text/css" href="mystyle.css">
+</head>
+
+教程
+http://www.w3school.com.cn/html/html_layout.asp
+http://www.aa25.cn/special/10day/index.shtml
+
+资源
+www.stylegala.com/features/bulletmadness
+
+css样式种类:
+外部样式
+	<link href="layout.css" rel="stylesheet" type="text/css" />
+内部样式
+<style>
+h2 { color:#f00;}
+</style>
+
+行内样式
+
+导入样式
+@import url("/css/global.css");
+可在一般的样式css文件中导入全局样式css文件
+
+css优先级
+id优先级高于class
+后面的样式覆盖前面的
+指定的高于继承
+行内样式高于内部或外部样式
+总结：单一的(id)高于共用的(class)，有指定的用指定的，无指定则继承离它最近的
+
+css盒模型
+http://www.aa25.cn/div_css/902.shtml
+http://www.w3school.com.cn/css/css_boxmodel.asp
+
+css的块级元素和内联元素
+块级元素
+div	像方块一样，默认占用一行 
+块级元素 <p> <h1>..<h6>  <ul><ol><li> <table> <form> 
+<div> <body>
+
+内联元素
+span 不会引起换行
+<input> <a> <img> <span>
+
+块级和内联元素 在css中设置 display:inline display:block
+
+div和span
+div就是一个块，他意味着前后都要空一行
+而span则可以嵌套，成为内敛的一部分
+
+margin 的垂直合并
+当两个元素在垂直方向上都设置了margin的时候,他们会合并,取最大值
+父子元素在垂直和水平方向上也会合并并取最大值
+
+css元素的定位
+positioning
+css的定位机制
+普通流 浮动 绝对定位
+普通流是以
+
+float属性
+
+ccs选择器分组
+
+相对定位和绝对定位
+定位position
+包含属性relative 相对 absolute绝对
+
+派生选择器	
+	li strong {xxx}
+	表示li标签中strong标签的样色
+id选择器	
+	#siderbar {xxxx}
+	<div id="siderbar"></div> 的样式
+	#siderbar p{xxx}
+	<div id="sidebar"><p></p></div>的样式
+	
+类选择器
+	.center {xxxx}
+	<xxx class="center"> 的样式
+	
+	.fancy td{xxxx} 
+	<td class="fancy">的样式
+	
+属性选择器
+	[title]
+	{
+		color:red; 
+	}
+	指定带有title属性的标签的样式
+	
+	[title=W3CShool]
+	{
+		border:xxxxx
+	}
+	title="W3CShool"的属性标签的样式
+	
+	[title=value]
+	[title~=value]
+	[title|=value]
+	[title^=value]
+	[title$=value]
+	[title*=value]
+
+伪类
+a:hover {xxx} 表示当<a>标签元素发生hover事件的时候应用的样式
+
+
+边框的简写
+div {
+	border-width: 1px;
+	border-style: solid;
+	border-color: #FF0000;
+}
+
+div {
+	border: 1px solid #FF0000;
+}
+
+border: border-with || border-style || border-color
+
+背景的简写
+body {
+	background: #FF0000 url(background.gif) no-repeat fixed 0 0;
+}
+background: background-color || background-image || background-repeat || background-attachment || background-position
+background-attachment 是否随页面滚动
+background-position 定义页面位置 必须先定义背景图片之后才有效
+默认值
+tansparent none repeat scroll 0% 0%
+
+字体
+body {
+	font-style:	italic;
+	font-variant: small-caps;
+	font-weight: bold;
+	font-size: 12px;
+	line-height: 140%;
+	font-family: "Lucida Grande", sans-serif;
+}
