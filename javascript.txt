@@ -68,7 +68,7 @@ setAttribute(attribute, value)
 
 <p>xxxxx</p>  
 var params=document.getElementsByTagName("p")
-for (var i=0; i<paras.length; ++i) {
+for (var i=0; i<params.length; ++i) {
 	var title_text=params[i].getAttribute("title");
 	if (title_text != null) {
 		do_something
@@ -316,3 +316,20 @@ var mySpy = new Spy(...);
 mySpy.spy();
 
 ======================================
+Dom操作
+document.getElementById() 通过Id获取元素节点
+document.getElementsByName() 通过name获取元素节点
+
+document.getElementsByTagName 通过TagName来获得节点
+document.getElementsByClassName
+
+parentNode
+childNodes
+firstChild
+lastChild
+nextSibling
+previoursSibling
+nodeType
+nodeValue
+nodeName
+

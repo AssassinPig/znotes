@@ -88,3 +88,22 @@ save()则由user.save()来调用
 javascript的规范
 https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide?redirectlocale=en-US&redirectslug=JavaScript%2FGuide
 
+=====================================================
+bower
+bower install jquery 安装
+bower update jquery 升级
+bower cache list 查看本地缓存列表
+bower info d3   查看d3的版本信息
+bower lookup dojo 查看dojo库的url
+bower home dojo 用浏览器打开dojo库页面
+bower search dojo 查询包含dojo的类库
+
+bower 提交自己的库
+bower init 生成bower.json配置文件
+git init
+bower register nodejs-bower git@github.com
+之后可以查询我们自己的库 并可以安装
+bower search nodejs-bower
+bower install nodejs-bower
+
+
