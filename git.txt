@@ -21,6 +21,7 @@ git reset file
 
 7,取消对文件的修改
 git checkout -- file
+git checkout -f step-0 迁出步骤step-0的代码
 
 8，删除 移动
 git rm
