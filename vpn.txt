@@ -1,0 +1,14 @@
+start vpn
+sudo pptpsetup --create myvpn --server tw1.smartdidu.com --username assassinpig --password tiancai2014 --encrypt --start
+
+
+traceroute www.163.com
+ip route 
+
+route -n
+
+sudo ip route del default 
+sudo ip route add default dev ppp0
+
+stop vpn
+sudo poff myvpn

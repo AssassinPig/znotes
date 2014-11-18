@@ -110,3 +110,8 @@ table也可以是竖直排列的表
 表单form
 http://www.w3school.com.cn/html/html_forms.asp
 
+DOCTYPE声明
+<! DOCTYPE html>
+指定字符编码
+<meta charset="UTF-8">
+
