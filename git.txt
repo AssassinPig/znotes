@@ -21,6 +21,7 @@ git reset file
 
 7,取消对文件的修改
 git checkout -- file
+git checkout -f step-0 迁出步骤step-0的代码
 
 8，删除 移动
 git rm
@@ -114,7 +115,7 @@ git push origin :add_sth 删除远程add_sth分支
 git br 显示本地分支
 
 作为贡献者
-git reomte add upstream https://github.com/lovelypeter/hello.git 这个分支是远程的代码master的分支
+git remote add upstream https://github.com/lovelypeter/hello.git 这个分支是远程的代码master的分支
 
 git pull upstream master 更新这个upstream分支, 即从master那边拿最新代码
 
@@ -125,7 +126,7 @@ git checkout -b add_sth 创建分支并切换到
 git checkout master
 git pull upstream master
 
-git checkout add_sth 切换回add_sth分支
+git checkout add_sth    切换回add_sth分支
 git rebase master	给本地的master分支rebase
 
 git push origin add_sth 推到远程的add_sth分支上

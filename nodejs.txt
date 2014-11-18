@@ -106,4 +106,10 @@ bower register nodejs-bower git@github.com
 bower search nodejs-bower
 bower install nodejs-bower
 
+==================================================
+n a node version manager
+install n 
+npm install -g n 
+install special version node
+n 0.11.12
 
