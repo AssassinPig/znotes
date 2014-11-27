@@ -145,3 +145,8 @@ arp
 arp -a 显示系统mac表中的记录
 arp -d 删除mac表中的所有记录
 arp -s 手动添加静态mac记录
+
+ip命令
+ip addr 显示所有网络地址连接
+ip addr show enth0 显示enth0上的网络连接
+ip addr add 192.168.0.106/24 dev enth0 给enth0配置地址
