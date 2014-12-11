@@ -88,7 +88,3 @@ del 删除的是名称，如果x={xxx} y=x 则del a in x不会影响到y中x的�
 exec "xxxx" 执行xxxx内容的脚本
 eval "xxxx" 计算xxxx内容的脚本返回的值
 
-
-
-
-

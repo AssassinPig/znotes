@@ -1,0 +1,6 @@
+1. install pip
+https://pip.pypa.io/en/latest/installing.html
+python get-pip.py
+
+2.
+
