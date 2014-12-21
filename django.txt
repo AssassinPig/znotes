@@ -22,9 +22,64 @@ python manage.py runserver
 python manage.py runserver 8080
 python manage.py runserver 192.168.129.128:8080
 
+7.template
+简单变量
+{{person_name}}
+
+控制语句的使用
+{% if %}
+{% endif %}
+
+{% for item in item_list %}
+{% endfor %}
+
+过滤器
+{{ ship_date | date:"F,j,Y" }}
 
 
+判断语句
+{% ifequal user currentuser %}
+{% endifequal %}
+
+注视
+{# This is a comment #}
+
+include模版标签
+{% include 'nav.html' %}
+
+{% extends "base.html" %}
+
+8.database
+setting
+mysite/settings.py
+ENGINE: 'django.db.backends.postgresql_psycopg2' 'django.db.backends.mysql'
+NAME:
+
+migrate
+step:
+Change your models (in models.py).
+Run python manage.py makemigrations to create migrations for those changes
+Run python manage.py migrate to apply those changes to the database
+
+9.console
+python manage.py startapp polls
+python manage.py shell
+
+10.start app
+一个project包含很多个Django app以及对它们的配置。
+技术上，project的作用是提供配置文件，比方说哪里定义数据库连接信息, 安装的app列表， TEMPLATE_DIRS ，等等。
+一个app是一套Django功能的集合，通常包括模型和视图，按Python的包结构的方式存在。
+例如，Django本身内建有一些app，例如注释系统和自动管理界面。app的一个关键点是它们是很容易移植到其他project和被多个project重用。
+To create your app, make sure you’re in the same directory as manage.py and type this command
+
+python manage.py startapp books
+
+python manage.py syncdb
+python manage.py dbshell 
+
+create an admin user
+python manage.py createsuperuser
 
 
-
-
+11.test case
+python manage.py test polls
