@@ -61,6 +61,10 @@ Change your models (in models.py).
 Run python manage.py makemigrations to create migrations for those changes
 Run python manage.py migrate to apply those changes to the database
 
+	modify models
+	python manage.py validate 验证models中是否正确
+	python manage.py syncdb 同步更新db中的表的结构
+
 9.console
 python manage.py startapp polls
 python manage.py shell

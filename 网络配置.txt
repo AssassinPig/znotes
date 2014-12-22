@@ -1,8 +1,18 @@
 ﻿ubuntu 
+
+配置静态ip地址
+auto eth0
+iface eth0 inet static 
+address 192.168.0.108
+netmask 255.255.255.0
+gateway 192.168.0.1
+dns-nameserver 223.6.6.6 223.5.5.5
+
+
 配置dns
 /etc/resolv.conf中添加
 nameserver 10.203.104.1
+
 如果总是被overwrite的话
 编辑/etc/networking/interface 添加
 dns-nameservers 10.203.104.1
-如果还是不行就要看dns了
