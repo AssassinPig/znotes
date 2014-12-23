@@ -1,6 +1,22 @@
 ﻿print 'hello, %s' % 'name'
 >>>hello, name
 
+__str__特殊方法
+给一个类添加__str__方法，可以在使用print方法打印这个类实例的时候，输出相应的__str__方法返回的内容
+__unicode__ 同__str__ 
+
+常见异常和错误
+AttributeError	属性错误 特性引用和赋值失败时候引发的属性错误
+NameError		试图访问的变量名不存在
+SyntaxError		语法错误
+Exception		所有异常基类
+IOError			一般常见于打不开存在文件时候
+KeyError		使用了映射中弄个不存在的关键字(键)
+IndexError		索引错误 使用的索引不存在或者超出序列范围
+TypeError		类型错误 内建操作或是函数应用于错误的对象时引发类型错误
+ZeroDivisonError 除数为零
+ValueError      值错误，给对象的参数类型不正确,例如给int()函数传入了字符串类型
+
 
 序列包
 scoundrel = {'name':'Robin', 'girlfriend':'Marion'}
@@ -92,3 +108,49 @@ python import搜索目录
 使用命令查看
 import sys
 sys.path
+
+常用模块和类的用法
+dir()方法
+查询对象的属性和方法
+dir([]) 查询list方法
+dir('') 查询字符串
+import(sys)
+dir(sys)  查询模块方法
+
+python基本类型 内置
+int
+bool True False
+str  ''  ""
+list  []
+tuple ('d', 100)
+dict {'name':'cc', 'country':'china'}
+
+可变数据类型list dict
+不可变数据类型int str tuple
+
+type()函数
+查看对象的类型信息
+type(1) 
+<type 'int'>
+type('')
+<type 'str'>
+type(type(1))	type()的返回值也是有类型的，它是type类型
+<type 'type'>	
+
+help()函数
+查看函数或者模块用途的具体说明
+help('sys')
+help('str')
+a=[1,2,3]
+help(a)
+help(a.append)
+
+global变量
+x=6
+def func():
+	global x
+	x=1
+func()
+print
+1
+可以看出在func中使用global x 可以指示要操作的x是一个全局变量
