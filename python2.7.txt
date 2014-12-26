@@ -154,3 +154,26 @@ func()
 print
 1
 可以看出在func中使用global x 可以指示要操作的x是一个全局变量
+
+list用法
+==================
+l = []
+len(l) 计算列表长度
+min(l) 求列表中最小元素
+max(l)
+sum(l) 求列表中元素的和
+
+遍历列表
+for n in l:
+  print n
+
+不修改列表元素的方法 
+list.index(x)
+list.count(x)
+修改列表元素的方法
+list.append(x)
+list.pop()
+list.extend()
+
+让python使用浮点计数法
+from __future__ import division

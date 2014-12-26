@@ -1,0 +1,70 @@
+NLTK
+1.install nltk
+http://www.nltk.org/install.html
+
+2.install nltk data and packages
+http://www.nltk.org/data.html
+
+3.from nltk import
+  from nltk.books import * #add all books
+
+4. 
+  text1.concordance('xxxword') #search 'xxxword'
+  text1.similar('xxxword') #search context
+  text1.common_contexts(['monstrous', 'very']) #search multiple context
+  
+  text4.dispersion_plot(['', '', '']) 
+  text3.generate()
+
+  summary words
+  len(text3)
+
+  summary different words
+  len(set(text3))
+  
+  sort different words
+  sorted(set(text3))
+ 
+  让python使用浮点计数法
+  from __future__ import division
+	
+  标识符号 
+  len(text)
+  类型
+  len(set(text))
+  词汇多样性
+  len(text)/len(set(text))
+ 
+  获取词语的索引
+  text4.index('awaken') 
+
+  切片
+  text5[111:222]
+
+5.频率分布
+  FreqDist
+  fdist1=FreqDist(text1)
+  fdist1
+  fdist1[w] #times w happends
+  vocabulary1 = fdist1.keys()
+
+  fdist = FreqDist(samples)
+  fdist.inc(sample) 增加样本数量
+  fdist['monstrous']  给定样本'monstrous'出现的次数
+  fdist.freq('monstrous') 给定样本的频率
+  fdist.N()		  样本总数
+  fdist.keys()		  以频率递减排序的样本链表
+  for sample in fdist:	  以频率递减的顺序遍历样本
+  fdist.max()		  数值最大的样本
+  fdist.tabulate()	  绘制频率分布表	
+  fdist.plot()		  绘制频率分布图
+  fdist.plot(cumulative=True) 绘制样本频率分布图
+  fdist1<fdist2 		测试样本在fdist1中出现的频率是否小于fdist2
+
+6.bigrams
+  词语搭配和双联词 
+  在列表中提取文本词汇的双联词
+  bigrams(['more', 'is', 'said', 'than', 'done'])
+  求文本中出现的更加频繁的双联词
+  text4.collocations()
+
