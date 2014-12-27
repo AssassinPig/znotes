@@ -1,37 +1,46 @@
-´úÂëÕû¶Î×Ô¶¯Ëõ½ø
+ä»£ç æ•´æ®µè‡ªåŠ¨ç¼©è¿›
 =G
 
-Õë¶ÔÑ¡ÖĞ´úÂëshift =  ×Ô¶¯¶ÔÆëËõ½ø
+é’ˆå¯¹é€‰ä¸­ä»£ç shift =  è‡ªåŠ¨å¯¹é½ç¼©è¿›
 
-Õë¶ÔÑ¡ÖĞµÄĞĞ½øĞĞËõ½ø
+é’ˆå¯¹é€‰ä¸­çš„è¡Œè¿›è¡Œç¼©è¿›
 shift+v
-jkÑ¡ÖĞĞĞ
-v <	ÏòÇ°Ëõ½øÒ»¸ötab
-v > ÏòºóËõ½øÒ»¸ötab
+jké€‰ä¸­è¡Œ
+v <	å‘å‰ç¼©è¿›ä¸€ä¸ªtab
+v > å‘åç¼©è¿›ä¸€ä¸ªtab
 
-16½øÖÆÏÔÊ¾/»Ö¸´
+16è¿›åˆ¶æ˜¾ç¤º/æ¢å¤
 %xxd
 %xxd -r
 
 http://www.2maomao.com/blog/wp-content/uploads/vim_tips.txt
 
 
-ctags -R .			Éú³Éµ±Ç°Ä¿Â¼µÄtagsË÷ÒıÎÄ¼ş
-set tags = ./tags	ÉèÖÃµ±Ç°Ä¿Â¼ÏÂµÄtagsË÷ÒıÎÄ¼ş
+ctags -R .			ç”Ÿæˆå½“å‰ç›®å½•çš„tagsç´¢å¼•æ–‡ä»¶
+set tags = ./tags	è®¾ç½®å½“å‰ç›®å½•ä¸‹çš„tagsç´¢å¼•æ–‡ä»¶
 
-TlistOpen TlistToggle	¿ªÆôµ±Ç°´úÂëÎÄ¼şĞÅÏ¢À¸
-ctrl+]					Ìø×ªµ½
+TlistOpen TlistToggle	å¼€å¯å½“å‰ä»£ç æ–‡ä»¶ä¿¡æ¯æ 
+ctrl+]					è·³è½¬åˆ°
 
-:LookupFile				²éÕÒÎÄ¼ş
-:LUWalk					²éÕÒÄ¿Â¼
+:LookupFile				æŸ¥æ‰¾æ–‡ä»¶
+:LUWalk					æŸ¥æ‰¾ç›®å½•
 	
-cscope -Rbq 			µİ¹éÉú³Éµ±Ç°Ä¿Â¼ÏÂµÄcscope in outÎÄ¼ş
-find . -type f > cscope.files	ÏÈµİ¹éµÄ±ãÀûËùÓĞÄ¿Â¼ ²¢ÇÒÊäÈëµ½´Ócscope.filesÎÄ¼şÖĞ
-cscope -bq 				¶Ôµ±Ç°Ä¿Â¼ÖĞµÄcscope.filesÎÄ¼şÉú³Éin outÎÄ¼ş
+cscope -Rbq 			é€’å½’ç”Ÿæˆå½“å‰ç›®å½•ä¸‹çš„cscope in outæ–‡ä»¶
+find . -type f > cscope.files	å…ˆé€’å½’çš„ä¾¿åˆ©æ‰€æœ‰ç›®å½• å¹¶ä¸”è¾“å…¥åˆ°ä»cscope.filesæ–‡ä»¶ä¸­
+cscope -bq 				å¯¹å½“å‰ç›®å½•ä¸­çš„cscope.filesæ–‡ä»¶ç”Ÿæˆin outæ–‡ä»¶
 
-:cs find c do_cscope 	²éÕÒdo_cscopeµÄº¯Êı±»µ÷ÓÃµÄµØ·½
+:cs find c do_cscope 	æŸ¥æ‰¾do_cscopeçš„å‡½æ•°è¢«è°ƒç”¨çš„åœ°æ–¹
 http://easwy.com/blog/archives/advanced-vim-skills-cscope/
 
 :cc
-:cw	´ò¿ªÒ»¸öquickfixµÄ´°¿Ú
-:cn Ìøµ½ÏÂÒ»¸ö´íÎóµÄµØ·½
+:cw	æ‰“å¼€ä¸€ä¸ªquickfixçš„çª—å£
+:cn è·³åˆ°ä¸‹ä¸€ä¸ªé”™è¯¯çš„åœ°æ–¹
+
+ç¼©è¿›
+vim set index keyborad shorcut
+>G indent until end of file
+>} indent until next paragraph
+>iB indent contents of current {} block
+< un-indent  
+> add-indent 
+= re-indent
