@@ -6,17 +6,17 @@ http://www.nltk.org/install.html
 http://www.nltk.org/data.html
 
 3.from nltk import
-  from nltk.books import * #add all books
+  from nltk.book import * #add all books
 
 4. 
-  text1.concordance('xxxword') #search 'xxxword'
-  text1.similar('xxxword') #search context
-  text1.common_contexts(['monstrous', 'very']) #search multiple context
+  text1.concordance('xxxword') 	#search 'xxxword'
+  text1.similar('xxxword') 	#search context
+  text1.common_contexts(['monstrous', 'very']) #search multiple context 研究两个或者两个以上的词的共同上下文
   
-  text4.dispersion_plot(['', '', '']) 
-  text3.generate()
+  text4.dispersion_plot(['', '', ''])	#离散图 
+  text3.generate()			#no attribute ???
 
-  summary words
+  summary sum of words
   len(text3)
 
   summary different words
@@ -33,7 +33,7 @@ http://www.nltk.org/data.html
   类型
   len(set(text))
   词汇多样性
-  len(text)/len(set(text))
+  len(text)/len(set(text))    #词的总数/不同词的个数
  
   获取词语的索引
   text4.index('awaken') 
@@ -49,7 +49,7 @@ http://www.nltk.org/data.html
   vocabulary1 = fdist1.keys()
 
   fdist = FreqDist(samples)
-  fdist.inc(sample) 增加样本数量
+  fdist.inc(sample) 		增加样本数量
   fdist['monstrous']  给定样本'monstrous'出现的次数
   fdist.freq('monstrous') 给定样本的频率
   fdist.N()		  样本总数

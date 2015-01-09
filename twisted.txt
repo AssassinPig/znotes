@@ -1,0 +1,46 @@
+http://twistedmatrix.com/documents/current/core/howto/index.html
+1.install 
+	sudo apt-get install python-twisted
+	sudo pip install Twisted
+
+2.
+twisted.internet.protocol.Protocol
+Your protocol handling class will usually subclass twisted.internet.protocol.Protocol
+An instance of the protocol class is instantiated per-connection
+
+3.
+twisted.internet.protocol.Factory
+	buildProtocol
+	this method is used to create a Procotol for each new connection
+
+ClientFactory
+
+4.Reactor
+in single thread
+singleton
+only import no create
+
+run() will run a loop and have a listen method. It will be halt utill any network event comes
+
+IReactorFDSet  
+addReader(reader)
+receive file description 
+
+IReadDescriptor
+connectionLost()
+
+doRead()
+twisted调用这个回掉来表明已经有数据在socket接收完毕了
+
+Transports
+一个Transports 代表一个可以收发字节的单条链接
+
+Protocols
+ProtocolFactory
+
+5.handler
+our codes and twisted codes were running in the same process
+they communicate with through specfied handler function
+when our codes runs, twisted codes don't and oppsite change 
+
+6.deferred

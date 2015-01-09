@@ -1,5 +1,5 @@
-﻿print 'hello, %s' % 'name'
->>>hello, name
+﻿string的编码转换
+s.encode("utf-8")
 
 __str__特殊方法
 给一个类添加__str__方法，可以在使用print方法打印这个类实例的时候，输出相应的__str__方法返回的内容
@@ -16,7 +16,6 @@ IndexError		索引错误 使用的索引不存在或者超出序列范围
 TypeError		类型错误 内建操作或是函数应用于错误的对象时引发类型错误
 ZeroDivisonError 除数为零
 ValueError      值错误，给对象的参数类型不正确,例如给int()函数传入了字符串类型
-
 
 序列包
 scoundrel = {'name':'Robin', 'girlfriend':'Marion'}
@@ -41,7 +40,7 @@ if not condition:
 	crash program
 	
 if xxx :
-else if xxx:
+elif xxx:
 	xxxx
 else :
 	xxxx
@@ -49,6 +48,27 @@ else :
 while xxxx:
 	xxxx
 	
+函数function
+将传入的参数当作一个元组对象
+def func(*args):
+    print args
+func(1,2,3)
+(1,2,3)
+
+将一个列表的所有元素当作不定参数
+func(*[1,2,3])
+(1,2,3)
+
+将参数作为一个字典形式传入
+func(**kwargs):
+    print kwargs
+>>>func(a=1, b=2, c=3)
+{'a':1, 'c':3, 'b':2}
+>>>func(**{'a':1, 'c':3, 'b':2})
+{'a':1, 'c':3, 'b':2}
+
+
+数组array
 words = ['this', 'is', 'a', 'array]
 for w in words:
 	print w
@@ -177,3 +197,51 @@ list.extend()
 
 让python使用浮点计数法
 from __future__ import division
+
+python 构造函数 python析构函数 python垃圾回收
+=====================================
+class A():
+  def __init__(self):
+    pass
+
+  def __del__(self):
+    pass
+垃圾回收机制
+Python 采用垃圾回收机制来清理不再使用的对象；Python 提供gc模块释放
+	不再使用的对象，Python 采用‘引用计数’ 的算法方式来处理回收，
+	即：当某个对象在其作用域内不再被其他对象引用的时候，Python 就自动清除对象；
+	Python 的函数collect()可以一次性收集所有待处理的对象(gc.collect())
+
+build-in class attribute
+__dict__ : Dictionary containing the class's namespace.
+__doc__ : Class documentation string or None if undefined.
+__name__: Class name.
+__module__: Module name in which the class is defined. This attribute is "__main__" in interactive mode.
+__bases__ : A possibly empty tuple containing the base classes, in the order of their occurrence in the base class list.
+
+Data Hiding:
+An object's attributes may or may not be visible outside the class definition. For these cases, you can name attributes with a double underscore prefix, and those attributes will not be directly visible to outsiders.
+
+class JustCounter:
+   __secretCount = 0	#private variable
+
+   def __privateFunction(self): #private function
+       pass
+  
+   def count(self):
+      self.__secretCount += 1
+      print self.__secretCount
+if you want JustCounter.__sercetCount, you will get an exception.
+
+多重继承
+class Calculator:
+    def calculate(self, expression):
+        self.value = eval(expression)  
+class Talker:
+    def talk(self):
+        print 'xxxx'
+class TalkingCalculator(Calculator, Talker):
+    pass
+以上TalkingCalculator继承了Calculator也继承了Talker
+如有同名函数 注意继承顺序 避免错误的重写函数 
+如果Calculator中有talk的函数那么Talk中的同名函数将会被重写

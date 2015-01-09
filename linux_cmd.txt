@@ -154,3 +154,7 @@ ip addr add 192.168.0.106/24 dev enth0 给enth0配置地址
 iconv转换
 iconv -f encoding -t encoding inputfile
 $ iconv -f GBK -t UTF-8 file1 -o file2
+
+查看当前网络流量
+watch -n 1 "/sbin/ifconfig eth0 | grep bytes"
+cat /proc/net/dev
