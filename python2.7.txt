@@ -245,3 +245,97 @@ class TalkingCalculator(Calculator, Talker):
 以上TalkingCalculator继承了Calculator也继承了Talker
 如有同名函数 注意继承顺序 避免错误的重写函数 
 如果Calculator中有talk的函数那么Talk中的同名函数将会被重写
+
+with的使用
+使用格式
+with EXPR as VAR:
+   BLOCK 
+根据PEP343的解释 with...as..会被翻译成
+mgr = (EXPR)
+exit = type(mgr).__exit__
+value = type(mgr).__enter__(mgr)
+exc = True
+try:
+    try:
+    VAR = value
+    BLOCK
+    except:
+        exc = False
+        if not exit(mgr, *sys.exc_info()):
+            raise
+finally:
+    if exc:
+        exit(mgr, None, None, None)
+
+以下两端等价
+代码段一:
+with open('...') as f:
+    for line in f.readlines():
+        print(line)
+可以保证在离开with语句的范围的时候close文件
+
+代码段二:
+f = open('...')
+try:
+    for line in f.readlines():
+        print(line)   
+finally:
+    f.close() #要手动确保close操作
+
+一般实现
+class opened(object):
+    def __init__(self,name):
+        self.handle = open(name)
+    def __enter__(self):
+        return self.handle
+    def __exit__(self, type, value, trackback):
+        return self.handle.close()
+用法同段二所示
+使用contextlib来实现
+from contextlib import contextmanager
+@contextmanager
+def opened(name):
+    f = open(name)
+    try:
+        yield f
+    finally:
+        f.close()
+用法同上
+
+列表推导 List comprehensions
+[i for i in range(10) if i%2 == 0]
+seq = ["one", "two", "three"]
+for i,element in enumerate(seq):
+    seq[i] = '%d, %s' % (i, seq[i])
+
+def _treatment(pos, element):
+    return '%d: %s' % (pos, element)
+[_treatment(i,el) for i,el in enumerate(seq)]
+	
+迭代器 Iterators 生成器generators
+def psychologist():
+    print 'Please tell me your problems'
+    while True:
+        answer = (yield)
+	if answer is not None:
+            if answer.endswith('?'):
+		print("Don't ask yourself"
+			"too much questions")
+	    elif 'good' in answer:
+		print "A that's good, go on"
+	    elif 'bad' in answer:
+		print "Don't be so negative"
+
+gen = my_generator()
+gen.next()
+'something'
+gen.throw(ValueError('mean mean mean'))
+'deal with the exception'
+gen.close()
+ok let's clean
+gen.next()
+Traceback(...):
+
+描述符 Descriptors 属性properties
+装饰 Decorators
+contextlib

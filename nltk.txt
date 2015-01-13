@@ -37,6 +37,10 @@ http://www.nltk.org/data.html
  
   获取词语的索引
   text4.index('awaken') 
+>>>1111
+  text4[1111] #text4的索引1111的元素是'awaken'
+>>>'awaken'
+  
 
   切片
   text5[111:222]
@@ -45,26 +49,75 @@ http://www.nltk.org/data.html
   FreqDist
   fdist1=FreqDist(text1)
   fdist1
-  fdist1[w] #times w happends
+  fdist1[w] 			#times w happends
   vocabulary1 = fdist1.keys()
 
   fdist = FreqDist(samples)
   fdist.inc(sample) 		增加样本数量
-  fdist['monstrous']  给定样本'monstrous'出现的次数
-  fdist.freq('monstrous') 给定样本的频率
-  fdist.N()		  样本总数
-  fdist.keys()		  以频率递减排序的样本链表
-  for sample in fdist:	  以频率递减的顺序遍历样本
-  fdist.max()		  数值最大的样本
-  fdist.tabulate()	  绘制频率分布表	
-  fdist.plot()		  绘制频率分布图
-  fdist.plot(cumulative=True) 绘制样本频率分布图
+  fdist['monstrous']  	  	给定样本'monstrous'出现的次数
+  fdist.freq('monstrous') 	给定样本的频率
+  fdist.N()		  	样本总数
+  fdist.keys()		  	以频率递减排序的样本链表
+  for sample in fdist:	  	以频率递减的顺序遍历样本
+  fdist.max()		  	数值最大的样本
+  fdist.tabulate()	  	绘制频率分布表	
+  fdist.plot()		  	绘制频率分布图
+  fdist.plot(cumulative=True) 	绘制样本频率分布图
   fdist1<fdist2 		测试样本在fdist1中出现的频率是否小于fdist2
+  fdist1.hapaxes()		绘制低频词
 
-6.bigrams
+6.V = set(text1)
+  抽取长度大于15的长词
+  long_words = [w for w in V if len(w) > 15]
+  #sorted(long_words)
+
+7.bigrams
   词语搭配和双联词 
   在列表中提取文本词汇的双联词
   bigrams(['more', 'is', 'said', 'than', 'done'])
   求文本中出现的更加频繁的双联词
   text4.collocations()
 
+8.s.startwith(t)
+  s.endwith(t)
+  t in s
+  s.islower()
+  s.isupper()
+  s.isalpha()
+  s.isdigit()
+  s.istitle()
+
+  [w.upper() for w in text1] #查找text1中的w 并取其变大写的操作
+  [f(w) for text1] 	     #查找text1中的w 并取其f(w)计算之后的值
+
+2.1 corpus 语料库
+  from nltk.corpus import inaugural #就职演说
+
+  fileids()			#语料库中的文件
+  fileids([categories])		#指定分类对应的语料库中的文件
+  categories()			#语料库中的分类
+  categories([fileids])		#指定文件对应语料库中的分类
+  raw()				#语料库中的原始预料
+  raw(fileids=[f1,f2,f3]	#指定文件的原始内容
+  raw(categories=[c1,c2,c3]	#指定分类的原始内容
+  words()			#整个语料库中的词汇
+  words(fileids=[f1,f2,f3])	#指定文件中的词汇
+  words(categories=[c1,c2])	#指定分类中的词汇
+  sents()			#指定分类中的句子
+  sents(fileids=[f1,f2,f3])	#指定文件中的句子
+  sents(categories=[c1,c2])	#指定分类中的句子
+  abspath(fileid)		#指定文件在磁盘上的位置
+  encoding(fileid)		#文件编码
+  open(fileid)			#打开指定语料文件的文件流
+  root()			#到本地安装的语料库根目录的路径
+  root()
+
+  载入自己的语料库
+  from nltk.corpus import PlainTextCorpusReader 
+  corpus_root = '/usr/share/dict'
+  wordlists = PlaintextCorpusReader(corpus_root, '.*')
+  wordlists.fileids()
+
+2.2条件概率分布
+   1.条件概率分布是有条件的概率分布的集合，条件通常是指文体
+   2.条件和事件 (条件,事件) 
