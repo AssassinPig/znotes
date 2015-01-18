@@ -158,3 +158,8 @@ $ iconv -f GBK -t UTF-8 file1 -o file2
 查看当前网络流量
 watch -n 1 "/sbin/ifconfig eth0 | grep bytes"
 cat /proc/net/dev
+
+xargs
+ls | xargs -t -i mv {} {}.bak
+-t 先打印命令再执行
+-i 替换{}

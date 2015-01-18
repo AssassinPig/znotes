@@ -337,5 +337,42 @@ gen.next()
 Traceback(...):
 
 描述符 Descriptors 属性properties
+描述符用来自定义在引用一个对象上的特性时应该完成的事情
+描述符是python中复杂特性访问的基础。它们在内部使用，以实现属性，类，静态方法和super类等。
+描述符类必须实现三个特护方法:
+__set__在任何特性被设置的时候调用，称为setter
+__get__在任何特性被读取的时候调用，成为getter
+__delete__在特性上请求del时候调用
+
+元编程
+__new__ 是一个特殊方法， 一个元构造程序， 每当一个对象必须被factory类实例化的时候就讲调用它 必须返回一个类的实例 因此它可以在对象创造之前或者之后修改类
+__metaclass__
+元类Metaclass提供给了在类对象在内存中创建时进行交互的能力 他们的效果与__new__类似只不过在类级别上运行
+代码一:
+def method(self):
+    return 1
+klass=type('MyClass', (object,), {'method':method})
+instance = klass()
+instance.method()
+>>>1
+代码二:
+class MyClass(object):
+    def method(self):
+	return 1
+
+instance = MyClass()
+instance.method()
+>>>1
+代码一和代码二是同样作用，但是代码一在动态的改变类MyClass，添加了method()函数
+使用dir(instance)可以查看
+
+__metaclass__特性必须被设置为
+接受和type相同的参数(一个类名， 一组基类和一个特性映射)
+返回一个类对象
+
+元编程使用的情景:
+框架级别，一个行为在许多类中是强制的行为的时候
+当一个特殊行为被添加的目的不是与诸如记录日志这样的类提供功能交互的时候
+
 装饰 Decorators
 contextlib

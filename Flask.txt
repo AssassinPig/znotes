@@ -1,0 +1,61 @@
+0.install 
+	1.sudo pip install virtualenv
+	2.sudo pip install Flask
+
+Flask 依赖两个外部库： Werkzeug 和 Jinja2 。
+Werkzeug 是一个 WSGI 套件。 
+WSGI是Web 应用与 多种服务器之间的标准 Python 接口，即用于开发，也用于部署。 
+Jinja2 是用于模版渲染的
+
+1.社区
+http://flask.pocoo.org/community/
+irc pidgin
+http://pidgin.im/
+
+SQLAlchemy 
+http://www.sqlalchemy.org/
+果壳就是用flask开发的
+http://www.guokr.com/group/
+
+如果在flask之中使用的话，可以使用Flask-SQLAlchemy模块
+http://dormousehole.readthedocs.org/en/latest/patterns/sqlalchemy.html
+https://pythonhosted.org/Flask-SQLAlchemy/
+pip install Flask-SQLAlchemy
+
+
+3.路由route
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@app.route('/user/<username>')
+def user_show(username):
+   return render_template('user_show.html', username)
+
+4.全局对象request response session cookies
+  request.method  
+  request.body
+  request.form['key']
+
+  session['key'] 
+  session.pop('key', None)
+
+  request.cookies['key']
+
+5.跳转
+  render_template('xxx.html', param)
+  redirect(url_to('index'))
+
+6.flash
+  http://dormousehole.readthedocs.org/en/latest/patterns/flashing.html#message-flashing-pattern
+  flash('flash message error')
+  
+  .html之中
+  {% for message in get_flashed_messages() %}
+      <div class='flash'>{{message}}</div>
+  {% endfor %}
+
+7.log
+  app.logger.debug('A value for debugging')
+  app.logger.warning('A warning occurred (%d apples)', 42)
+  app.logger.error('An error occurred')
