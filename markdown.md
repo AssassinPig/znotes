@@ -29,19 +29,19 @@ nested
 >     return shell_exec("echo $input | $markdown_script");
 
 List
-*Red
-*Green
-*Blue
+* Red
+* Green
+* Blue
 
-+Red
-+Green
-+Blue
++ Red
++ Green
++ Blue
 
--Red
--Green
--Blue
+- Red
+- Green
+- Blue
 
-1.Bird
-2.McHale
-3.Parish
+1. Bird
+2. McHale
+3. Parish
 
