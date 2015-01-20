@@ -375,4 +375,15 @@ __metaclass__特性必须被设置为
 当一个特殊行为被添加的目的不是与诸如记录日志这样的类提供功能交互的时候
 
 装饰 Decorators
+@staticmethod have no idea about Class. Oppsite, @classmethod has one parameter cls which describes class structure
+class StaticClassMethodSample():
+    my_class_var = 3
+    @staticmethod
+    def my_staticmethod():
+        print StaticClassMethodSample.my_class_var
+
+    @classmethod
+    def my_classmethod(cls):
+        print cls.my_class_var
+
 contextlib
