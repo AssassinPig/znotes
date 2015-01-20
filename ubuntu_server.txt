@@ -1,0 +1,13 @@
+1.setup ubuntu server desktop
+	make sure Universe and Multiverse open in /etc/apt/sources.list
+
+2.
+  1.gnome
+  sudo apt-get update
+  sudo apt-get install ubuntu-desktop
+
+  2.xfce
+  sudo apt-get install xubuntu-desktop
+ 
+  3.kde
+  sudo apt-get install kubuntu-desktop
