@@ -1,4 +1,17 @@
 scrapy
+			Scheduler    
+	     /	     |			             \
+	   /      request		     	      \
+	  /          |                      	       \
+	/	     |	scrapy engine        		\ 
+Item 	             |                 -- downloader--  Downloader
+Pipline              |			middlewares       
+	\            |                                   /
+	 \Items      |  spider                          /
+	  \          |	middlewares       	       /
+	   \         |                               /
+			Spiders
+
 首先从初始 URL 开始，Scheduler 会将其交给 Downloader 进行下载，下载之后会交给 Spider 进行分析，Spider 分析出来的结果有两种：一种是需要进一步抓取的链接，例如之前分析的“下一页”的链接，这些东西会被传回 Scheduler ；另一种是需要保存的数据，它们则被送到 Item Pipeline 那里，那是对数据进行后期处理（详细分析、过滤、存储等）的地方。另外，在数据流动的通道里还可以安装各种中间件，进行必要的处理
 
 1.create project

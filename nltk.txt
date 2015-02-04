@@ -1,4 +1,22 @@
 NLTK
+NLTK-Data   分析和处理的语言语料库
+NumPy		科学计算库
+Matplotlib  数据可视化的2D绘图库
+NetworkX	可用于存储的操作节点和边组成的网络结构的网络库
+Prover9		一阶等式逻辑定理的自动证明器，用于支持语言处理中的推理
+
+获取和处理语料库	nltk.corpus
+字符串处理			nltk.tokenize nltk.stem
+搭配发现			nltk.collocation
+词性标示符			nltk.tag
+分类				nltk.classify nltk.cluster
+分块				nltk.chunk
+解析				nltk.parse
+语义解释			nltk.sem nltk.interface
+指标评测			nltk.metrics
+概率与估计			nltk.probability
+应用				nltk.app nltk.chat
+语言学领域的工作	nltk.toolbox
 1.install nltk
 http://www.nltk.org/install.html
 
@@ -121,3 +139,45 @@ http://www.nltk.org/data.html
 2.2条件概率分布
    1.条件概率分布是有条件的概率分布的集合，条件通常是指文体
    2.条件和事件 (条件,事件) 
+cfdist = ConditionalFreqDist(paris)	#从配对链表中创建条件概率分布
+cfdist.conditions()			#将条件按字母排列
+cfdist[condition]			#condition此条件下的概率分布
+cfdist[condition][sample]		#condition此条件下的样本频率
+cfdist.tabulate()			#为条件概率分布制表
+cfdist.tabulate(samples, conditions)	#指定样本和条件限制下制表
+cfdist.plot()				#为条件概率分布绘图
+cfdist.plot(samples, conditions)	#指定样本和条件限制下绘图
+cfdist1 < cfdist2			#测试样本在cfdist1中出现的次数是否小于在cfdist2中出现的次数
+
+2.4 词典资源
+词典或者词典资源是一个词或者短语以及一些相关信息的集合
+词汇列表语料库
+def unusual_words(text):
+    text_vocab = set(w.lower() for w in text if w.isalpha())
+    englist_vocab = set(w.lower() for w in nltk.corpus.words.words())
+    unusual = text_vocab.difference(english_vocab)
+    return sorted(unusual)
+
+停用高频词语料库
+from nltk.corpus import stopwords
+stopwords.words('english')
+
+#计算停用词库中的词在某文本中的比例
+def content_fraction(text):
+    stopwords = nltk.corpus.stopwords.words('english')
+    content = [w for w in text if w.lower() not in stopwords ]
+    return len(content)/len(text)
+
+发音词典
+WordNet
+
+3 加工原料文本
+from urllib import ulropen
+url = "http://www.gutenberg.org/files/2554/2554.txt"
+raw = urlopen(url).read()
+
+5. 分类和标注词汇
+将词汇按他们的词汇(parts-of-speech, POS)分类以及相应的标注他们的过程成为词性标注(POST tagging)或简称标注
+词性也成为词类或者词汇范畴 用于特定任务的标记的集合被成为一个标记集
+
+
