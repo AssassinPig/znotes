@@ -1,0 +1,56 @@
+requests lib usage
+http://docs.python-requests.org/en/latest/
+
+1. make a request
+   import requests
+   r = requests.get('https://api.github.com/events')
+   request.put('')
+   request.delete('')
+   request.head('')
+   request.options('')
+
+2.passing parameters in urls
+   payload = {'key1': 'value1', 'key2': 'value2'}
+   r = requests.get("xxxx", params=payload)
+   print r.url
+
+3. response content
+   r = request.get('')
+   r.text 
+
+4. binary response content
+   r.content 
+
+5. json response content
+   r.json()   
+   raw response content
+
+   r.raw()
+   r.raw.read(10)
+
+6. custom headers
+   payload = {'some':'data'}
+   headers = {'content-type': 'application/json'}
+   r = requests.post(url, data=json.dumps(payload), headers=headers)
+
+7. post a multipart-encoded file
+   url = ''
+   files = {'file':open('reports.xls', 'rb')}
+   r = requests.post(url, files=files)
+   r.text
+   
+   with filename 
+   url = 'http://httpbin.org/post'
+   files = {'file': ('report.xls', open('report.xls', 'rb'), 'application/vnd.ms-excel', {'Expires': '0'})} 
+   r = requests.post(url, files=files)
+
+8. response status code
+   r.status_code
+
+   response headers
+   r.headers
+   r.headers['key']
+   r.headers.get('key')
+
+   cookies
+   r.cookies['key']

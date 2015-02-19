@@ -1,6 +1,5 @@
 1.setup ubuntu server desktop
 	make sure Universe and Multiverse open in /etc/apt/sources.list
-
 2.
   1.gnome
   sudo apt-get update
@@ -11,3 +10,15 @@
  
   3.kde
   sudo apt-get install kubuntu-desktop
+
+2.wifi  
+  1.wep wifi 
+	iwconfig wlan0 essid 'sky-node' key 123456
+  2.wpa 
+  	wpa_passhrase ESSID PWD > xxx.conf
+	wpa_supplicant -B -i wlan0 -Dwext -c ./xxx.conf
+
+3. ifconfig ethN up/down 启用和禁用网卡
+   enable/disable network adapter
+  
+

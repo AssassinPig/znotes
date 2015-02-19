@@ -1,4 +1,10 @@
-﻿string的编码转换
+﻿pip
+how to update a package with pip						
+pip install --upgrade xxxx 
+install package from local file 						
+pip install xxxx.tar.gz
+
+string的编码转换
 s.encode("utf-8")
 
 __str__特殊方法

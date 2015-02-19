@@ -40,3 +40,6 @@ heroku config | grep POSTGRESQL
 heroku pg:reset HEROKU_POSTGRESQL_IVORY_URL
 
 heroku restart -a app_name
+
+python heroku doc
+https://devcenter.heroku.com/categories/python
