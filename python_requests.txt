@@ -54,3 +54,7 @@ http://docs.python-requests.org/en/latest/
 
    cookies
    r.cookies['key']
+
+9. session
+   s = requests.Session()
+   

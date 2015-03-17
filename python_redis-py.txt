@@ -1,0 +1,23 @@
+1.setup 
+https://github.com/andymccurdy/redis-py
+sudo pip install redis
+
+2.
+import redis
+r = redis.StrictRedis(host='', port=6739, db=0)
+r.set('foo', 'bar')
+r.get('foo')
+
+two important class implement all most redis commands
+StrictRedis
+Redis(StrictRedis) #a subclass of StrictRedis
+
+3.connection pools
+pool = redis.ConnectPool(host=, port=, db=)
+r = redis.Redis(connection_pool=pool)
+
+
+4.Thread Safety
+Redis client instances can safely be shared between threads. Internally, connection instances are only retrieved from the connection pool during command execution, and returned to the pool directly after. Command execution never modifies state on the client instance
+
+It is no safe to pass PubSub or Pipeline object between threads.

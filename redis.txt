@@ -1,0 +1,132 @@
+http://blog.nosqlfan.com/html/3139.html?ref=rediszt
+1.setup
+  dowload lastet redis.tar.gz
+  http://redis.io/
+  性能极高 – Redis能支持超过 100K+ 每秒的读写频率。
+  丰富的数据类型 – Redis支持二进制案例的 Strings, Lists, Hashes, Sets 及 Ordered Sets 数据类型操作。
+  原子 – Redis的所有操作都是原子性的，同时Redis还支持对几个操作全并后的原子性执行。
+  丰富的特性 – Redis还支持 publish/subscribe, 通知, key 过期等等特性。
+
+2.make
+  cd directionary
+  make
+  make test
+  
+3.open server
+  cd src/
+  ./redis-server
+  
+  with our configtion
+  ./redis-server /path/to/redis.conf
+  
+  with port
+  ./redis-server --port 9999 --slaveof 127.0.0.1 6379
+
+  with log level
+  ./redis-server /etc/redis/6379.conf --loglevel debug
+
+4.open cli
+  cd src/
+  ./redis-cli
+
+5. commands
+   http://redis.io/commands
+
+6. 中文文档
+   http://origin.redisbook.com/
+7.
+  redisObject
+  数据指针+type+encoding
+  内存占用量
+  16字节
+  64字节
+  redis里面所有存储对象都是redisObject类型
+  A value can't be bigger than 1 Gigabyte!!!!
+  all operation is atom operaiton
+
+8.数据类型
+  Data Types
+  1.string 
+  binary safe
+  A value can't be bigger than 1 Gigabyte!!!!
+  atom operation
+  简单存取
+  set foo bar
+  OK
+  get foo
+  'bar'
+  
+  自增自减 
+  set counter 100
+  OK
+  incr counter 
+  (integer) 101
+  incr counter
+  (integer) 102
+ 
+  定量增减 
+  incrby counter 10
+  (integer) 112
+  or decrby
+
+  部分的修改和获取
+  append name "Mr."
+  get name
+  'John xxx Mr.'
+  
+  strlen name
+  12
+
+  substr name 0 3
+  John
+
+  2.list
+  base on linked list
+  lpush students "John Doe"
+  rpush 
+  llen	求list长度
+  lrange student 0 2 获取0-2位置上的元素 
+  lpop students	     去掉并返回第一个元素
+  lrem 		     去掉元素，详查命令文档 
+
+  3.set 
+  unordered
+  sadd 			加入元素
+  smembers 		获取元素
+  srem mamals cat       删除cat元素
+  sinter set1 set2 	
+  sunion set1 set2      交集合
+  sdiff  set1 set2	 
+   
+  4.hash
+  Redis能够存储key对多个属性的数据（比如user1.uname user1.passwd）
+  hkeys student		获取key的集合
+  1) 'name'
+  2) 'age' 
+  3) 'sex'
+  hvals student	        values的集合	
+  hgetall student	key/value对的集合
+  hdel student sex	删除key=sex的值
+
+  hmset kid name abc age 2 sex female 	批量赋值
+  hmget kid name age sex		批量获取
+  1) 'abc'
+  2) 'female'
+
+  5.set sorted 
+  每个数据会有一个score属性并会在写入的时候就按这个score拍好序列
+  zadd days 0 mon 	加入元素mon 它的score是0
+  zadd days 1 tue
+  zadd days 2 wed
+  ...
+  zadd days 6 wed
+  zcard days
+  zrange days 0 6 	取0-6范围的元素
+  zscore days sat	取sat的score
+  zrangebyscore days 3 6 根据score来取元素
+
+  6.channel
+
+  7.data expire 
+
+  8.transcation

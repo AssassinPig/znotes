@@ -1,0 +1,18 @@
+1. import
+from bs import BeautifulSoup
+
+2. tidy html 
+soup = BeautifulSoup(html_doc)
+soup.prettify()
+
+3. soup.title
+   #<title>xxxxx</title>
+   
+   soup.title.name
+   #u'title'
+
+   soup.title.string
+   #u'xxxxx'
+
+   soup.title.parent.name
+   #u'head'

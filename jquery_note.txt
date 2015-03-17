@@ -11,12 +11,17 @@ $(document).ready(function() {
 	$('.poem-stanza').addClass('highlight');
 });
 
-给class为poem-stanza的标签加上hightlight样式
+when window load
+$(window).load(function(){
 
-addClass
+});
+
+给class为poem-stanza的标签加上hightlight样式
+$('.poem-stanza').addClass('hightlight')
 removeClass
 
-$()函数(JQuery()函数的别名)返回特别的javascript对象, 它包含着与选择器相匹配的DOM元素的数组
+$()函数(JQuery()函数的别名)
+返回特别的javascript对象, 它包含着与选择器相匹配的DOM元素的数组
 当完成一组操作之后，他会返回相同的一组元素，提供给下一个操作
 $("div.notLongForThisWorld").fadeOut().addClass("removed")
 这些jquery链可以无限延续，没有必要进行循环的操作
@@ -28,11 +33,10 @@ for(i=0; i<elements.length; i++)
 	elements[i].innerHTML = "I have added some text to a group nodes";
 }
 
-$()				工厂函数
+$()			工厂函数
 $('p')			取得文档中所有的段落
-$('#somd-id')	取得文档中ID为some-id的一个元素
-$('.some-class')取得文档中为some-class的所有元素
-
+$('#somd-id')		取得文档中ID为some-id的一个元素
+$('.some-class')	取得文档中为some-class的所有元素
 
 $(document).ready(function() {
 	$('selected-plays > li').addClass('horizontal');
