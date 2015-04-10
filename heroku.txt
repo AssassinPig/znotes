@@ -1,45 +1,45 @@
-﻿安装heroku
-https://toolbelt.heroku.com/debian
-https://devcenter.heroku.com/articles/getting-started-with-rails4
+﻿0. 安装heroku
+	https://toolbelt.heroku.com/debian
+	https://devcenter.heroku.com/articles/getting-started-with-rails4
 
-gem install heroku
+	gem install heroku
 
-简单部署
-git clone git://github.com/heroku/ruby-sample.git
-cd ruby-sample
+1. 简单部署
+	git clone git://github.com/heroku/ruby-sample.git
+	cd ruby-sample
 
-新建
-heroku create		
-git push heroku master
-heroku open
+	新建
+	heroku create		
+	git push heroku master
+	heroku open
 
-heroku keys:add
+	heroku keys:add
 
-heroku create 
-git push heroku master
-heroku run rake db:migrate	在heroku上进行数据库迁移
+	heroku create 
+	git push heroku master
+	heroku run rake db:migrate	在heroku上进行数据库迁移
 
-在浏览器中打开
-heroku open
+	在浏览器中打开
+	heroku open
 
-查看heroku log
-heroku logs
+	查看heroku log
+	heroku logs
 
-重命名工程之后 找不到工程的情况
-git remote rm heroku
-git remote add heroku git@heroku.com:yourappname.git
+2. 重命名工程之后 找不到工程的情况
+	git remote rm heroku
+	git remote add heroku git@heroku.com:yourappname.git
 
-git clone git://github.com/heroku/ruby-sample.git
-cd ruby-sample
-heroku create
-git push heroku master
-heroku open
+	git clone git://github.com/heroku/ruby-sample.git
+	cd ruby-sample
+	heroku create
+	git push heroku master
+	heroku open
 
-reset数据库
-heroku config | grep POSTGRESQL
-heroku pg:reset HEROKU_POSTGRESQL_IVORY_URL
+3. reset数据库
+	heroku config | grep POSTGRESQL
+	heroku pg:reset HEROKU_POSTGRESQL_IVORY_URL
 
-heroku restart -a app_name
+	heroku restart -a app_name
 
-python heroku doc
-https://devcenter.heroku.com/categories/python
+4. python heroku doc
+	https://devcenter.heroku.com/categories/python

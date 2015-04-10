@@ -1,176 +1,197 @@
-﻿export环境变量
-1.临时
-#export PATH=$PATH:/opt/au1200_rm/build_tools/bin	重启之后失效
-2.永久针对所有用户
-#vi /etc/profile
-添加1中的代码
-3.永久针对单个用户
-#vi ~/.bashrc
-添加1中的代码
+﻿1. export环境变量
+	1. 临时
+		export PATH=$PATH:/opt/au1200_rm/build_tools/bin	重启之后失效
+	2. 永久针对所有用户
+		vi /etc/profile
+		添加1中的代码
+	3. 永久针对单个用户
+		vi ~/.bashrc
+		添加1中的代码
 
+2. tar
+	-c create
+	-x 解压缩
+	-z 是否需要gzip	后缀tar.gz
+	-j bzip2		后缀tar.bz2
+	-v 压缩过程之中显示档案
+	-f 指定文档名 在f后面直接加文件名，不能再加参数
+	解压和压缩的区别是x
 
-tar
--c create
--x 解压缩
--z 是否需要gzip
--v 压缩过程之中显示档案
--f 指定文档名 在f后面直接加文件名，不能再加参数
-解压和压缩的区别是x
+	tar xzvf xxx.tar.gz 			解压tar.gz后缀的文件
+	tar xjvf xxx.tar.bz2 			解压tar.gz后缀的文件
 
-scp [可选参数] file_source file_target
--r 拷贝目录
-从本地到远程
-scp file_source root@www.xxxx.com:/home/xxxx
-scp -r file_dir root@www.xxxx.com:/home/xxxx/
-如果成功的话相当于在远程有/home/xxxx/file_dir/目录
-从远程到本地
-scp root@www.xxx.com:/home/xxxx file_source
-scp -r root@www.xxx.com:/home/xxxx/ ~/file_dir/
-如果成功的话相当于在本地有/home/xxxx/file_dir/目录
+	tar cvf xxx                     仅归档不压缩
+	tar czvf xxx.tar.gz  xxx        压缩xxx为xxx.tar.gz
+	tar cjvf xxx.tar.bz2 xxx        压缩xxx为xxx.tar.bz2
 
-grep 
-grep [option] pattern [filename]
+3. scp [可选参数] file_source file_target
+	-r 拷贝目录
+	从本地到远程
+	scp file_source root@www.xxxx.com:/home/xxxx
+	scp -r file_dir root@www.xxxx.com:/home/xxxx/
+	如果成功的话相当于在远程有/home/xxxx/file_dir/目录
+	从远程到本地
+	scp root@www.xxx.com:/home/xxxx file_source
+	scp -r root@www.xxx.com:/home/xxxx/ ~/file_dir/
+	如果成功的话相当于在本地有/home/xxxx/file_dir/目录
 
--v 不包含patttern的内容
--c 显示含有pattern的行数
--cv 不包含pattern的行数 
+4. grep 
+	grep [option] pattern [filename]
 
--i 搜索的时候忽略大小写
+	-v 不包含patttern的内容
+	-c 显示含有pattern的行数
+	-cv 不包含pattern的行数 
 
--n 显示行数
--r 在子目录中查找
--l 只显示含有pattern的文件名
+	-i 搜索的时候忽略大小写
 
-find
-find path 约束条件
+	-n 显示行数
+	-r 在子目录中查找
+	-l 只显示含有pattern的文件名
 
-find /etc -name "content"	//含有content的文件
-find / -type f -size +100M	//文件大小100M的文件
-find . -mtime +60			//最近60天没有修改过的文件
-find . -mtime -2			//最近2天被修改过的文件
+5. find
+	find path 约束条件
 
-多个条件并用
-find / -type f -name *.tar.gz -size +100M -exec ls -l {} \;
-find / -type f -name *.tar.gz -size +100M -exec rm -f {} \;
+	find /etc -name "content"	//含有content的文件
+	find / -type f -size +100M	//文件大小100M的文件
+	find . -mtime +60			//最近60天没有修改过的文件
+	find . -mtime -2			//最近2天被修改过的文件
 
-find /home/zhu	-type f -mtime +60 | xargs tar -cvf /tmp/'data'+%d%m%Y'_archive.tar'
+	多个条件并用
+	find / -type f -name *.tar.gz -size +100M -exec ls -l {} \;
+	find / -type f -name *.tar.gz -size +100M -exec rm -f {} \;
 
-xargs
-find ~ -name "*.log" -print0 | xargs -0 rm -f
-find /etc -name "*.conf" | xargs ls -l
+	find /home/zhu	-type f -mtime +60 | xargs tar -cvf /tmp/'data'+%d%m%Y'_archive.tar'
 
-pgrep vim
-显示vim进程的pid
+6. xargs
+	find ~ -name "*.log" -print0 | xargs -0 rm -f
+	find /etc -name "*.conf" | xargs ls -l
+	其中 xargs 的参数
+	-i   使用{} 替代参数
+	-t   打印出命令
+	
+	find . -name "*.pyc" | xargs -i -t rm {}   把当前目录下所有.pyc后缀的文件删掉
 
-ssh
-ssh-keygen 
-.ssh/
-	id_rsa
-	id_ras.pub  交给server
-	known_host
+	ls | xargs -t -i mv {} {}.bak	给当前目录下所有文件加上.bak后缀
+	-t 先打印命令再执行
+	-i 替换{}
 
-登陆另外一个server 添加
-authorized_keys
+7. pgrep vim
+	显示vim进程的pid
 
+8. ssh
+	ssh-keygen 
+	.ssh/
+		id_rsa
+		id_ras.pub  交给server
+		known_host
 
-yum的用法
-列出所有可更新的软件清单
-命令：yum check-update
-2
-安装所有更新软件
-命令：yum update
-3
-仅安装指定的软件
-命令：yum install <package_name>
-4
-仅更新指定的软件
-命令：yum update <package_name>
-5
-列出所有可安裝的软件清单
-命令：yum list
+	登陆的server上 添加
+	authorized_keys
 
-删除安装的文件
-yum remove
-rpm -e
-make uninstall
+9. yum的用法
+	1. 列出所有可更新的软件清单
+		yum check-update
+	2. 安装所有更新软件
+		yum update
+	3. 仅安装指定的软件
+		yum install <package_name>
+	4. 仅更新指定的软件
+		yum update <package_name>
+	5. 列出所有可安裝的软件清单
+		yum list
 
+	6. 删除安装的文件
+		yum remove
+		rpm -e
 
-netstat的用法
-http://linux.cn/thread/12158/1/1/
-net config 显示当前的网络配置
+		如果是源码安装的话，打开其目录，执行:
+		make uninstall
 
-net config Workstation 显示Workstation的网络配置
+10. netstat的用法
+	http://linux.cn/thread/12158/1/1/
+	net config 显示当前的网络配置
 
-net send {hostname/domain[name]} message 向主机hostname或者域name发送消息message
-要发送message之前必须要先运行信使服务，可以使用命令net start messager
+	net config Workstation 显示Workstation的网络配置
 
-net start/net stop  service
-启动或者关闭service服务
+	net send {hostname/domain[name]} message 向主机hostname或者域name发送消息message
+	要发送message之前必须要先运行信使服务，可以使用命令net start messager
 
-net statistics [workstation|server] 统计记录
-workstation 本地工作站
-service 本地服务器服务
+	net start/net stop  service
+	启动或者关闭service服务
 
-net share 
-新建，删除或者显示共享资源
+	net statistics [workstation|server] 统计记录
+	workstation 本地工作站
+	service 本地服务器服务
 
-net continue 
-重新激活已经挂起的服务
+	net share 
+	新建，删除或者显示共享资源
 
-net time
-使本地计算机与指定计算机的时间同步
+	net continue 
+	重新激活已经挂起的服务
 
-netstat
--a   或者机器当前的所有网络链接 包括用户当前连接，其他用户的连接和系统进程的连接
--n   以ip的形式直接显示连接的机器
--b   显示通过打开的端口进行通信的应用程序进程
--r   显示本机路由表
--s   按各个协议分别统计其数据
+	net time
+	使本地计算机与指定计算机的时间同步
 
-ipconfig 
-显示ip配置信息
-ipconfig /all 
-显示详细ip配置信息
-ipconfig /release 
-归还dhcp分配的ip地址
-ipconfig /renew
-重新获得dhcp分配的ip地址
+	netstat
+	-a   或者机器当前的所有网络链接 包括用户当前连接，其他用户的连接和系统进程的连接
+	-n   以ip的形式直接显示连接的机器
+	-b   显示通过打开的端口进行通信的应用程序进程
+	-r   显示本机路由表
+	-s   按各个协议分别统计其数据
 
-route
-route print
-显示路由信息
-route add 
-添加静态路由  
-例子 添加一条 157.0.0.0 下一跳是 157.55.80.1 从本地连接转发的静态表项
-route add 157.0.0.0 mask 255.0.0.0 157.55.80.1 metric 3 IF "本地连接"
+11. ipconfig 
+	显示ip配置信息
+	ipconfig /all 
+	显示详细ip配置信息
+	ipconfig /release 
+	归还dhcp分配的ip地址
+	ipconfig /renew
+	重新获得dhcp分配的ip地址
 
-route delete 
-例子 route delete 157.0.0.0 mask 255.0.0.0 157.55.80.1 metric 3 IF
+12. route
+	route print
+	显示路由信息
+	route add 
+	添加静态路由  
+	例子 添加一条 157.0.0.0 下一跳是 157.55.80.1 从本地连接转发的静态表项
+	route add 157.0.0.0 mask 255.0.0.0 157.55.80.1 metric 3 IF "本地连接"
 
-route change
+	route delete 
+	例子 route delete 157.0.0.0 mask 255.0.0.0 157.55.80.1 metric 3 IF
 
-netsh
-复杂的配置壳程序
+	route change
 
-arp
-arp -a 显示系统mac表中的记录
-arp -d 删除mac表中的所有记录
-arp -s 手动添加静态mac记录
+13. 其他网络命令
+	netsh
+	复杂的配置壳程序
 
-ip命令
-ip addr 显示所有网络地址连接
-ip addr show enth0 显示enth0上的网络连接
-ip addr add 192.168.0.106/24 dev enth0 给enth0配置地址
+	arp
+	arp -a 显示系统mac表中的记录
+	arp -d 删除mac表中的所有记录
+	arp -s 手动添加静态mac记录
 
-iconv转换
-iconv -f encoding -t encoding inputfile
-$ iconv -f GBK -t UTF-8 file1 -o file2
+	ip命令
+	ip addr 显示所有网络地址连接
+	ip addr show enth0 显示enth0上的网络连接
+	ip addr add 192.168.0.106/24 dev enth0 给enth0配置地址
 
-查看当前网络流量
-watch -n 1 "/sbin/ifconfig eth0 | grep bytes"
-cat /proc/net/dev
+14. iconv转换
+	iconv -f encoding1 -t encoding2 inputfile	把inputfile从encoding1编码转化为encoding2
+	iconv -f GBK -t UTF-8 file1 -o file2
 
-xargs
-ls | xargs -t -i mv {} {}.bak
--t 先打印命令再执行
--i 替换{}
+15. 查看当前网络流量
+	watch -n 1 "/sbin/ifconfig eth0 | grep bytes"
+	cat /proc/net/dev
+
+16. 时间
+	需要权限!!!
+	date 	显示时间
+	
+	修改时间
+	date -s 06/10/96
+	date -s 14:36:00
+	date -s "2008-08-08 12:00:00"
+	date -s 991128
+
+	写入CMOS!!!
+	clock -w

@@ -1,139 +1,144 @@
 0. install 
-  1. sudo pip install virtualenv
-  2. sudo pip install Flask
+  	1. sudo pip install virtualenv
+  	2. sudo pip install Flask
 
-Flask 依赖两个外部库： Werkzeug 和 Jinja2 。
-Werkzeug 是一个 WSGI 套件。 
-WSGI是Web 应用与 多种服务器之间的标准 Python 接口，即用于开发，也用于部署。 
-Jinja2 是用于模版渲染的
+	Flask 依赖两个外部库： Werkzeug 和 Jinja2 。
+	Werkzeug 是一个 WSGI 套件。 
+	WSGI是Web 应用与 多种服务器之间的标准 Python 接口，即用于开发，也用于部署。 
+	Jinja2 是用于模版渲染的
 
 1. 社区
-http://flask.pocoo.org/community/
-irc pidgin
-http://pidgin.im/
+	http://flask.pocoo.org/community/
+	irc pidgin
+	http://pidgin.im/
 
-SQLAlchemy 
-http://www.sqlalchemy.org/
-果壳就是用flask开发的
-http://www.guokr.com/group/
+3. SQLAlchemy 
+	http://www.sqlalchemy.org/
+	pip install Flask-SQLAlchemy
 
-如果在flask之中使用的话，可以使用Flask-SQLAlchemy模块
-http://dormousehole.readthedocs.org/en/latest/patterns/sqlalchemy.html
-https://pythonhosted.org/Flask-SQLAlchemy/
-pip install Flask-SQLAlchemy
+	果壳就是用flask开发的
+	http://www.guokr.com/group/
 
+	如果在flask之中使用的话，可以使用Flask-SQLAlchemy模块
+	http://dormousehole.readthedocs.org/en/latest/patterns/sqlalchemy.html
+	https://pythonhosted.org/Flask-SQLAlchemy/
 
 3. 路由route
-@app.route('/')
-def index():
-    return render_template('index.html')
+	``` python
+	@app.route('/')
+	def index():
+	    return render_template('index.html')
 
-@app.route('/user/<username>')
-def user_show(username):
-   return render_template('user_show.html', username)
+	@app.route('/user/<username>')
+	def user_show(username):
+	   return render_template('user_show.html', username)
+	```
 
 4. 全局对象request response session cookies
-  request.method  
-  request.body
-  request.form['key']
+	request.method  
+	request.body
+	request.form['key']
 
-  session['key'] 
-  session.pop('key', None)
+	session['key'] 
+	session.pop('key', None)
 
-  request.cookies['key']
+	request.cookies['key']
 
 5. 跳转
-  render_template('xxx.html', param)
-  redirect(url_to('index'))
+	render_template('xxx.html', param)
+	redirect(url_to('index'))
 
 6. flash
-  http://dormousehole.readthedocs.org/en/latest/patterns/flashing.html#message-flashing-pattern
-  flash('flash message error')
-  
-  .html之中
-  {% for message in get_flashed_messages() %}
-      <div class='flash'>{{message}}</div>
-  {% endfor %}
+	http://dormousehole.readthedocs.org/en/latest/patterns/flashing.html#message-flashing-pattern
+	flash('flash message error')
+
+	.html之中
+	{% for message in get_flashed_messages() %}
+	  <div class='flash'>{{message}}</div>
+	{% endfor %}
 
 7. log
-  app.logger.debug('A value for debugging')
-  app.logger.warning('A warning occurred (%d apples)', 42)
-  app.logger.error('An error occurred')
+	app.logger.debug('A value for debugging')
+	app.logger.warning('A warning occurred (%d apples)', 42)
+	app.logger.error('An error occurred')
 
-hr
----------------------------------------------------------------
+------
 
-Flask 源码阅读
-from flask import Flask
-app = Flask(__name__)
+#Flask 源码阅读
+	1. 重要的类
+		核心app类在此创建
+	``` python
+	from flask import Flask
+	app = Flask(__name__)
+	```
 
-globalContext
-g
-_request_ctx_stack 一个请求的上下文站, 详细见context
-_app_ctx_stack		
-current_app			
-
-
-核心对象
-app 
-	拥有函数的数组或者map，用来在dispatch时候进行调用，可以看多是支架作用
-	view_function = {}
-	_error_handlers = {}
-	before_request_funcs = {}
-	before_first_request_funcs = []
-	after_request_funcs = {}
-
-	blueprints模块
-	blueprints = {}
-
-	dispatch过程
-	处理了request收取 和 response的发出
-	dispatch_request(self)
-	full_dispatch_request(self)
-
-存储对应的request和response信息，还有session信息
-context
-	session
-	request
-	response
-
-hr
------------------------------------------------------
-阅读Flask代码								
-	基本看懂 是否需要细看接口 深入需要看werkzeug 甚至需要考虑是否看HTTP权威指南
-或者尝试自己造一个web开发框架
-
-Flask的缺点:
-	感觉性能上可能就那样子，而且目前版本不到1.0, 很多写起来其实不是很爽
-
-	Flask 不适合搞大型网站
-	做论坛 不需要搞blog 因为blog需求都想不明白，也不能算是是产品，除非是blog平台
-	模仿36kr的北极社区 或者 django china
-
-flask的学习目的:
-	1.重要的是后台部分快速敏捷的开发
-	2.旨在于小型网站 做论坛看起来似乎都很费劲
-
-1.flask的测试部分:
-	1.阅读unittest 								仅有model级别的测试	已阅读test case
-	2.阅读june的测试部分						发现是使用flask自带client
-2.完善bbs 并做相应测试:
-	1.编写前端代码
-		1.研究几个网站的前端 
-		36kr.com
-		taobao.com
-	2.编写测试代码	
+	globalContext
+	g
+	_request_ctx_stack 一个请求的上下文站, 详细见context
+	_app_ctx_stack		
+	current_app			
 
 
+2. 核心对象
+	1. app 
+		拥有函数的数组或者map，用来在dispatch时候进行调用，可以看多是支架作用
+		view_function = {}
+		_error_handlers = {}
+		before_request_funcs = {}
+		before_first_request_funcs = []
+		after_request_funcs = {}
 
-对比一下Tornado 和 flask
-第一感觉Tornado更方便些
-准备明天使用Tornado来写一下小blog
+	2. blueprints模块
+		blueprints = {}
+
+	3. dispatch过程
+		处理了request收取 和 response的发出
+		dispatch_request(self)
+		full_dispatch_request(self)
+
+		存储对应的request和response信息，还有session信息
+		context
+			session
+			request
+			response
+
+------
+
+#后记
+	1. 阅读Flask代码的过程
+		基本看懂 是否需要细看接口 深入需要看werkzeug 甚至需要考虑是否看HTTP权威指南
+		或者尝试自己造一个web开发框架
+
+		1. flask的测试部分:
+			1.阅读unittest 							
+				仅有model级别的测试	已阅读test case
+			2.阅读june的测试部分					
+				发现是使用flask自带client
+
+		2.完善bbs 并做相应测试:
+			1.编写前端代码
+				1.研究几个网站的前端 
+					36kr.com
+					taobao.com
+			2.编写测试代码	
+
+	2. Flask的缺点:
+		1. 感觉性能上可能就那样子，而且目前版本不到1.0,很多写起来其实不是很爽
+
+		2. Flask 不适合搞大型网站
+			做论坛 不需要搞blog 因为blog需求都想不明白，也不能算是是产品，除非是blog平台,
+			模仿36kr的北极社区 或者 django china
+
+	3. flask的学习目的:
+		1.重要的是后台部分快速敏捷的开发
+		2.旨在于小型网站 做论坛看起来似乎都很费劲
+
+	4. 对比一下Tornado 和 flask
+		第一感觉Tornado更方便些
+		准备明天使用Tornado来写一下小blog
 	
-同时django和flask 在写小网站时候的各自优势所在
-flask 提供的东西少 很多时候要自己写，但是也因为这样自己写才能学习 更多的东西
-django 提供的很多，学习框架的成本很重，如果熟练之后可以拥有很强的生产力
-结论:有时间有积累的话，在做小网站的时候选用flask
-其他时间积累django
-
-可以考虑暂时终止学习Flask了 
+		同时django和flask 在写小网站时候的各自优势所在
+		flask 提供的东西少 很多时候要自己写，但是也因为这样自己写才能学习 更多的东西
+		django 提供的很多，学习框架的成本很重，如果熟练之后可以拥有很强的生产力
+		
+#结论:只在web开发而言，有时间有积累的话，在做小网站的时候选用flask, 其他时间积累django

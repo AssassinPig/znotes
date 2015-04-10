@@ -856,5 +856,3 @@ Rails的三种缓存方式
 page caching页面缓存
 action caching action 缓存
 fragment caching 片段缓存
-
-

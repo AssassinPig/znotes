@@ -1,32 +1,35 @@
-NLTK
-NLTK-Data   分析和处理的语言语料库
-NumPy		科学计算库
-Matplotlib  数据可视化的2D绘图库
-NetworkX	可用于存储的操作节点和边组成的网络结构的网络库
-Prover9		一阶等式逻辑定理的自动证明器，用于支持语言处理中的推理
+##NLTK
+0. 常用库
+  NLTK-Data   分析和处理的语言语料库
+  NumPy		科学计算库
+  Matplotlib  数据可视化的2D绘图库
+  NetworkX	可用于存储的操作节点和边组成的网络结构的网络库
+  Prover9		一阶等式逻辑定理的自动证明器，用于支持语言处理中的推理
 
-获取和处理语料库	nltk.corpus
-字符串处理			nltk.tokenize nltk.stem
-搭配发现			nltk.collocation
-词性标示符			nltk.tag
-分类				nltk.classify nltk.cluster
-分块				nltk.chunk
-解析				nltk.parse
-语义解释			nltk.sem nltk.interface
-指标评测			nltk.metrics
-概率与估计			nltk.probability
-应用				nltk.app nltk.chat
-语言学领域的工作	nltk.toolbox
-1.install nltk
-http://www.nltk.org/install.html
 
-2.install nltk data and packages
-http://www.nltk.org/data.html
+  获取和处理语料库	nltk.corpus
+  字符串处理			  nltk.tokenize nltk.stem
+  搭配发现			    nltk.collocation
+  词性标示符			  nltk.tag
+  分类				      nltk.classify nltk.cluster
+  分块				      nltk.chunk
+  解析				      nltk.parse
+  语义解释			    nltk.sem nltk.interface
+  指标评测			    nltk.metrics
+  概率与估计			  nltk.probability
+  应用				      nltk.app nltk.chat
+  语言学领域的工作	nltk.toolbox
 
-3.from nltk import
-  from nltk.book import * #add all books
+1. install nltk
+  http://www.nltk.org/install.html
 
-4. 
+2. install nltk data and packages
+  http://www.nltk.org/data.html
+
+3. from nltk import
+   from nltk.book import * #add all books
+
+4. 第一章
   text1.concordance('xxxword') 	#search 'xxxword'
   text1.similar('xxxword') 	#search context
   text1.common_contexts(['monstrous', 'very']) #search multiple context 研究两个或者两个以上的词的共同上下文
@@ -54,16 +57,17 @@ http://www.nltk.org/data.html
   len(text)/len(set(text))    #词的总数/不同词的个数
  
   获取词语的索引
+  ```python
   text4.index('awaken') 
->>>1111
+  >>>1111
   text4[1111] #text4的索引1111的元素是'awaken'
->>>'awaken'
-  
+  >>>'awaken'
+  ```
 
   切片
   text5[111:222]
 
-5.频率分布
+5. 频率分布
   FreqDist
   fdist1=FreqDist(text1)
   fdist1
@@ -84,19 +88,20 @@ http://www.nltk.org/data.html
   fdist1<fdist2 		测试样本在fdist1中出现的频率是否小于fdist2
   fdist1.hapaxes()		绘制低频词
 
-6.V = set(text1)
+6. V = set(text1)
   抽取长度大于15的长词
   long_words = [w for w in V if len(w) > 15]
   #sorted(long_words)
 
-7.bigrams
+7. bigrams
   词语搭配和双联词 
   在列表中提取文本词汇的双联词
   bigrams(['more', 'is', 'said', 'than', 'done'])
   求文本中出现的更加频繁的双联词
   text4.collocations()
 
-8.s.startwith(t)
+8. string
+  s.startwith(t)
   s.endwith(t)
   t in s
   s.islower()
@@ -108,7 +113,8 @@ http://www.nltk.org/data.html
   [w.upper() for w in text1] #查找text1中的w 并取其变大写的操作
   [f(w) for text1] 	     #查找text1中的w 并取其f(w)计算之后的值
 
-2.1 corpus 语料库
+9. corpus 语料库
+  ```python
   from nltk.corpus import inaugural #就职演说
 
   fileids()			#语料库中的文件
@@ -129,6 +135,7 @@ http://www.nltk.org/data.html
   open(fileid)			#打开指定语料文件的文件流
   root()			#到本地安装的语料库根目录的路径
   root()
+  ```
 
   载入自己的语料库
   from nltk.corpus import PlainTextCorpusReader 
@@ -136,48 +143,57 @@ http://www.nltk.org/data.html
   wordlists = PlaintextCorpusReader(corpus_root, '.*')
   wordlists.fileids()
 
-2.2条件概率分布
-   1.条件概率分布是有条件的概率分布的集合，条件通常是指文体
-   2.条件和事件 (条件,事件) 
-cfdist = ConditionalFreqDist(paris)	#从配对链表中创建条件概率分布
-cfdist.conditions()			#将条件按字母排列
-cfdist[condition]			#condition此条件下的概率分布
-cfdist[condition][sample]		#condition此条件下的样本频率
-cfdist.tabulate()			#为条件概率分布制表
-cfdist.tabulate(samples, conditions)	#指定样本和条件限制下制表
-cfdist.plot()				#为条件概率分布绘图
-cfdist.plot(samples, conditions)	#指定样本和条件限制下绘图
-cfdist1 < cfdist2			#测试样本在cfdist1中出现的次数是否小于在cfdist2中出现的次数
+10. 条件概率分布
+   1. 条件概率分布是有条件的概率分布的集合，条件通常是指文体
+   2. 条件和事件 (条件,事件) 
 
-2.4 词典资源
-词典或者词典资源是一个词或者短语以及一些相关信息的集合
-词汇列表语料库
-def unusual_words(text):
-    text_vocab = set(w.lower() for w in text if w.isalpha())
-    englist_vocab = set(w.lower() for w in nltk.corpus.words.words())
-    unusual = text_vocab.difference(english_vocab)
-    return sorted(unusual)
+   ```python
+    cfdist = ConditionalFreqDist(paris)	#从配对链表中创建条件概率分布
+    cfdist.conditions()			#将条件按字母排列
+    cfdist[condition]			#condition此条件下的概率分布
+    cfdist[condition][sample]		#condition此条件下的样本频率
+    cfdist.tabulate()			#为条件概率分布制表
+    cfdist.tabulate(samples, conditions)	#指定样本和条件限制下制表
+    cfdist.plot()				#为条件概率分布绘图
+    cfdist.plot(samples, conditions)	#指定样本和条件限制下绘图
+    cfdist1 < cfdist2			#测试样本在cfdist1中出现的次数是否小于在cfdist2中出现的次数
+    ```
+11. 词典资源
+  词典或者词典资源是一个词或者短语以及一些相关信息的集合
+  词汇列表语料库
+  ```python
+    def unusual_words(text):
+        text_vocab = set(w.lower() for w in text if w.isalpha())
+        englist_vocab = set(w.lower() for w in nltk.corpus.words.words())
+        unusual = text_vocab.difference(english_vocab)
+        return sorted(unusual)
+  ```
 
-停用高频词语料库
-from nltk.corpus import stopwords
-stopwords.words('english')
+12. 停用高频词语料库
+  from nltk.corpus import stopwords
+  stopwords.words('english')
 
-#计算停用词库中的词在某文本中的比例
-def content_fraction(text):
-    stopwords = nltk.corpus.stopwords.words('english')
-    content = [w for w in text if w.lower() not in stopwords ]
-    return len(content)/len(text)
+  ```python
+  #计算停用词库中的词在某文本中的比例
+  def content_fraction(text):
+      stopwords = nltk.corpus.stopwords.words('english')
+      content = [w for w in text if w.lower() not in stopwords ]
+      return len(content)/len(text)
+  ```
 
-发音词典
-WordNet
+13. 其他
+  1. 发音词典
+    WordNet
 
-3 加工原料文本
-from urllib import ulropen
-url = "http://www.gutenberg.org/files/2554/2554.txt"
-raw = urlopen(url).read()
+  2. 加工原料文本
+    ```python
+    from urllib import ulropen
+    url = "http://www.gutenberg.org/files/2554/2554.txt"
+    raw = urlopen(url).read()
+    ```
 
-5. 分类和标注词汇
-将词汇按他们的词汇(parts-of-speech, POS)分类以及相应的标注他们的过程成为词性标注(POST tagging)或简称标注
-词性也成为词类或者词汇范畴 用于特定任务的标记的集合被成为一个标记集
+14. 分类和标注词汇
+  将词汇按他们的词汇(parts-of-speech, POS)分类以及相应的标注他们的过程成为词性标注(POST tagging)或简称标注
+  词性也成为词类或者词汇范畴 用于特定任务的标记的集合被成为一个标记集
 
 

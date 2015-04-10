@@ -1,108 +1,89 @@
-﻿mysql
-mysql
-安装
-yum install mysql
-yum install mysql-server
-yum install mysql-client
+﻿0. 安装
+	yum install mysql
+	yum install mysql-server
+	yum install mysql-client
 
-安装库
-yum install mysql mysql-server mysql-libs mysql-server
+	安装库
+	yum install mysql mysql-server mysql-libs mysql-server
 
-启动
-service mysql start
-service mysql stop
+1. 启动
+	service mysql start
+	service mysql stop
 
-停用当前mysql服务
-/etc/init.d/mysql stop (service mysqld stop )
-/usr/bin/mysqld_safe --skip-grant-tables
+2. 停用当前mysql服务
+	/etc/init.d/mysql stop (service mysqld stop )
+	/usr/bin/mysqld_safe --skip-grant-tables
 
-另外开个SSH连接
-[root@localhost ~]# mysql
-mysql>use mysql
-mysql>update user set password=password("123456") where user="root";
-mysql>flush privileges;
-mysql>exit
+3. 另外开个SSH连接
+	[root@localhost ~]# mysql
+	mysql>use mysql
+	mysql>update user set password=password("123456") where user="root";
+	mysql>flush privileges;
+	mysql>exit
 
-关闭ssh窗口 重开一个//pkill -KILL -t pts/0 可将pts为0的**用户(之前运行mysqld_safe的用户窗口)强制踢出  
-正常启动 MySQL：/etc/init.d/mysql start (service mysqld start)
+	关闭ssh窗口 重开一个//pkill -KILL -t pts/0 可将pts为0的**用户(之前运行mysqld_safe的用户窗口)强制踢出  
+	正常启动 MySQL：/etc/init.d/mysql start (service mysqld start)
 
+4. 开启远程账户访问
+	http://wiki.ubuntu.org.cn/MySQL%E5%AE%89%E8%A3%85%E6%8C%87%E5%8D%97
+	mysql>CREATE DATABASE myblog;
+	mysql>GRANT ALL PRIVILEGES ON myblog.* TO zhufeng@localhost IDENTIFIED BY "654321"; 开启账户zhufeng对myblog的本地访问的全部权限
+	mysql>GRANT ALL PRIVILEGES ON myblog.* TO zhufeng@"%" IDENTIFIED BY "654321"; 开启账户zhufeng对myblog的任何机器访问的权限
 
-开启远程账户访问
-http://wiki.ubuntu.org.cn/MySQL%E5%AE%89%E8%A3%85%E6%8C%87%E5%8D%97
-mysql>CREATE DATABASE myblog;
-mysql>GRANT ALL PRIVILEGES ON myblog.* TO zhufeng@localhost IDENTIFIED BY "654321"; 开启账户zhufeng对myblog的本地访问的全部权限
-mysql>GRANT ALL PRIVILEGES ON myblog.* TO zhufeng@"%" IDENTIFIED BY "654321"; 开启账户zhufeng对myblog的任何机器访问的权限	
+	mysql>CREATE DATABASE myblog；
+	mysql>GRANT ALL PRIVILEGES ON myblog.* TO zhufeng@localhost IDENTIFIED BY "654321"; 开启账户zhufeng对myblog的本地访问的全部权限
+	mysql>GRANT ALL PRIVILEGES ON myblog.* TO zhufeng@"%" IDENTIFIED BY "654321"; 开启账户zhufeng对myblog的任何机器访问的权限
 
+5. 远程不能访问的情况
+	http://www.2cto.com/database/201204/127400.html
+	$sudo gedit /etc/mysql/my.cnf
+	把这行注释掉
+	bind_address=127.0.0.1
 
-远程不能访问的情况
-http://www.2cto.com/database/201204/127400.html
-$sudo gedit /etc/mysql/my.cnf
-把这行注释掉
-bind_address=127.0.0.1
+	老的版本中
+	>skip-networking => # skip-networking
 
-老的版本中
+	新的版本中
+	>bind-address=127.0.0.1 => bind-address= 你机器的IP
 
->skip-networking => # skip-networking
+	这样就可以允许其他机器访问MySQL了。
 
-新的版本中
+	注意需要重启mysql
+	service mysql restart
 
->bind-address=127.0.0.1 => bind-address= 你机器的IP
+6. 字符集和引擎
+	1. 创建数据库表 
+		mysql>CREATE DATABASE IF NOT EXISTS my_db default charset utf8 COLLATE utf8_general_ci; 
+		注意后面这句话 "COLLATE utf8_general_ci",大致意思是在排序时根据utf8变码格式来排序 
+		那么在这个数据库下创建的所有数据表的默认字符集都会是utf8了 
+		mysql>create table my_table (name varchar(20) not null default '')type=myisam default charset utf8;
 
-这样就可以允许其他机器访问MySQL了。
+	2. 改变当前表的字符集
+		mysql> show table status;
+		ALTER TABLE my_table CONVERT TO CHARACTER SET utf8;
 
-注意需要重启mysql
-service mysql restart
+7. mysql中文乱码解决方案
+	http://www.2cto.com/database/201108/101151.html
 
-建表时候指定字符集和引擎
-1.创建数据库表 
-mysql>CREATE DATABASE IF NOT EXISTS my_db default charset utf8 COLLATE utf8_general_ci; 
-#注意后面这句话 "COLLATE utf8_general_ci",大致意思是在排序时根据utf8变码格式来排序 
-#那么在这个数据库下创建的所有数据表的默认字符集都会是utf8了 
-mysql>create table my_table (name varchar(20) not null default '')type=myisam default charset utf8;
+8. mysql的api C语言版本
+	mysql_select_db()
+	mysql_create_db()
+	mysql_drop_db()
 
-改变当前表的字符集
-mysql> show table status;
-ALTER TABLE my_table CONVERT TO CHARACTER SET utf8;
+	MYSQL_RES *mysql_store_result(MYSQL *mysql)
 
-mysql中文乱码解决方案
-http://www.2cto.com/database/201108/101151.html
+	mysql_next_result()
+	mysql_num_rows()
+	mysql_more_results()
 
+	mysql_fetch_row()
 
-mysql的api C语言版本
-mysql_select_db()
-mysql_create_db()
-mysql_drop_db()
+	mysql_fetch_field()
+	mysql_fetch_fields()
 
-MYSQL_RES *mysql_store_result(MYSQL *mysql)
+	mysql_commit()
+	mysql_rollback()
 
-mysql_next_result()
-mysql_num_rows()
-mysql_more_results()
+	mysql_escape_string()
 
-mysql_fetch_row()
-
-mysql_fetch_field()
-mysql_fetch_fields()
-
-mysql_commit()
-mysql_rollback()
-
-
-mysql_escape_string()
-
-
-create table user
-(
-	id int not null primary key,
-	nick varchar(48) not null
-);
-
-http://www.cnblogs.com/sherlockhua/archive/2012/03/31/2426399.html
-
-
-常用sql语句
-设置访问权限:
-mysql>CREATE DATABASE myblog；
-mysql>GRANT ALL PRIVILEGES ON myblog.* TO zhufeng@localhost IDENTIFIED BY "654321"; 开启账户zhufeng对myblog的本地访问的全部权限
-mysql>GRANT ALL PRIVILEGES ON myblog.* TO zhufeng@"%" IDENTIFIED BY "654321"; 开启账户zhufeng对myblog的任何机器访问的权限	
-
+	http://www.cnblogs.com/sherlockhua/archive/2012/03/31/2426399.html

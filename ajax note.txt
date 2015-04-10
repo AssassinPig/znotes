@@ -28,4 +28,3 @@ xmlhttp.send();
 
 GET和POST的区别
 GET更简单而且更快
-

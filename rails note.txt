@@ -347,7 +347,3 @@ render action: :edit
 render layout: "special_layout"
 render layout: false
 render status: 500
-
-
-
-

@@ -1,115 +1,96 @@
-http://www.nodebeginner.org/index-zh-cn.html
-https://github.com/ManuelKiessling/NodeBeginnerBook/tree/master/code/application
-http://martinfowler.com/articles/injection.html
-http://felix.apache.org/site/index.html
-https://www.byvoid.com/project/node
+0. 参考入门文章
+	http://www.nodebeginner.org/index-zh-cn.html
+	https://github.com/ManuelKiessling/NodeBeginnerBook/tree/master/code/application
+	http://martinfowler.com/articles/injection.html
+	http://felix.apache.org/site/index.html
+	https://www.byvoid.com/project/node
 
-nodejs特点
-优点:
-单线程
-异步I/O
-事件驱动
+1. nodejs特点
+	优点:
+	单线程
+	异步I/O
+	事件驱动
 
-缺点:
-编程方式
+	缺点:
+	编程方式
 
-层次:
-____________
-javascript  |
-------------
-c/cpp | v8  |
-------------
-
-
-事件
+	层次:
+	| javascript |
+	| ---------- |
+	| c/cpp | v8 |
+	
+2. 事件
 	Nodejs所有事件异步I/O 操作完成时都会发送一个事件到事件队列
 	在开发者看来 事件由EventEmitter提供
 	Nodejs的事件处理机制的底层是由libev
 	Nodejs的事件循环对开发者而言也是不可见的
 	类似ev_io ev_signal ev_idle ev_timer等事件均由vEentEmitter封装
 	libev事件循环的每一次迭代 在nodejs中就是一次tick
-=====================================================
-ECMAScript变量包括两种不同类型
-1.基本数据类型
-2.引用数据类型
-对于引用数据类型，可以围棋添加动态属性和方法，也可以改变和删除其属性和方法
-不能给基本数据类型的值添加属性
 
-基本数据类型 赋值操作的时候对应开辟新的空间 各自存储value
-引用数据类型 赋值操作之后对应的空间仅有一个value而已, 而各自拥有一个引用
-=====================================================
-所有的函数参数传值都是传值的
-function addTen(num) {
-	num += 10;
-	return num;
-}
+3. 关于ECMAscript
+	javascript的规范
+	https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide?redirectlocale=en-US&redirectslug=JavaScript%2FGuide
 
-var count = 10;
-var result = addTen(count);	
-alert(count);	//count => 10	没有变动
-alert(result);	//result => 20
+	1. ECMAScript变量包括两种不同类型
+		1.基本数据类型
+		2.引用数据类型
 
-function setName(obj) {
-	obj.name = "Nicholas";
-}
+		对于引用数据类型，可以围棋添加动态属性和方法，也可以改变和删除其属性和方法
+		不能给基本数据类型的值添加属性
 
-var person = new Object();
-setName(person);			//这里传入的是引用，所以在函数处理过程中添加的name属性会加到唯一的value上
-alert(person.name);			
+		基本数据类型 赋值操作的时候对应开辟新的空间 各自存储value
+		引用数据类型 赋值操作之后对应的空间仅有一个value而已, 而各自拥有一个引用
 
-function setName(obj) {
-	obj.name = "Nicholas";
-	obj = new Object();		//这里被new的对象，在离开函数范围之后被销毁了
-	obj.name = "Greg";
-}
-var person = new Object();
-setName(person);
-alert(person.name);			//output: "Nicholas";
+	2. 所有的函数参数传值都是传值的
+		``` javascript
+			function addTen(num) {
+				num += 10;
+				return num;
+			}
 
-====================================================
-简单的类表示
-var User = function(attribute1) {
-	this.attribute1 = attribute1;
-}
+			var count = 10;
+			var result = addTen(count);	
+			alert(count);	//count => 10	没有变动
+			alert(result);	//result => 20
 
-User.get = function(...) {
-	...	
-}
+			function setName(obj) {
+				obj.name = "Nicholas";
+			}
 
-User.prototype.save = function(...) {
-	...
-}
+			var person = new Object();
+			setName(person);			//这里传入的是引用，所以在函数处理过程中添加的name属性会加到唯一的value上
+			alert(person.name);			
 
-var user = new User(...);
-get()仅能使用User.get()来调用
-save()则由user.save()来调用
+			function setName(obj) {
+				obj.name = "Nicholas";
+				obj = new Object();		//这里被new的对象，在离开函数范围之后被销毁了
+				obj.name = "Greg";
+			}
+			var person = new Object();
+			setName(person);
+			alert(person.name);			//output: "Nicholas";
+		'''
+3. 简单的类表示
+	``` javascript
+	var User = function(attribute1) {
+		this.attribute1 = attribute1;
+	}
 
-====================================================
-javascript的规范
-https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide?redirectlocale=en-US&redirectslug=JavaScript%2FGuide
+	User.get = function(...) {
+		...	
+	}
 
-=====================================================
-bower
-bower install jquery 安装
-bower update jquery 升级
-bower cache list 查看本地缓存列表
-bower info d3   查看d3的版本信息
-bower lookup dojo 查看dojo库的url
-bower home dojo 用浏览器打开dojo库页面
-bower search dojo 查询包含dojo的类库
+	User.prototype.save = function(...) {
+		...
+	}
 
-bower 提交自己的库
-bower init 生成bower.json配置文件
-git init
-bower register nodejs-bower git@github.com
-之后可以查询我们自己的库 并可以安装
-bower search nodejs-bower
-bower install nodejs-bower
+	var user = new User(...);
+	get()						仅能使用User.get()来调用
+	save()						则由user.save()来调用
+	```
 
-==================================================
-n a node version manager
-install n 
-npm install -g n 
-install special version node
-n 0.11.12
-
+4. n a node version manager
+	install n 
+	npm install -g n 
+	install special version node
+	n 0.11.12

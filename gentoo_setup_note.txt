@@ -33,5 +33,3 @@ Error udev-mount failed to start
 > devtmpfs support. 
 > It can be found in device-drviers -> generic driver options. 
 http://www.gossamer-threads.com/lists/gentoo/user/264060
-
-
