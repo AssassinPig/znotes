@@ -1,4 +1,15 @@
-﻿tar
+﻿export环境变量
+1.临时
+#export PATH=$PATH:/opt/au1200_rm/build_tools/bin	重启之后失效
+2.永久针对所有用户
+#vi /etc/profile
+添加1中的代码
+3.永久针对单个用户
+#vi ~/.bashrc
+添加1中的代码
+
+
+tar
 -c create
 -x 解压缩
 -z 是否需要gzip

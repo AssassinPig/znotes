@@ -1,24 +1,67 @@
-1.setup ubuntu server desktop
-	make sure Universe and Multiverse open in /etc/apt/sources.list
-2.
-  1.gnome
-  sudo apt-get update
-  sudo apt-get install ubuntu-desktop
+1. setup ubuntu server desktop
+  make sure Universe and Multiverse open in /etc/apt/sources.list
 
-  2.xfce
-  sudo apt-get install xubuntu-desktop
- 
-  3.kde
-  sudo apt-get install kubuntu-desktop
+2. 安装桌面 现在使用的是kde的
+    1. gnome
+      sudo apt-get update
+      sudo apt-get install ubuntu-desktop
+    2. xfce
+      sudo apt-get install xubuntu-desktop
+    3.kde
+      sudo apt-get install kubuntu-desktop
 
-2.wifi  
-  1.wep wifi 
-	iwconfig wlan0 essid 'sky-node' key 123456
-  2.wpa 
-  	wpa_passhrase ESSID PWD > xxx.conf
-	wpa_supplicant -B -i wlan0 -Dwext -c ./xxx.conf
+3. wifi  
+    1. wep wifi 
+      iwconfig wlan0 essid 'sky-node' key 123456
+    2. wpa 
+  	   wpa_passhrase ESSID PWD > xxx.conf
+	     wpa_supplicant -B -i wlan0 -Dwext -c ./xxx.conf
 
-3. ifconfig ethN up/down 启用和禁用网卡
-   enable/disable network adapter
+4. ifconfig ethN up/down 启用和禁用网卡
+    enable/disable network adapter
   
+5. 添加repository 
+  sudo add-apt-repository ppa:fkrull/deadsnakes
+  sudo apt-get update
+  sudo apt-get install python2.6
 
+6. 切换版本号
+    sudo update-alternatives --install /usr/bin/python python /usr/bin/python2.6 20
+    sudo update-alternatives --install /usr/bin/python python /usr/bin/python2.7 10
+
+    you can switch between 2.6 & 2.7 using:
+    sudo update-alternatives --config python
+
+7. 清理系统
+    sudo apt-get autoclean  清理旧版本的软件缓存
+    sudo apt-get clean      清理所有软件缓存
+    sudo apt-get autoremove 删除系统不再使用的孤立软件
+
+    清理软件的cache
+    ls ~/.opera/cach4
+
+    清理孤立的包
+    图形界面下使用gtkorphan -y
+    sudo apt-get install gtkorphan -y
+    终端下面使用
+    sudo apt-get install deborphan -y
+
+    卸载tracker
+
+    删除多余内核，危险操作，谨慎
+    dpkg --get-selections | grep linux
+    删掉有image的老内核
+    sudo apt-get remove 内核文件名(一般类似这样linux-image-2.6.27-2-generic)
+
+    最后使用uname -a检查一下当前内核
+
+    临时文件的目录
+    /var/cache/apt/archives
+    /var/cache/apt/archives/partial (未下载完毕的)
+
+8. 查看当前系统桌面环境
+    etc／下面有没有gnome文件夹或者kde文件夹就知道了，如果都有，就是都按装了，至少是安装过
+
+    切换
+    switchdesk gnome
+    switchdesk kde

@@ -20,10 +20,17 @@ python numpy
 	array([ [1,2,3],[4,5,6],[7,8,9] ])  构造
 	array([1,2], dtype=complex)			构造的时候指定数据类型
 
-	array.dtype	每个元素的数据类型
-	array.ndim  轴的个数， 在python世界之中，轴被称为秩
-	array.shape 数组的维度
-	array.itemsize 数组中每个元素的字节大小
+	array.dtype		每个元素的数据类型
+	array.ndim  	轴的个数， 在python世界之中，轴被称为秩
+	array.shape 	数组的维度
+	array.itemsize 	数组中每个元素的字节大小
+	array.sum()		求和		
+	array.sum(axis=0)	求第0号坐标轴上的和
+	array.min()		求最小元素
+	array.min(axis=..)
+	array.max()		求最大元素
+	array.max(axis=..)
+	array.reshape(2,3,4) 生成一个2*3*4的矩阵
 
 	zeros((3,4)) 	创建一个元素都是0的3*4的矩阵
 	ones((2,3,4), dtype=int16)	创建一个元素类型是int16 值都是1的 2*3*4维的矩阵
@@ -42,7 +49,24 @@ python numpy
 		return (i+1) * (j+1)
 	array.fromfunction(func2, (9,9)) 从func2中创建数组，9*9的数组
 
+	random.random((3,3))	随机生成一个3*3的数组
+
+	shape manipulation
+	a = floor(10*random.random((3,4)))
+	a.shape
+	a.ravel				# flaten the array
+	a.shape = (6,2)
+	a.transpose()		#转置
+
+	a.resize((2,6))
+
+	a.reshape(3,-1)
+
 2. 基本运算
+	exp(x)		自然数e的x次方 
+				如果x是矩阵或数组则是要对其中每一个元素求e的次方
+	sqrt(x)		同上
+	add(b,c)	b和c中的元素对应相加
 
 3. matrix矩阵
 	mat() 		使用mat()函数来把数组转换成矩阵
