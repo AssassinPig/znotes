@@ -1,132 +1,117 @@
-1,克隆代码库
-git clone git://url 
-git clone git://url file
+0. 参考文章
+	http://www.yangzhiping.com/tech/github.html
 
-2,查询当前状态
-git status
+1. 克隆代码库
+	git clone git://url 
+	git clone git://url file
 
-3,添加跟踪新文件 把文件放到暂存区
-git add
+2. 查询当前状态
+	git status
 
-4,查看已暂存和未暂存的更新
-git diff 查看未暂存  比较的是当前文件和暂存区的区别
-git diff --cached/--staged 查看已暂存和上次提交的区别
+3. 添加跟踪新文件 把文件放到暂存区
+	git add file
 
-5,提交更新
-git commit
-ps:跳过缓存区 git commit -a
+4. 查看已暂存和未暂存的更新
+	git diff 查看未暂存  比较的是当前文件和暂存区的区别
+	git diff --cached/--staged 查看已暂存和上次提交的区别
 
-6,撤销已经暂存的文件
-git reset file
+5. 提交更新
+	git commit
+	ps:跳过缓存区 git commit -a
 
-7,取消对文件的修改
-git checkout -- file
-git checkout -f step-0 迁出步骤step-0的代码
+6. 撤销已经暂存的文件
+	git reset file
 
-8，删除 移动
-git rm
-git mv 
+7. 取消对文件的修改
+	git checkout -- file
+	git checkout -f step-0 迁出步骤step-0的代码
 
-9,查看远程仓库版本
-git remote show origin 
+8. 删除 移动
+	git rm file
+	git mv file
 
-10,拿回远程仓库的代码
-git fetch
+9. 查看/设置 远程仓库版本(包括url)
+	git remote						查看当前远程分支
+	git remote show origin 			查看远程分支origin的信息
+	git remote set-url origin git@github.com:AssassinPig/region8848.git	 设置origin的url
+	git remote update  	
 
-11.初始化一个本地代码库
-mkdir /path/to/your/project
-cd /path/to/your/project
-git init
-git remote add origin https://AssassinPig@bitbucket.org/AssassinPig/search-model.git
+10. 本地分支仓库
+	git branch 					查看本地分支
+	git branch yourbranch		新建一个本地分支 yourbranch
+	git branch -d yourbranch	删除本地分支yourbranch
 
-12.
-git remote update  	
-git clone https://username:password@github.com/org/project.git
+	git checkout yourbranch		
+	git checkout -b add_sth		创建分支并切换到 进行开发
 
-cd /path/to/my/repo
-git remote add origin https://AssassinPig@bitbucket.org/AssassinPig/search-model.git
-git push -u origin --all   # to push up the repo for the first time
+10. 拿回远程仓库的代码
+	git fetch
 
+11. 全新情况下 初始化新建
+	mkdir /path/to/your/project
+	cd /path/to/your/project
+	git init
+	git remote add origin https://AssassinPig@bitbucket.org/AssassinPig/search-model.git
 
-全局设置:
-git config --global user.name 'AssassinPig'
-git config --global user.email 'AssassinPig@gmail.com'
-接下来:
-在本地创建新的 Git 仓库
-mkdir my_src
-cd my_src
-git init
-touch README.md
-git add README.md
-git commit -m 'first commit'
-git remote add origin 'git@github.com:AssassinPig/my_src.git'
-git push -u origin master
-或
-在本地已有 Git 仓库
-cd existing_git_repo
-git remote add origin 'git@github.com:AssassinPig/my_src.git'
-git push -u origin master
+12. 在本地已有代码的情况下 新建
+	cd /path/to/my/repo
+	git init
+	git remote add origin https://AssassinPig@bitbucket.org/AssassinPig/search-model.git
+	git push -u origin --all   # to push up the repo for the first time
 
-高人指导
-http://www.yangzhiping.com/tech/github.html
+13. 全局设置:
+	git config --global user.name 'AssassinPig'
+	git config --global user.email 'AssassinPig@gmail.com'
 
-换用ssh方式提交
- git remote add origin git@github.com:Stonekity/BaiduMapAPI.git  
- git remote set-url origin git@github.com:Stonekity/BaiduMapAPI.git  
- push origin -u master  
+14. 换用ssh方式提交
+	git remote add origin git@github.com:Stonekity/BaiduMapAPI.git  
+	git remote set-url origin git@github.com:Stonekity/BaiduMapAPI.git  
+	push origin -u master  
  
- 扩大http方式提交的buffer 没啥作用的说
- git config http.postBuffer 524288000 
- 
- 如果Fork别人的项目或者多人合作项目，最好每人都拥有一个独立分支，然后由项目维护人合并。如何建己的分支？
-# 分支的创建和合并
-# git branch yourbranch 
-# git checkout yourbranch    切换到yourbranch
+ 	扩大http方式提交的buffer 没啥作用的说
+ 	git config http.postBuffer 524288000 
 
-# 开发yourbranch分支，然后开发之后与master分支合并
-# git checkout master		先切换到master
-# git merge yourbranch		整合
-# git branch -d yourbranch  合并完后删除本地分支
+15. 实例一
+	1. 如果Fork别人的项目或者多人合作项目，最好每人都拥有一个独立分支，然后由项目维护人合并,
+	如何建立自己的分支？
 
-如何将牛人的远程分支更新到自己的本地分支？
-# 查看当前项目下远程
-# git remote
-# 增加新的分支链接，例如
-git remote add niuren giturl ...
-# 获取牛人的远程更新
-git fetch niuren
-# 将牛人的远程更新合并到本地分支
-git merge niuren/master
+		分支的创建和合并
+		git branch yourbranch 
+		git checkout yourbranch    切换到yourbranch
 
-git remote set-url origin git@github.com:AssassinPig/region8848.git
-git remote set-url origin git@github.com:AssassinPig/my_src.git
-https://github.com/AssassinPig/region8848.git
-git@git.oschina.net:assassinpig/my_src.git
+		中间开发功能 之后commit省略...
 
-git remote show origin #显示远程分支信息 包括url
+		开发yourbranch分支，然后开发之后与master分支合并
+		git checkout master			先切换到master
+		git merge yourbranch		整合
+		git branch -d yourbranch  	合并完后删除本地分支
 
-git clone
-git check -b add_sth	添加一个本地分支add_sth并切换到该分支
-git push origin add_sth 
+	2. 如何将牛人的远程分支更新到自己的本地分支？
+		git remote							查看当前项目下远程
+		git remote add niuren git-url ...	增加新的分支链接
+		
+		git fetch niuren					获取牛人的远程更新
+		git merge niuren/master				将牛人的远程更新合并到本地分支
 
-git branch -D add_sth	 删除本地add_sth分支
-git push origin :add_sth 删除远程add_sth分支
+16. 实例二
+	1. 作为原作者
+		git clone
+		git check -b add_sth		添加一个本地分支add_sth并切换到该分支
+		git push origin add_sth 	将本地add_sth分支推送到远程的origin上
 
-git br 显示本地分支
+		git branch -D add_sth	 	删除本地add_sth分支
+		git push origin :add_sth 	删除远程add_sth分支
 
-作为贡献者
-git remote add upstream https://github.com/lovelypeter/hello.git 这个分支是远程的代码master的分支
+	2. 作为贡献者
+		git remote add upstream https://github.com/xx/.git 这个分支是远程的代码master的分支
+		git pull upstream master 					更新这个upstream分支, 即从master那边拿最新代码
+		git checkout -b add_sth 					创建分支并切换到 进行开发
 
-git pull upstream master 更新这个upstream分支, 即从master那边拿最新代码
+		切换回master 再拿最新的代码	原因是这个时候如果原作者又新发布了代码，你就要rebase了
+		git checkout master
+		git pull upstream master
 
-git checkout -b add_sth 创建分支并切换到
-进行开发
+		git checkout add_sth    切换回add_sth分支
+		git rebase master		给本地的master分支rebase
 
-切换回master 再拿最新的代码
-git checkout master
-git pull upstream master
-
-git checkout add_sth    切换回add_sth分支
-git rebase master	给本地的master分支rebase
-
-git push origin add_sth 推到远程的add_sth分支上
+		git push origin add_sth 推到远程的add_sth分支上
