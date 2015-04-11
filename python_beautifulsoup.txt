@@ -1,9 +1,9 @@
 1. import
-from bs import BeautifulSoup
+   from bs import BeautifulSoup
 
 2. tidy html 
-soup = BeautifulSoup(html_doc)
-soup.prettify()
+   soup = BeautifulSoup(html_doc)
+   soup.prettify()
 
 3. soup.title
    #<title>xxxxx</title>
