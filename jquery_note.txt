@@ -1,31 +1,67 @@
 ﻿1. 常见操作
-	在document加载的时候触发
-	$(document).ready(function() {
-	});
+	1. 在document加载的时候触发
+		```
+		$(document).ready(function() {
+		});
+		```
+	2. 当window进行load的时候触发
+		```
+		$(window).load(function(){
 
-	when window load
-	$(window).load(function(){
+		});
+		```
 
-	});
-
-	给class为poem-stanza的标签加上hightlight样式
-	$('.poem-stanza').addClass('hightlight')
-	removeClass
+	3. 给class为poem-stanza的标签加上hightlight样式
+		```
+		$('.poem-stanza').addClass('hightlight')
+		```
+	4. 同理使用removeClass
 
 2. 关于jQuery的几个约定
-	$()函数(JQuery()函数的别名)
-	返回特别的javascript对象, 它包含着与选择器相匹配的DOM元素的数组
-	当完成一组操作之后，他会返回相同的一组元素，提供给下一个操作
-	$("div.notLongForThisWorld").fadeOut().addClass("removed")
-	这些jquery链可以无限延续，没有必要进行循环的操作
+	1. $()函数(JQuery()函数的别名)
+		返回特别的javascript对象, 它包含着与选择器相匹配的DOM元素的数组
+		当完成一组操作之后，他会返回相同的一组元素，提供给下一个操作, 如:
+		```
+		$("div.notLongForThisWorld").fadeOut().addClass("removed")
+		```
 
-	$("div.fillMeIn").html("I have")
-	var elements = $("div.fillMeIn");
-	for(i=0; i<elements.length; i++)
-	{
-		elements[i].innerHTML = "I have added some text to a group nodes";
-	}
+		这些jquery链可以无限延续，没有必要进行循环的操作，对应一下代码
+		``` javascript
+		$("div.fillMeIn").html("I have")
+		var elements = $("div.fillMeIn");
+		for(i=0; i<elements.length; i++)
+		{
+			elements[i].innerHTML = "I have added some text to a group nodes";
+		}
+		```
 
+	2. $.extend()
+		1. $.extend(dest, src1, src2...)
+			意思是将src1, src2添加到dest对象之中
+			1. 如果dest之前就有同名属性或函数，则覆盖之
+			2. 如果dest参数被省略, 则是对全局jQuery对象进行添加
+				$.extend({
+  					hello:function(){alert('hello');}
+  				});
+
+	3. $.fn
+		$.fn是指jquery的命名空间，加上fn上的方法及属性，会对jquery实例每一个有效
+		简单的说就是下面jQuery源码
+		```
+		jQuery.fn = jQuery.prototype ={
+	　　　　init: function( selector, context ){//....　
+　　	　　init//......
+		};
+		```
+		所以:
+			1. 给jQuery对象添加方法
+				```
+				jQuery.fn.extend(object);
+				```
+			2. 为jQuery类添加添加类方法
+				```
+				jQuery.extend(object);
+				```
 3.	选择器
 	$()					工厂函数
 	$('p')				取得文档中所有的段落
@@ -143,3 +179,28 @@
 	.map(numArray, function(value, index){...}) 第一个参数是要遍历的集合，第二个参数是一个回调函数，回调的参数:第一个是索引对应的值，第二个是索引
 
 	.trim()移除字符串首位的空格
+
+9. ajax
+	```javascript
+		var _orgAjax = jQuery.ajaxSettings.xhr;
+		jQuery.ajaxSettings.xhr = function () {
+		    var xhr = _orgAjax();
+		    xhr.onreadystatechange = function() {
+		        //you can log xhr.readystate here
+		        if( xhr.readyState == 4 ) {
+		             $("div").html("Done");
+		        }
+		    }
+		    return xhr;
+		};
+		$(function(){
+		    $("<div>Loading</div>").appendTo($("body"));
+		    var anticache = "?anticache=" + new Date().getTime();
+		    $.ajax({
+		        url: "http://fiddle.jshell.net",
+		        error: function() {
+		            console.log("error");
+		        }
+		    });
+		});
+	```

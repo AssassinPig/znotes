@@ -1,0 +1,49 @@
+1. 运行(windows)
+	mongod -dbpath d:\mongodb\blog
+	d:\mongodb\bin\mongod.exe -dbpath d:\mongodb\blog
+2. 操作
+	1. 控制台中的操作，使用javascript代码
+		mongo 			开启mongodb的命令行客户端
+		use blog		使用blog文档
+		db.users.find()	查找user的所有文档
+
+	2. 启动关闭等操作
+		sudo /etc/init.d/mongod start /var/log/mongodb/mongod.log
+		sudo /etc/init.d/mongod stop
+		sudo /etc/init.d/mongod restart
+
+		参考
+		http://docs.mongodb.org/manual/tutorial/install-mongodb-on-ubuntu/
+
+3. 概念
+	1. index索引
+		文档是mongodb中的基本单元 非常类似于行, 但可以复杂很多
+		集合可以看作是没有模式的表
+		单个mongodb的实例 可以容纳多个独立的库 每个都有自己的集合和权集
+		自带简洁的javascript shell
+		每一个文档都有特殊键"_id" 它在文档集合中是唯一的
+
+	2. doc文档
+		1.多个kv关联放在一起就是文档
+		文档中的键值对是有序的
+		{"greeting":"Hello"; "foo":3}
+		{"foo":3; "greeting":"hello"}
+
+	2. key键
+		键不能含有'\0' 这个字符用来表示键的结尾
+		. 和 $ 有特别意义
+		以"_"开头的键是保留的，但是并不严格要求
+		{"foo":3}
+		{"Foo":3}	这两行不同
+
+		{"foo":"3"}
+		{"foo": 3}	这两行不同
+
+		不能有重复的键
+
+	3. 集合
+		集合就是一个文档 类比于表
+		集合是无模式的
+		{"greet":"hello"}
+		{"foo":5}
+		可以放到一个集合中

@@ -1,24 +1,26 @@
-基本类型
-Number
-String
-Boolean
-Object
-Function
-Array
-Date
-RegEx
-Null
-Undefinded
+1. 基本类型
+	Number
+	String
+	Boolean
+	Object
+	Function
+	Array
+	Date
+	RegEx
+	Null
+	Undefinded
 
-常见错误
-Error
-EvalError
-RangeError
-ReferenceError
-SyntaxError
-TypeError
-URIError
+2. 常见错误
+	Error
+	EvalError
+	RangeError
+	ReferenceError
+	SyntaxError
+	TypeError
+	URIError
 
+3. 一般对象和数组
+```
 var variable=1;
 var mood='happy';
 alert(mood);
@@ -38,65 +40,82 @@ beatles[3][0] --数组的数组
 var lenon=Array();
 lenon['name']='John';
 lenon['year']=1940;
+```
 
-对象
+4. 对象
+```
 var jeremy=new Person
 jermy.age
 jermy.mood
-javascript的对象分为3种
-用户定义的对象user defined object:	由程序员自己创建的对象
-内建对象native object			:	包括Array Math和Date
-宿主对象host object				:	由浏览器提供的对象
+```
+	javascript的对象分为3种
+		1. 用户定义的对象user defined object:	由程序员自己创建的对象
+		2. 内建对象native object			:	包括Array Math和Date
+		3. 宿主对象host object				:	由浏览器提供的对象
 
-document.getElementById()方法	获取文档中对应id的元素
-alert(typeof document.getElementById('purchases'))
+5. 文档
+	1. 获取文档中对应id的元素
+		```
+		document.getElementById()方法	
+		alert(typeof document.getElementById('purchases'))
+		```
 
-document.getElementsByTagname("li")获取文档中所有li元素的数组
-var items=document.getElementsByTagname("li");
-for(var i=0; i<items.length; i++){
-	alert(typeof items[i]);
-}
-getElementsByTagname("*") 获取文档中所有的元素
+	2. 获取文档中所有li元素的数组
+		```
+		document.getElementsByTagname("li")
+		var items=document.getElementsByTagname("li");
+		for(var i=0; i<items.length; i++){
+			alert(typeof items[i]);
+		}
+		```
+	3. 获取文档中所有的元素
+		```
+		getElementsByTagname("*") 
+		```
 
-文档就是一棵节点树
-节点分为不同的类型 元素节点 属性节点 文本节点
-getElementById
-getElementTagName
+	4. 文档就是一棵节点树
+		节点分为不同的类型 元素节点 属性节点 文本节点
+		使用下面两个函数获得节点:
+			getElementById
+			getElementTagName
 
-object.getAttribute(attribute)
-setAttribute(attribute, value)
+		使用下面的函数来设置节点属性
+			object.getAttribute(attribute)
+			setAttribute(attribute, value)
+		```
+		<p>xxxxx</p>  
+		var params=document.getElementsByTagName("p")
+		for (var i=0; i<params.length; ++i) {
+			var title_text=params[i].getAttribute("title");
+			if (title_text != null) {
+				do_something
+			}
+		}
+		```
+6. 在html中引用外部js文件
+	```
+	<head>
+	<script src="scripts/xxx.js" type="text/javascript"></script>
+	</head>
+	```
 
-<p>xxxxx</p>  
-var params=document.getElementsByTagName("p")
-for (var i=0; i<params.length; ++i) {
-	var title_text=params[i].getAttribute("title");
-	if (title_text != null) {
-		do_something
-	}
-}
+7. 事件处理的工作机制
+	在给某个元素添加事件处理机制之后，一旦发生预定事件，响应的javascript代码会得到执行，那些javascript的代码可以返回一个结果，而这个结果将被传递给那个事件处理函数。例如，我们可以给某链接添加onclick函数，并且让这个函数岁哦除法的javascript代码返回布尔值true或false，这样如果点击处理函数被调用，返回true意味着事件处理将被认为这个链接点击了，返回false表示请认为这个链接没有被点击
 
-引用外部js文件
-<head>
-<script src="scripts/xxx.js" type="text/javascript"></script>
-</head>
+	childNodes 		把元素的子元素检索出来并返回数组
+	document.body //body元素
 
-事件处理的工作机制
-在给某个元素添加事件处理机制之后，一旦发生预定事件，响应的javascript代码会得到执行，那些javascript的代码可以返回一个结果，而这个结果将被传递给那个事件处理函数。例如，我们可以给某链接添加onclick函数，并且让这个函数岁哦除法的javascript代码返回布尔值true或false，这样如果点击处理函数被调用，返回true意味着事件处理将被认为这个链接点击了，返回false表示请认为这个链接没有被点击
+	element.nodeType	//返回当前元素的类型
+	元素类型:
+	元素节点nodeType 1
+	属性节点nodeType 2
+	文本节点nodeType 3
+	共12种
 
-childNodes 把元素的子元素检索出来并返回数组
-document.body//body元素
+	element.nodeValue	//当前元素的值
 
-element.nodeType	//返回当前元素的类型
-元素类型:
-元素节点nodeType 1
-属性节点nodeType 2
-文本节点nodeType 3
-共12种
-
-element.nodeValue	//当前元素的值
-
-element.firstChild
-element.lastChild
+	element.firstChild
+	element.lastChild
 
 function addLoadEvent()
 {
@@ -332,4 +351,3 @@ previoursSibling
 nodeType
 nodeValue
 nodeName
-

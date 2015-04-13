@@ -1,0 +1,25 @@
+0. setup 
+	npm install -g bower
+	运行之后需要git
+
+1. bower 一般命令
+	bower install jquery 安装jquery
+	bower update jquery 升级jquery
+
+	bower cache list 查看本地缓存列表
+
+	bower info d3   查看d3的版本信息
+	bower lookup dojo 查看dojo库的url
+	bower home dojo 用浏览器打开dojo库页面
+
+	bower search dojo 查询包含dojo的类库
+
+2. bower 提交自己的库
+	nodejs-bower 就是我们自己的库
+	1. bower init 生成bower.json配置文件
+	2. git init
+	3. bower register nodejs-bower git@github.com
+
+	之后就可以查询我们自己的库 并可以安装了
+	bower search nodejs-bower
+	bower install nodejs-bower

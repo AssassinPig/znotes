@@ -1,27 +1,29 @@
-scrapy
+##scrapy
+------
 			Scheduler    
-	     /	     |			             \
+	    /	       |			           \
 	   /      request		     	      \
-	  /          |                      	       \
-	/	     |	scrapy engine        		\ 
-Item 	             |                 -- downloader--  Downloader
-Pipline              |			middlewares       
-	\            |                                   /
-	 \Items      |  spider                          /
-	  \          |	middlewares       	       /
-	   \         |                               /
+	  /          |                   \
+	 /           |	scrapy engine     \ 
+Item 	         |                 -- downloader--  Downloader
+Pipline        |	                  middlewares       
+	\            |                      /
+	 \Items      |  spider             /
+	  \          |	middlewares       /
+	   \         |                   /
 			Spiders
 
 首先从初始 URL 开始，Scheduler 会将其交给 Downloader 进行下载，下载之后会交给 Spider 进行分析，Spider 分析出来的结果有两种：一种是需要进一步抓取的链接，例如之前分析的“下一页”的链接，这些东西会被传回 Scheduler ；另一种是需要保存的数据，它们则被送到 Item Pipeline 那里，那是对数据进行后期处理（详细分析、过滤、存储等）的地方。另外，在数据流动的通道里还可以安装各种中间件，进行必要的处理
+------
 
-1.create project
- scrapy startproject tutorial
+1. create project
+  scrapy startproject tutorial
 
-2.edit
+2. edit code
+  
+3. run 'scrapy crawl dmoz' in the project's top level directory
 
-3.run 'scrapy crawl dmoz' in the project's top level directory
-
-4.Scrapy create scrapy.Request objects for each URL in the start_urls 
+4. Scrapy create scrapy.Request objects for each URL in the start_urls 
   and assigns them to the parse method of the spider as their callback function
 
   These Requests are scheduled, then executed, and scrapy.http.Response objects are returned and then fed back to the spider, through the parse() method
@@ -42,19 +44,19 @@ Pipline              |			middlewares
    response.xpath('//title/text()').extract()  extract the value of <title> element
    response.xpath('//title/text()').re('(\w+):') 
 
-7.scrapy crawl dmoz -o items.json 
+7. scrapy crawl dmoz -o items.json 
    
-8.create a new spider
+8. create a new spider
   scrapy genspider mydomain mydomain.com   
 
-9.Items class
-  Items objects are simple containers used to collect the scraped data.
-  Item Fields() to specify a data field 
+9. Items class
+    Items objects are simple containers used to collect the scraped data.
+    Item Fields() to specify a data field 
 
-10.Spdiers class
-   CrawlSpider scrapy.contrib.spiders.CrawlerSpider 
+10. Spdiers class
+  CrawlSpider scrapy.contrib.spiders.CrawlerSpider 
 
-11.Selector class
+11. Selector class
    extract data from html
    two methods: 
    1.selector.css('')
@@ -68,7 +70,7 @@ Pipline              |			middlewares
    nesting selectors
    links = response.xpath('//a[contains(@href, "image")]')
    for link in enumerate(links):
-	link.extract()
+	 link.extract()
    
    regular expression
    response.xpath('//a[contains(@href, "image")]/text()').re(r'Name:\s*(.*)')

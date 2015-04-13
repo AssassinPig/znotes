@@ -41,6 +41,3 @@ emerge -p --depclean
 
 安装gentoolkit
 emerge gentoolkit
-
-
-
