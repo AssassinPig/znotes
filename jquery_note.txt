@@ -1,4 +1,4 @@
-﻿1. 常见操作
+1. 常见操作
 	1. 在document加载的时候触发
 		```
 		$(document).ready(function() {
@@ -204,3 +204,12 @@
 		    });
 		});
 	```
+10. 常见封装
+	
+	http://www.2cto.com/kf/201104/87600.html	
+	var self = this;
+	this.timer = setInterval(function (){ self.show_next(); }, opts.interval);
+
+	slider.prototype.show_next = function() {
+    	this.show(this.index+1);
+	}
