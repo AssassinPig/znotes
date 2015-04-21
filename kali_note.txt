@@ -3,7 +3,7 @@ service networking start
 service networking stop
 update-rc.d networking defaults
 
-1,信息收集命令
+1. 信息收集命令
 dnsenum 
 dnsmap
 
@@ -16,7 +16,7 @@ tctrace
 traceroute www.xxx.com
 tracert
 
-2,主机发现
+2. 主机发现
 arping
 fping
 genlist 
@@ -24,11 +24,11 @@ hping3
 netscan
 nping
 
-3,扫描工具
+3. 扫描工具
 onesixyone
 protos 探测开放的协议
 
-4,操作系统指纹
+4. 操作系统指纹
 
 maltego
 nessus 漏洞扫描工具

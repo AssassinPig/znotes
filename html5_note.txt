@@ -1,0 +1,143 @@
+##html5
+1. 语法
+	1. 内容类型ContentType
+		后缀名仍然是'html' 或 'htm', 内容类型仍然是'text/html'
+
+	2. doctype不用刻意使用版本 
+		``` html
+		<! DOCTYPE html>
+		```
+	3. 指定字符编码
+		```html
+		<meta charset="UTF-8">
+		```
+2. 新增元素
+	对应
+	``` html
+		<div class="xxxx"></div>
+	```
+	html5新增了很多元素，加强了web语义
+	1. 常见
+		section	表示页面中的一块区域
+		article 表示与页面中独立的一段内容
+		```
+			<article>
+				<header>
+					<h1>apple</h1>
+					<p>发表日期:<time pubdate="pubdate">2010/10/9</time></p>
+				</header>
+				<p><b>apple</b> 植物类水果， 多次花果</p>
+				<footer>
+					<p><small>著作权归...公司所有</small></p>
+				</footer>
+			</article>
+		```
+
+		aside	表示article元素内容之外的
+		header  表示页面中的一个内容块或者整个页面的标题
+		hgroup	
+		footer  页面的底部
+		nav		页面的导航链接部分
+		figure	表示一段独立的流内容
+	2. 特殊
+		1. video元素
+			```
+			<video src='' controls='controls'>video元素</video>
+
+			<object type='video/ogg' data="movie.ogv">
+				<param name="src" value="movie.ogv">
+			</object>
+			```
+		2. audio元素
+			```
+			<audio src='someaudio.wav'>audio元素</audio>
+
+			<object type='application/ogg' data="someaudio.wav">
+				<param name="src" value="omeaudio.wav">
+			</object>
+			```
+		3. embed元素
+			embed元素用来插入各种多媒体, 格式包括:midi, wav, aiff, au, mp3等
+			```
+				<embed src='horse.wav'></embed>
+				<object data="flash.swf" type="application/x-shockwave-flash"></object>
+			```
+		4. mark
+			主要用来呈现需要突出显示或高亮的文字, 典型应用是在搜索结果之中高亮显示搜索
+			```
+			<mark></mark>
+			```
+		5. progress
+		    主要用来显示进度
+		    ```html
+		    <meter></meter>
+		    ```
+		6. time
+			```
+			<time></time>
+			```
+		7. canvas元素
+			提供一块区域，用来进行绘图, 需要使用javascript来操作
+			```
+			<canvas id="mycanvas" width="200" height="200"></canvas>
+			```
+		8. command元素
+			表示命令按钮， 比如单选/复选/按钮
+			```
+			<command onclick="cut()" label="cut">
+			```
+		9. details
+		10. datalist
+		11. datagrid
+		12. keygen
+		13. output
+		14. source
+		15. menu
+
+	3. 新增input元素		
+		1. email
+		2. url
+		3. number
+		4. range
+		5. Date Pickers
+3. form新增属性
+	1. form属性
+		在form标签之外的标签控件，指定form的id，表示从属对应的form下
+		```
+			<form id="testform">
+				<input type="text">
+			</form>
+			<textarea form="testform"></testarea>
+		```
+	2. formaction属性 (注意兼容性)
+		一个form的一次submit操作之中，发送不同的提交请求给不同的页面
+		```
+		<form id='testform' action="serv.jsp">
+			<input type="submit" name="s1" value="v1" formaction="s1.jsp">sumit1
+			<input type="submit" name="s1" value="v1" formaction="s2.jsp">sumit2
+			<input type="submit" name="s1" value="v1" formaction="s3.jsp">sumit3
+			<input type="submit">
+		</form>
+		```
+	3. placeholder属性
+	4. autofocus属性
+	6. list属性
+		指定一个控件的属性, 以下input的内容都来自与greetings的datalist之中
+		```
+		<input type="text" name="greeting" list="greetings">
+			<datalist id="greetings" style="display:none;">
+			<option value="Good Morning">Good Morning</option>
+			<option value="Hello">Hello</option>
+			<option value="Good Afternoon">Good Afternoon</option>
+			</datalist>
+		```
+	7. autocomplete属性
+		自动补全
+		```
+		<input type="text" name="greeting" autocomplete="on" list="greetings">
+		<!-- ... -->
+		```
+4. 文件API
+	
+
+
