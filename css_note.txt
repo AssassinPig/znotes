@@ -41,20 +41,57 @@
 
 	1. css的块级元素和内联元素
 		1. 块级元素
-			div	像方块一样，默认占用一行 
-			块级元素 <p> <h1>..<h6>  <ul><ol><li> <table> <form> 
-			<div> <body>
+			1. div像方块一样，默认占用一行 
+			2. 高度，行高以及顶和底边距都可控制
+			3. 宽度缺省是它的容器的100%，除非设定一个宽度
+			4. 常见块级元素 
+				p 
+				pre	格式化文本
+				h1..h6
+				ul ol li
+				table form
+				div 
+				body
+				address 
+				blockquote 
+				center 
+				dir 
+				fieldset
+				menu 
+				noframes - frames
 
-		2. 内联元素
-			span 不会引起换行
-			<input> <a> <img> <span>
+		2. 内联元素inline
+			1. span 不会引起换行
+			2. 高，行高及顶和底边距不可改变
+			3. 宽度就是它的文字或图片的宽度，不可改变
+			4. 常见内联元素
+				input
+				a
+				img
+				span
+				br 
+				em 
+				input 
+				label
+				textarea 
+				sub sup  	上下标
+				textarea 
+				u 			下划线
+				strike 		中划线
+				small 		小文本字体
+				strong 		粗体强调
+				code   		引用代码
+				i   		斜体
+
 
 		3. 在css中设置 
 			1. display:inline 
 			2. display:block
+
 		4. div和span
 			div就是一个块，他意味着前后都要空一行
 			而span则可以嵌套，成为内敛的一部分
+			
 
 6. margin 的垂直合并
 	当两个元素在垂直方向上都设置了margin的时候,他们会合并,取最大值
@@ -133,9 +170,8 @@
 9. 伪类
 	```
 	a:hover {xxx} 
-	```
 	表示当<a>标签元素发生hover事件的时候应用的样式
-
+	```
 
 10. 边框背景
 	1. 边框的简写
@@ -145,8 +181,6 @@
 				border-style: solid;
 				border-color: #FF0000;
 			}		
-
-
 
 			div {
 				border: 1px solid #FF0000;
@@ -168,11 +202,29 @@
 			tansparent none repeat scroll 0% 0%
 		```
 11. 字体
-body {
-	font-style:	italic;
-	font-variant: small-caps;
-	font-weight: bold;
-	font-size: 12px;
-	line-height: 140%;
-	font-family: "Lucida Grande", sans-serif;
-}
+	1. 例子
+	```
+	body {
+		font-style:	italic;
+		font-variant: small-caps;
+		font-weight: bold;
+		font-size: 12px;
+		line-height: 140%;
+		font-family: "Lucida Grande", sans-serif;
+	}
+	```
+	2. font 简写
+		font: 12px/1.5 Arial
+		等于以下三行:	
+		font-family:Arial;
+		font-size:12px;
+		line-height:1.5em;
+	3. 各个属性的详解
+		font-style设定斜体　如：font-style: italic;
+		font-weight设定文字粗细　如：font-weight: bold;
+		font-size设定文字大小　如：font-size: 12px;
+		line-height设定行距　如：line-height: 150%;
+		color设定文字颜色（注意不是font-color）　如：color: red;
+		font-family设定字体　如：font-family : "Lucida Grande", Verdana, Lucida, Arial, Helvetica, 宋体,sans-serif;
+
+	[字体参考](http://www.divcss5.com/rumen/r74.shtml)

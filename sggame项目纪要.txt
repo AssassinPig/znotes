@@ -1,22 +1,22 @@
-��Ҫ�����һЩ��Ϸ���߼��Ķ���
-1�����ݵ��벿��			   ��excel��json�ĵ������֣��Ȿ��û��ʲô���Լ�¼�Ķ������ǳ��򲿷�����һ��xml������ƥ��xml�е��к͵�����json�Ľṹ�ֶ�
-	��excel�ж�ȡ�ֶ�ֵʹ�õ���ole com�ķ�װ�࣬��ʵ������ʹ��odbc�ķ�ʽ��������һЩ
-	��ȡxml��ʹ�õ�tinyxml��
+﻿主要是想记一些游戏的逻辑的东西
+1，数据导入部分			   从excel到json的导出部分，这本身没有什么可以记录的东西，非程序部分配置一个xml，用来匹配xml中的列和导出的json的结构字段
+	从excel中读取字段值使用的是ole com的封装类，其实还可以使用odbc的方式，更方便一些
+	读取xml是使用的tinyxml库
 	
 	<excel excel_path="../example.xls">
 		<sheet sheet_name="sheet1">
 			<column column_name="column1" json_name="json_column1">
 			</column>
 			<column column_name="column1" json_name="json_column1">
-				<enum enum_value="1" value="value1"/>	//��һ����ö������
+				<enum enum_value="1" value="value1"/>	//这一行是枚举配置
 			</column>
 		</sheet>
 	</excel>
 	
-2��ddl����
-	ddl��һ�������ļ��������������л�����
+2，ddl部分
+	ddl是一个配置文件，可以生成序列化代码
 
-3��mvc���»���
+3，mvc更新机制
 	UILogic Register UIDispatcher
 	Client->QueryData(nSync)   ==> Server
 	mark data1 data2 dirty
@@ -30,20 +30,20 @@
 	SendUIUpdateEvent 			==> UIDispatcher
 		
 
-4����Ϸ�ĸ����߼�ģ�鲿�ּ�Ҫ
-	��ʱ���ݣ�
+4，游戏的各个逻辑模块部分纪要
+	即时数据：
 	player 
-	U32 	avatar_id	//sex profession�����Դ�����������
+	U32 	avatar_id	//sex profession都可以从这里区分了
 	string 	nick
 	_U32	xp;
 	_U32	level;
 	_U32 	skill[]
 	_U32 	level_process;
 	_U32	gold;
-	_U32	rmb;		//Ŀǰ����ʹ�õ�rmb
-	_U32	total_rmb;	//�ۼƳ�ֵrmb
-	_U32	genius_value;//�ɳ�ֵ �츳ֵ
-	_U32	rank;		//pk����
+	_U32	rmb;		//目前可以使用的rmb
+	_U32	total_rmb;	//累计充值rmb
+	_U32	genius_value;//成长值 天赋值
+	_U32	rank;		//pk排名
 	
 	bag:
 	item
@@ -67,18 +67,18 @@
 		_U32	instance_id;
 		_U8		type;//0-normal 1-hard
 		
-	ս���Ĳ��ֽṹ��
+	战斗的部分结构体
 	base:
-		atk				atk-def������hp���˺�
+		atk				atk-def决定对hp的伤害
 		def		
-		speed			�����������
-		miss/hit		��������
+		speed			决定攻击间隔
+		miss/hit		决定命中
 	
-	��������:	��ͨ���� ���̹��� ���ǹ��� ħ������
-	��������:	�޼� ��� �м� �ؼ� �Ǽ�
+	攻击类型:	普通攻击 穿刺攻击 攻城攻击 魔法攻击
+	防御类型:	无甲 轻甲 中甲 重甲 城甲
 
-	�������ص��ǰ�������ˢ���Ѹ���
-	�빫����ص���ս��ս
-	��������������ص�������bossս
-	�ɿ��pk���ǿ�������ս
+	与好友相关的是帮助好友刷好友副本
+	与公会相关的是战盟战
+	与整个服务器相关的是世界boss战
+	可跨服pk的是跨服武道会战
 

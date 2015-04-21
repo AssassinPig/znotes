@@ -1,24 +1,24 @@
-�̻߳����ǿɻ�ϵģ�joinable����ȱʡֵ�����������루detached�������ɻ�ϵ��߳���ֹʱ�����߳�ID���˳�״̬��������ֱ������һ���̵߳���pthread_join��������߳������ػ����̣�������ֹʱ�����е���Դ�����ͷţ����ǲ��ܵȴ�����ֹ�����һ���߳���Ҫ֪����һ���߳�ʲôʱ����ֹ����ñ����ڶ����̵߳Ŀɻ���ԡ�
-����������Լ����̵߳���:
+﻿线程或者是可汇合的（joinable）（缺省值）或者是脱离（detached）。当可汇合的线程终止时，其线程ID和退出状态将保留，直到另外一个线程调用pthread_join。脱离的线程则像守护进程：当它终止时，所有的资源都将释放，我们不能等待它终止。如果一个线程需要知道另一个线程什么时候终止，最好保留第二个线程的可汇合性。
+如果想脱离自己的线程调用:
 	pthread_detach(pthread_t tid);
 
-�ӻ������Ͳ��ӻ�����������ȷ�汾���Ĳ���ʱ����10%
+加互斥锁和不加互斥锁（非正确版本）的测量时间差别10%
 
-�첽 asynchronous
-���� concurrency
+异步 asynchronous
+并发 concurrency
 
-���кͲ���
-����ֻ���Ƕ�cpu�������Ļ�����
-�����Ƕ���̵߳Ĵ���
+并行和并发
+并行只能是多cpu处理器的环境下
+并发是多个线程的处理
 
-�����̺߳�����ȫ�����⣬ ���԰��̺߳�������Ϊ����ٽ��������õķ�ʽ�ǰ��ٽ����ݽ��б��������Ƕ��ٽ������б���
+对于线程函数安全的问题， 可以把线程函数改造为多个临界区，更好的方式是把临界数据进行保护而不是对临界代码进行保护
 
 #include <pthread>
 #include "errors"
 
-�̵߳���������Ҫ�أ�
-ִ�л��� ���� ͬ��
-������һ���߳�ϵͳ���߱Ƚ����������߳�ϵͳ��ʱ�򣬶����ԴӱȽ����Ƕ������������֧�̶ֳȿ�ʼ
+线程的三个基本要素：
+执行环境 调度 同步
+在评估一个线程系统或者比较任意两个线程系统的时候，都可以从比较他们对这三个方面的支持程度开始
 
 pthread_t 
 pthread_mutext_t
@@ -29,89 +29,89 @@ pthread_mutexattr_t
 pthread_condattr_t
 pthread_once_t
 
-������pthreadͬ��ģ��ʹ��mutex��������������
-ʹ������������ͨ�ţ� ������ʹ��������ͬ�����ƣ����ź������ܵ�����Ϣ���У�
-�����������߳��ڷ��ʹ�������ʱ�������ǣ��Ա��������̵߳ĸ��ţ�
-�������������̵߳ȴ��������ݵ���ĳ��������״̬
+基本的pthread同步模型使用mutex来保护共享数据
+使用条件变量来通信， 还可以使用其他的同步机制，如信号量，管道和消息队列，
+互斥量允许线程在访问共享数据时锁定他们，以避免其他线程的干扰，
+条件变量允许线程等待共享数据到达某个期望的状态
 
-������
-��ͳ�����ɹ����ص�ʱ�򣬻᷵��һ����Чֵ����ָʾ���óɹ���0ֵ���ڴ�������ʱ�򣬻᷵���ض���-1ֵ������ȫ�ֱ���errno��ֵ��ָʾ��������
-errno ���Ǹ��ⲿ����extern int����
+错误检查
+传统函数成功返回的时候，会返回一个有效值或者指示调用成功的0值，在错误发生的时候，会返回特定的-1值，并对全局变量errno赋值以指示错误类型
+errno 是是个外部整型extern int变量
 
-pthread ���º���ͨ������ֵ����ʾ����״̬��������errno���������ɹ�ʱ��pthreads��������0�� ������һ����������������ָ��������ý���ĵ�ַ����������ʱ����������һ��������<errno.h>ͷ�ļ��еĴ������
-��pthreadҲͬ���ṩһ���߳��ڵ�errno�������߳���ʹ����������ʱ�򣬲��ᱻ�������߳���д���ȡ���������úͶ�ȡ�߳��ڵ�errno����Ҫ�ȶ�д�ڴ��ַ�򷵻غ���ֵ��������Ŀ�����
+pthread 中新函数通过返回值来表示错误状态，而不是errno变量，当成功时，pthreads函数返回0， 并包含一个额外的输出参数来指向存有有用结果的地址，当错误发生时，函数返回一个包含在<errno.h>头文件中的错误代码
+（pthread也同样提供一个线程内的errno变量，线程在使用它报错的时候，不会被其他的线程重写或读取，但是设置和读取线程内的errno变量要比读写内存地址或返回函数值带来更多的开销）
 
-һ��δ��ʼ����pthread_tҲ����ӵ��һ���Ϸ���ֵ�����ֵ���ǳ�ʼ���̣߳�һ����Ҫpthcread���pthread_t���̣߳�����������ȴ����pthread_t�Ķ�Ӧ���̵߳Ļ����ͻ���������������Ϊ����ȴ����Լ��������ʹ��pthread_join����鷵�ؽ���Ļ�����õ�EDEADLK
+一个未初始化的pthread_t也可能拥有一个合法的值，这个值就是初始化线程（一般是要pthcread这个pthread_t的线程），如果你挂起等待这个pthread_t的对应的线程的话，就会出现死锁情况，因为挂起等待了自己，如果你使用pthread_join来检查返回结果的话，会得到EDEADLK
 
-pthread ��û����perror����һ�����������ĸ�ʽ��ӡ�������Ϣ��������ʹ��strerror��������ô�������������Ȼ�����ӡ��stderr�ļ�����
+pthread 中没有像perror函数一样来按给定的格式打印错误的信息，但是它使用strerror函数来获得错误代码的描述，然后将其打印到stderr文件流中
 
-pthread ����������һ��������pthred_getspecific����
+pthread 报错机制中一个例外是pthred_getspecific函数
 
 pthread_create(...)
-pthread_detach(...) �߳̽���֮�����̻�����Դ, �������̺߳����ڲ��ջ��Լ�����Դ pthread_detach(pthread_self())
-pthread_self() �̺߳����ڲ����е��ã�����Լ����߳�ID
+pthread_detach(...) 线程结束之后立刻回收资源, 可以在线程函数内部收回自己的资源 pthread_detach(pthread_self())
+pthread_self() 线程函数内部进行调用，获得自己的线程ID
 err_abort("...")
 
-��2�� �߳�
-main֮����ִ�еĴ���������һ���г�ʼ�̵߳��̣߳�����������������κ��߳����������顣��ʼ�̵߳�����������pthread��main�������ؽ׶α����˴�ͳunix���̵���Ϊ�������̽���ʱ�򲻻�ȴ������̵߳Ľ�����ͨ�������̴߳������㲢��ϣ����ˣ�����ʱҲ��iuhenfangbian��һ�����̼����Ͳ������߳�����ʲô�������̽�����Ŷ���������̡߳�״̬�����ǵĹ����������򵥵�������û������Ҫ����ʲô��
+第2章 线程
+main之内所执行的代码所属于一个叫初始线程的线程，你可以在这里面做任何线程所作的事情。初始线程的特殊性在于pthread在main函数返回阶段保留了传统unix进程的行为，即进程结束时候不会等待其他线程的结束。通常，在线程代码中你并不希望如此，但有时也会iuhenfangbian。一旦进程技术就不关心线程在做什么。当进程结束是哦胡，所有线程。状态和他们的工作结果都会简单的蒸发，没有理由要清理什么。
 
-����һ���������е��̲߳�����̴߳����κ�Ӱ�죬������ͬ־ϵͳ�����߳̽���ʱ�������е���Դ���Ա����գ�pthread_dettach�������û�����߳̽�����ʱ��������ǣ�ϵͳ�ᱣ�������ǵ������ڴ棬�������ǵĶ�ջ������ϵͳ��Դ�������߳���ζ��֪ͨϵͳ������Ҫ���̣߳�����ϵͳ����������ǵ���Դ���ա�
+分离一个正在运行的线程不会对线程带来任何影响，仅仅是同志系统当该线程结束时，其所有的资源可以被回收，pthread_dettach。如果你没有在线程结束的时候分离他们，系统会保留了他们的虚拟内存，还有他们的堆栈和其他系统资源。分离线程意味着通知系统不再需要此线程，允许系统将分配给他们的资源回收。
 
-�̵߳���������
-���� ready �߳��ܹ����У����ڵȴ����õĴ����������ܸո���������ոմ������лָ������߱��������߳���ռ
-���� running �߳��������С��ڶദ����ϵͳ�У������ж���̴߳�������̬
-���� blocked �߳����ڵȴ�������������������޷����У������������ĸı䣬������������IO��������
-��ֹ terminated �̴߳���ʼ�����з��أ������pthread_exit�����߱�ȡ������ֹ�Լ������������Դ�������������Ǳ����룬Ҳ���Ǳ����ӣ�һ���̱߳�����������ӣ����Ϳ��Ա�����
+线程的生命周期
+就绪 ready 线程能够运行，但在等待可用的处理器，可能刚刚启动，或刚刚从阻塞中恢复，或者被其他的线程抢占
+运行 running 线程正在运行。在多处理器系统中，可能有多个线程处于运行态
+阻塞 blocked 线程由于等待处理器外的其他条件无法运行，如条件变量的改变，加锁互斥量或IO操作结束
+终止 terminated 线程从起始函数中返回，或调用pthread_exit，或者被取消，终止自己并完成所有资源清理工作，不是被分离，也不是被连接，一旦线程被分离或者连接，他就可以被回收
 
-�����߳� 
-���̴߳���֮�����ʹ��ھ���״̬���յ��Ȼ������ƣ����߳̿����ھ���̬ͣ��һ��ʱ���ű�ִ�С���ǰ�̴߳Ӻ���pthread_create�з����Լ����̱߳�����ִ��֮�䲻����ͬ����ϵ�����߳̿����ڵ�ǰ�̴߳�pthread_create����֮ǰ�������ˣ�������������ˣ�ע���������
+创建线程 
+新线程创建之后，它就处于就绪状态，收到度机制限制，新线程可能在就绪态停留一段时间后才被执行。当前线程从函数pthread_create中返回以及新线程被调度执行之间不存在同步关系，新线程可能在当前线程从pthread_create返回之前就运行了，甚至运行完毕了，注意这里！！！
 
-�߳�����
-��ʼ�̺߳���ͨ�̴߳���һЩ��ͬ��
-1��main�����ĵ��ò���(argc��argv)����ͨ�̵߳�����������ͬ(void*)
-2����ͨ�̷߳��أ����߳���ֹ�����������߳���Ȼ�������У����ǳ�ʼ�̴߳�main�з���ʱ��������ֹ�������������߳�Ҳ����ֹ�������ϣ���ڳ�ʼ�߳���ֹʱ�����������߳�Ҳ����ִ�У����ڳ�ʼ�߳��е���pthread_exit�����Ǵ�main�����з���
-3���ڴ����ϵͳ�У���ʼ�߳�������Ĭ�ϵĽ��̶�ջ�ϣ��ö�ջ�����������㹻�ĳߴ磬����ĳЩʵ���У���ͨ�̵߳Ķ�ջ�ռ������޵ģ�����̶߳�ջ�������������δ���������ߴ����ʧ��
+线程启动
+初始线程和普通线程存在一些不同：
+1，main函数的调用参数(argc和argv)与普通线程的启动函数不同(void*)
+2，普通线程返回，该线程终止，但是其他线程依然可以运行，但是初始线程从main中返回时，进程终止，进程内所有线程也被终止，如果你希望在初始线程终止时进程中其他线程也继续执行，则在初始线程中调用pthread_exit而不是从main函数中返回
+3，在大多数系统中，初始线程运行在默认的进程堆栈上，该堆栈可以增长到足够的尺寸，而在某些实现中，普通线程的堆栈空间是受限的，如果线程堆栈溢出，则程序会因段错误或者总线错误而失败
 
-�߳����к�����
-�߳������������»ᱻ������
-1��ͼ����һ���Ѿ�����ס�Ļ�������
-2�ȴ�ĳ������������
-3����singwait�ȴ���δ���͵��ź�
-4�̻߳�����Ϊ�ڴ�ҳ����֮���ϵͳ������������
+线程运行和阻塞
+线程在以下条件下会被阻塞：
+1试图枷锁一个已经被锁住的互斥量，
+2等待某个条件变量，
+3调用singwait等待尚未发送的信号
+4线程还会因为内存页错误之类的系统操作而被阻塞
 
-�߳���ֹ
-�߳�ͨ�������������з�������ֹ�Լ�
-������pthread_exit�˳��̻߳��ߵ���pthrea_cancelȡ���߳�ʱ���̵߳������ÿ���������̺�Ҳ��������ֹ̬����Щ�������������߳�ͨ������pthread_cleanup_pushע��ģ�������δͨ������pthread_cleanup_popɾ����
-�̻߳�����˽�е��߳��ض����ݣ�����߳��зǿյ�˽������ֵ��������Щ������ص�destructor������������
-����߳��Ѿ������룬�������̽�����գ������̴߳�����ֹ̬�������ǿ��Ա������̵߳���pthread_join���ӣ�����join������wait��û��join���߳̾���ʬ����һ��������������Ҫjoin���߳�ʱ��ʹ��detachstate���Խ����߳�ʹ���Զ�����
+线程终止
+线程通常从启动函数中返回来终止自己
+当调用pthread_exit退出线程或者调用pthrea_cancel取消线程时，线程调用完后每个清理过程后也将进入终止态，这些清理过程是由线程通过调用pthread_cleanup_push注册的，而且尚未通过调用pthread_cleanup_pop删除。
+线程还会有私有的线程特定数据，如果线程有非空的私有数据值，则与这些数据相关的destructor函数将被调用
+如果线程已经被分离，则它立刻进入回收，否则线程处于终止态，他还是可以被其他线程调用pthread_join连接，这里join就类似wait，没有join的线程就像僵尸进程一样，当创建不需要join的线程时，使用detachstate属性建立线程使其自动分离
 
-sche_yield()���̹���ǰ�̣߳��������������״̬���̣߳���������ת���Ǹ��̲߳�ִ��
+sche_yield()立刻挂起当前线程，如果有其他就绪状态的线程，就立刻跳转到那个线程并执行
 
-ʹ��PTHREAD_MUTEX_INIT PTHREAD_COND_INIT��ʼ�����̣߳����Ǿ�̬����ģ�����Ҫfree
+使用PTHREAD_MUTEX_INIT PTHREAD_COND_INIT初始化的线程，都是静态分配的，不需要free
 
-������
-pthread_mutex_trylock ���ż����Ļ�����������û������Ѿ��������ˣ���ú�������EBUSY
+互斥量
+pthread_mutex_trylock 试着加锁改互斥量，如果该互斥量已经被加锁了，则该函数返回EBUSY
 
-��������
-��������������֪ͨ�����ڴ�����״̬��Ϣ�ġ�����ʹ������������֪ͨ�����ѿգ�����зǿգ�����������Ҫ���̴߳����Ĺ�������״̬��
-��һ�����������ϵȴ��ᵼ��һ��ԭ�Ӳ������ͷ���ػ��������ȴ������̷߳����������������źţ�����һ���ȴ��ߣ���㲥�������������������еȴ��ߣ�
+条件变量
+条件变量是用来通知共享内存数据状态信息的。可以使用条件变量来通知队列已空，或队列非空，或者其他需要有线程处理的共享数据状态。
+在一个条件变量上等待会导致一下原子操作：释放相关互斥量，等待其他线程发给该条件变量的信号（唤醒一个等待者）或广播该条件变量（唤醒所有等待者）
 
-���������������Ƿ��źŶ����ǻ���
+条件变量的作用是发信号而不是互斥
 
-1�������ڶ��ν��֮�乲��һ����������ʱ����������ʹ�ù㲥�������Ƿ��źţ�
-2���ź�Ҫ�ȹ㲥��Ч
+1，当你在多个谓词之间共享一个条件变量时，必须总是使用广播，而不是发信号，
+2，信号要比广播有效
 
-�������������ȴ��߳�
+唤醒条件变量等待线程
 int pthread_cond_signal(pthread_cond_t* cond);
 int pthread_cond_broadcast(pthrea_cond_t* cond);
 
-��ʼ��pthread��ע������
+初始化pthread的注意问题
 http://stackoverflow.com/questions/15976043/not-being-able-to-initialize-condition-variable-in-a-struct
 
 To initialize when you define a struct trie_node object, use:
 
-struct trie_node x = { ��, PTHREAD_COND_INTIALIZER, �� };
-In place of the ������, put initializers for other members of the struct, if any. You can omit the trailing ones if you do not care about them.
+struct trie_node x = { …, PTHREAD_COND_INTIALIZER, … };
+In place of the “…”, put initializers for other members of the struct, if any. You can omit the trailing ones if you do not care about them.
 
 To assign a value to the condition member in an existing object, use:
 
@@ -120,6 +120,6 @@ Two things:
 
 The code you used failed because you cannot specify the initialization of a member when you are defining the struct. Initialization goes with definitions of objects, not definitions of types.
 
-The expansion PTHREAD_COND_INITIALIZER has the format of an initializer, something like { values }. It is not an expression, so you cannot use it normally in an assignment statement. However, the (pthread_cond_t) PTHREAD_COND_INITIALIZER shown above creates a ��compound literal�� that is an expression.
+The expansion PTHREAD_COND_INITIALIZER has the format of an initializer, something like { values }. It is not an expression, so you cannot use it normally in an assignment statement. However, the (pthread_cond_t) PTHREAD_COND_INITIALIZER shown above creates a “compound literal” that is an expression.
 
 
