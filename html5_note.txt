@@ -138,6 +138,112 @@
 		<!-- ... -->
 		```
 4. 文件API
-	
+	HTML4的文件file控件，一次只允许上传一个文件
+	但是在HTML5之中通过添加multiple属性, 允许一次放置多个文件
+	控件内每一个用户选择的文件都是一个file对象
+	而FileList对象则为这些file对象列表
+
+5. Blob对象
+	原始二进制数据
+	属性:
+	size	表示Blob对象的字节长度
+	type    表示MIME类型 如果是未知 则为空
+
+6. canvas
+	1. 取得canvas元素
+		document.getElementById('canvas_id')
+	2. 取得上下文context
+	3. 填充与绘制边框
+		fill   是指填满图形内部
+		stroke 是指不填满内部只绘制图形外框
+	```html
+		<canvas id="canvas"></canvas>
+	```
+	```javascript
+		function draw(id) {
+			var canvas = document.getElementById(id);
+			if (canvas == null)
+				return false;
+			console.log(canvas);
+			var context = canvas.getContext('2d');
+			context.fillStyle = "#EEEEFF";
+			context.fillRect(0, 0, 400, 300);
+			context.fillStyle = "red";
+			context.strokeStyle = "blue";
+			context.lineWidth = 1;
+			context.fillRect(50, 50, 100, 100);
+			context.strokeStyle(50, 50, 100, 100);
+		}
+
+		window.onload = function() {
+			draw('canvas');
+		}
+	```
+7. 绘制路径
+	开始创建路径
+	context.beginPath()
+	创建圆形路径
+	context.arc
+	关闭路径
+	context.closePath()
+	绘制图形样式
+	context.fillStyel = 'rgba(255, 0, 0, 0.25)';
+	context.fill()
+
+	moveTo	移动到某点
+	lineTo	绘制到某点的直线
+8. 变形绘制
+	计算机平面绘图以最左上角为坐标原点(0,0), 以像素为单位坐标
+	x是水平放大倍数
+	y是垂直放大倍数
+	1. 平移
+		context.translate(x,y)
+		参数x,y分别是x,y轴上的移动坐标
+		当x,y为负数的时候是按数轴反方向移动
+
+	2. 扩大
+		context.scale(x,y)
+		参数x,y分别是水平/垂直方向放大倍数
+		当x,y属于[0,1]的时候是缩小倍数
+
+	3. 旋转
+		context.rotate(angle)
+		使用图形上下文对象rotate方法将图形进行旋转
+		angle指旋转角度
+		顺时针方向旋转时候 angle为正
+		逆时针方向旋转时候 angle为负
+
+	4. 矩阵变换
+		1. 原理
+			当图形上下文被创建完成之后，事实上也创建了一个默认的变换矩阵
+			如果不对这个变换矩阵进行修改, 那么接下来绘制的图形将以画布的最左上角为坐标原点绘制图形
+			绘制出来的图形也不经过缩放,变形处理，但是如果对这个变换矩阵进行修改, 则绘制图形随之变化
+			context.transform(m11, m12, m21, m22, dx, dy)
+			变换矩阵如下:
+				m11 m12  dx
+				m12 m22  dy
+				0     0   1
+			其中dx,dy是移动的单位
+		2. translate scale rotate都是在底层隐式修改了变换矩阵 	
+			都可以使用transform方法来进行替代
+			translate(x,y)可以用以下两个替换:
+				context.transform(1,0,0,1,x,y)
+				context.transform(0,1,1,0,x,y)
+			scale(x,y)的替换
+				context.transform(x,0,0,y,0,0)
+				context.transform(0,y,x,0,0,0)
+			rotate(angle)的替换
+				context.transform(Math.cos(angle*Math.PI/180),
+								Math.sin(angle*Math.PI/180),
+								-Math.sin(angle*Math.PI/180),
+								-Math.cos(angle*Math.PI/180), 0, 0),
+				context.transform(-Math.sin(angle*Math.PI/180),
+								Math.cos(angle*Math.PI/180),
+								Math.cos(angle*Math.PI/180),
+								Math.sin(angle*Math.PI/180), 0, 0),
+
+		3. setTransform
+			使用transform方法后，接下来绘制的图形都会按照移动后的坐标原点与新的变换矩阵相结合的方法来进行绘制，必要的时候可以使用setTransform方法将变换矩阵进行重置
+
 
 

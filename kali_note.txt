@@ -1,36 +1,124 @@
-启动/关闭网络服务
-service networking start
-service networking stop
-update-rc.d networking defaults
+0. 启动/关闭网络服务
+	service networking start
+	service networking stop
+	update-rc.d networking defaults
 
 1. 信息收集命令
-dnsenum 
-dnsmap
+	1. dnsenum 
+	2. dnsmap
 
-tcptrouteroute www.xxx.com
-tctrace
+	3. tcptrouteroute www.xxx.com
+	4. tctrace
 
-区域传送 主dns和从dns 
-使用udp 端口53 tcp 端口53
+	区域传送 主dns和从dns 
+	使用udp 端口53 tcp 端口53
 
-traceroute www.xxx.com
-tracert
+	traceroute www.xxx.com
+	tracert
 
 2. 主机发现
-arping
-fping
-genlist 
-hping3
-netscan
-nping
+	arping
+	fping
+	genlist 
+	hping3
+	netscan
+	nping
 
 3. 扫描工具
-onesixyone
-protos 探测开放的协议
+	onesixyone
+	protos 探测开放的协议
 
 4. 操作系统指纹
+	maltego
+	nessus 漏洞扫描工具
+	websecurity web安全测试平台
 
-maltego
-nessus 漏洞扫描工具
-websecurity web安全测试平台
+hr
+##信息收集
+1. 目标：
+	尽可能的收集所有有用信息，包括域名信息，DNS，IP，使用的技术和配置，文件和联系方式
+	每一个信息都可能很重要
+	
+	搜集方式:
+	主动和被动。主动的信息收集方式：通过直接访问、扫描网站，这种将流量流经网站的行为。
+	被动的信息收集方式：利用第三方的服务对目标进行访问了解，比例：Google搜索
+2. 使用公共网站来收集资源
 
+3. 域名注册信息
+	Whois数据库是提供域名的注册人信息，包括联系方式，管理员名字，管理员邮箱等等，其中也包括DNS服务器的信息
+	whois baidu.com
+	[关于Whois的介绍请访问](https://www.ietf.org/rfc/rfc3912.txt‍)
+
+	除了使用whois命令，也有一些网站提供在线whois信息查询：
+	[在线whois](whois.chinaz.com/)
+	[2](www.internic.net/whois.html)
+
+4. DNS分析
+	使用DNS分析工具的目的在于收集有关DNS服务器和测试目标的相应记录信息
+
+	1. 获取IP host
+		host www.baidu.com
+		查找详细记录
+		host -a www.baidu.com
+		从8.8.8.8获取详细记录
+		host -a www.baidu.com 8.8.8.8
+	2. dig
+		除了host命令，你也可以使用dig命令对DNS服务器进行挖掘。相对于host命令，dig命令更具有灵活和清晰的显示信息
+
+		dig baidu.com
+
+		返回全部记录
+		dig baidu.com any
+
+	3. dnsenum
+		可获取信息:
+		1. 主机IP地址
+		2. 该域名的DNS服务器
+		3. 该域名的MX记录
+		特点:
+		1. 使用谷歌浏览器获取子域名
+		2. 暴力破解
+		3. C级网络扫描
+		4. 反向查找网络
+
+		dnsnum baidu.com
+
+		获取IPV6的工具
+		dnsdict6 baidu.com
+		一般会开起自带字典和八个线程
+
+		也可以指定使用IPV4
+		dnsdict6 -4 -d baidu.com
+
+	4. fierce
+		fierce 是使用多种技术来扫描目标主机IP地址和主机名的一个DNS服务器枚举工具。运用递归的方式来工作。它的工作原理是先通过查询本地DNS服务器来查找目标DNS服务器，然后使用目标DNS服务器来查找子域名。fierce的主要特点就是可以用来地位独立IP空间对应域名和主机名。
+
+		fierce  -dns baidu.com -threads 3
+
+	5. DMitry
+		DMitry（Deepmagic Information Gathering Tool）是一个一体化的信息收集工具。它可以用来收集以下信息：
+		1. 端口扫描
+		2. whois主机IP和域名信息
+		3. 从Netcraft.com获取主机信息
+		4. 子域名
+		5. 域名中包含的邮件地址
+
+		获取 whois ，ip，主机信息，子域名，电子邮件。
+		dmitry -winse baidu.com
+
+		通过dmitry 来扫描网站端口
+		dmitry -p baidu.com -f -b
+
+	6. Maltego
+		Maltego是一个开源的取证工具。它可以挖掘和收集信息。
+		Maltego的基础网络特点：
+		1. 域名
+		2. DNS
+		3. Whois
+		4. IP地址
+		5. 网络块
+		也可以被用于收集相关人员的信息：
+		1. 公司、组织
+		2. 电子邮件
+		3. 社交网络关系
+		4. 电话号码

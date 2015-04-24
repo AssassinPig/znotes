@@ -1,0 +1,58 @@
+##CSS3
+1. 选择器
+	1. 属性选择器
+		[att=val]
+		[att*=val]	包含val
+		[att^=val]	以val开头
+		[att$=val]	以val结尾
+	2. 结构元素伪类选择器
+		root
+		not
+		empty
+		target
+		first-child
+		last-child
+		nth-child
+		nth-last-child
+		nth-of-type
+		nth-last-of-type
+		only-child
+	3. 状态伪类选择器
+		E:hover
+		:active
+		:focus
+		:enabled
+		:disabled
+		:read-only
+		:read-write
+		:checked
+		:default
+		:indeterminate
+		:selection
+2. 边框
+	border-radius
+		```
+			div
+			{
+				border:2px solid;
+				border-radius:25px;
+				-moz-border-radius:25px; /* Old Firefox */
+			}
+		```
+	box-shadow
+		```
+			div
+			{
+				box-shadow: 10px 10px 5px #888888;
+			}
+		```
+	border-image
+		```
+			div
+			{
+				border-image:url(border.png) 30 30 round;
+				-moz-border-image:url(border.png) 30 30 round; /* 老的 Firefox */
+				-webkit-border-image:url(border.png) 30 30 round; /* Safari 和 Chrome */
+				-o-border-image:url(border.png) 30 30 round; /* Opera */
+			}
+		```
