@@ -1,74 +1,64 @@
-本地exampledb 
-zhufeng
-password
+0. 安装
+    sudo apt-get install postgresql-client
+    sudo apt-get install postgresql
 
-安装
-sudo apt-get install postgresql-client
-sudo apt-get install postgresql
+    正常情况下PostgreSql会在本机的5432端口开放
+    sudo apt-get install pgadmin3
 
-正常情况下PostgreSql会在本机的5432端口开放
-sudo apt-get install pgadmin3
+    初次安装之后会默认生成名为postgres的数据库和名为postgres的数据库用户
+    同时注意这还生成了一个postgres的linux系统用户
 
-初次安装之后会默认生成名为postgres的数据库和名为postgres的数据库用户
-同时注意这还生成了一个postgres的linux系统用户
+1. 使用postgres用户来操作数据库
+    切换到postgres用户
+    sudo su - postgres
 
-使用postgres用户来操作数据库
-切换到postgres用户
-sudo su - postgres
+2. 添加一个数据库 
+    1. 打开控制台
+        psql
+        这相当于系统用户postgres使用同名的数据库用户名登陆数据库
 
-update "categories" set "name"='往届的Discovery trip' where "categories"."name"='往届回顾';
-SELECT "categories".* FROM "categories" WHERE "categories"."name" = '往届回顾' LIMIT 1
+    2. 第一件事是使用\password命令，为postgres用户设置一个密码
+        \password postgres
 
-update "categories" set "name"='探索之旅-往届回顾' where "categories"."id"=31;
+    3. 第二件事情是创建数据库用户zhufeng(跟系统之中的最好对应)
+        CREATE USER dbuser WITH PASSWORD 'password';
 
-打开控制台
-psql
-这相当于系统用户postgres使用同名的数据库用户名登陆数据库
+    4. 第三件事是创建用户数据库，这里为exampledb，并指定所有者为dbuser。
+        CREATE DATABASE exampledb OWNER dbuser;
+        CREATE DATABASE m3 OWNER assassinpig;
 
-第一件事是使用\password命令，为postgres用户设置一个密码
-\password postgres
+    5. 第四件事是将exampledb数据库的所有权限都赋予dbuser，否则dbuser只能登录控制台，没有任何数据库操作权限。
+        GRANT ALL PRIVILEGES ON DATABASE exampledb to dbuser;
+        GRANT ALL PRIVILEGES ON DATABASE m3 to assassinpig;
 
-第二件事情是创建数据库用户zhufeng(跟系统之中的最好对应)
-CREATE USER dbuser WITH PASSWORD 'password';
+3. 登陆数据库
+    添加新用户和新数据库以后，就要以新用户的名义登录数据库，这时使用的是psql命令。
+    psql -U dbuser -d exampledb -h 127.0.0.1 -p 5432
 
-第三件事是创建用户数据库，这里为exampledb，并指定所有者为dbuser。
-CREATE DATABASE exampledb OWNER dbuser;
-CREATE DATABASE m3 OWNER assassinpig;
+4. 常用命令
+    \password 设置密码
+    \h 查看sql命令解释
+    \? 查看psql命令列表
+    \l 列举所有数据库
+    \c [database_name] 连接其他数据库
+    \d 列出当前数据库的所有列表
+    \d [table_name] 列出某一张表的结构
+    \d+ [table_name] 
+    \du 列出所有的用户
+    \e 打开文本编辑器
+    \conninfo 列出当前数据库和连接的信息
 
-第四件事是将exampledb数据库的所有权限都赋予dbuser，否则dbuser只能登录控制台，没有任何数据库操作权限。
-GRANT ALL PRIVILEGES ON DATABASE exampledb to dbuser;
-GRANT ALL PRIVILEGES ON DATABASE m3 to assassinpig;
+5. 备份Backup
+    pg_dump -U {user-name} {source_db} -f {dumpfile.sql}
 
-登陆数据库
-添加新用户和新数据库以后，就要以新用户的名义登录数据库，这时使用的是psql命令。
-psql -U dbuser -d exampledb -h 127.0.0.1 -p 5432
-psql -U assassinpig -d usualoa -h 127.0.0.1 -p 5432
-psql -U assassinpig -d region8848 -h 127.0.0.1 -p 5432
+6. 恢复Restore
+    psql -U {user-name} -d {desintation_db} -f {dumpfilename.sql}
+    pg_restore -U {user-name} -d {desintation_db} -f {dumpfilename.sql}
+    pg_restore -U assassinpig -d gnhd_website_production -f gnhd_website_production.dump
 
-常用命令
-\password 设置密码
-\h 查看sql命令解释
-\? 查看psql命令列表
-\l 列举所有数据库
-\c [database_name] 连接其他数据库
-\d 列出当前数据库的所有列表
-\d [table_name] 列出某一张表的结构
-\d+ [table_name] 
-\du 列出所有的用户
-\e 打开文本编辑器
-\conninfo 列出当前数据库和连接的信息
-
-备份Backup
-pg_dump -U {user-name} {source_db} -f {dumpfile.sql}
-恢复Restore
-psql -U {user-name} -d {desintation_db} -f {dumpfilename.sql}
-pg_restore -U {user-name} -d {desintation_db} -f {dumpfilename.sql}
-pg_restore -U assassinpig -d gnhd_website_production -f gnhd_website_production.dump
-
-直接修改migrate之后的操作
-1, psql中删除表schema_migrations
-	drop table schema_migrations;
-2, 删除schema.rb
-	rm db/schema.rb
-3, rake db:migrate
-
+7. 直接修改migrate之后的操作
+    1. psql中删除表schema_migrations
+            drop table schema_migrations;
+    2. 删除schema.rb
+            rm db/schema.rb
+    3. rake db:migrate
