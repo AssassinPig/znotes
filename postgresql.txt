@@ -62,3 +62,9 @@
     2. 删除schema.rb
             rm db/schema.rb
     3. rake db:migrate
+8. 注意user表
+    ```
+        select * from user;
+        select * from public.user;
+    ```
+    以上两个查询分别针对不同的表,需要注意
