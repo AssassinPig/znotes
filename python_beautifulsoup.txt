@@ -1,5 +1,5 @@
 1. import
-   from bs import BeautifulSoup
+   from bs import beautifulsoup4 
 
 2. tidy html 
    soup = BeautifulSoup(html_doc)

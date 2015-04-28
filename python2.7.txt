@@ -7,6 +7,10 @@ pip install xxxx.tar.gz
 string的编码转换
 s.encode("utf-8")
 
+在python代码文件开始两行表明
+#!/usr/bin/python
+# coding: utf-8
+
 __str__特殊方法
 给一个类添加__str__方法，可以在使用print方法打印这个类实例的时候，输出相应的__str__方法返回的内容
 __unicode__ 同__str__ 

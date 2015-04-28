@@ -1,5 +1,5 @@
 1. setup ubuntu server desktop
-  make sure Universe and Multiverse open in /etc/apt/sources.list
+    make sure Universe and Multiverse open in /etc/apt/sources.list
 
 2. 安装桌面 现在使用的是kde的
     1. gnome
@@ -14,16 +14,16 @@
     1. wep wifi 
       iwconfig wlan0 essid 'sky-node' key 123456
     2. wpa 
-  	   wpa_passhrase ESSID PWD > xxx.conf
-	     wpa_supplicant -B -i wlan0 -Dwext -c ./xxx.conf
+        wpa_passhrase ESSID PWD > xxx.conf
+	wpa_supplicant -B -i wlan0 -Dwext -c ./xxx.conf
 
 4. ifconfig ethN up/down 启用和禁用网卡
     enable/disable network adapter
   
 5. 添加repository 
-  sudo add-apt-repository ppa:fkrull/deadsnakes
-  sudo apt-get update
-  sudo apt-get install python2.6
+    sudo add-apt-repository ppa:fkrull/deadsnakes
+    sudo apt-get update
+    sudo apt-get install python2.6
 
 6. 切换版本号
     sudo update-alternatives --install /usr/bin/python python /usr/bin/python2.6 20

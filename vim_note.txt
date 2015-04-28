@@ -1,0 +1,73 @@
+1. 代码格式调整 
+    1. 代码整段自动缩进
+        =G
+
+    2. 针对选中代码
+        shift =  自动对齐缩进
+
+    3. 针对选中的行进行缩进
+        shift+v
+        jk选中行
+
+    4. 缩进快捷键 
+        v < 向前缩进一个tab
+        v > 向后缩进一个tab
+
+    5. 缩进
+        vim set index keyborad shorcut
+        >G indent until end of file
+        >} indent until next paragraph
+        >iB indent contents of current {} block
+        < un-indent  
+        > add-indent 
+        = re-indent
+
+2. 索引文件
+    ctags -R .		生成当前目录的tags索引文件
+    set tags = ./tags	设置当前目录下的tags索引文件
+
+    TlistOpen TlistToggle	开启当前代码文件信息栏
+    ctrl+]					跳转到
+
+    :LookupFile				查找文件
+    :LUWalk					查找目录
+            
+    cscope -Rbq 			递归生成当前目录下的cscope in out文件
+    find . -type f > cscope.files	先递归的便利所有目录 并且输入到从cscope.files文件中
+    cscope -bq 				对当前目录中的cscope.files文件生成in out文件
+
+    :cs find c do_cscope 	查找do_cscope的函数被调用的地方
+    http://easwy.com/blog/archives/advanced-vim-skills-cscope/
+
+    :cc
+    :cw	打开一个quickfix的窗口
+    :cn 跳到下一个错误的地方
+
+3. 16进制显示/恢复
+    %xxd
+    %xxd -r
+
+    http://www.2maomao.com/blog/wp-content/uploads/vim_tips.txt
+
+4. 替换
+    1. 基本用法
+        ```
+        [range]s/pattern/string/[c,e,g,i] 
+        ```
+        其中```[range]```是替换作用的范围行数, 如1,3表示1到3行, ```1, $```表示从1行到最后
+        pattern需要替换的
+        string替换成的
+        
+        ```
+            1,3s/$//gc
+        ```
+        表示在1,3行范围内替换特殊字符$为换行
+        其中``````是ctrl+v 然后回车得到的
+
+    2. 在行首或者行尾添加字符
+        ```
+            %s/$/xxxx
+            %s/^/xxxx
+        ```
+5. 查看当前文件编码
+    set fileencoding
