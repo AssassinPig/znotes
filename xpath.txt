@@ -1,0 +1,35 @@
+XPath
+1.七种节点
+    元素 属性 文本 命名空间 处理指令 注释 以及文档节点
+    node
+    item
+    parent
+    children
+    sibling
+    ancestor   先辈
+    descendant 后辈
+2.语法 
+    /	从根节点选取
+    //  从匹配的选择节点选择文档中的节点 不用考虑位置
+    .	选取当前节点
+    ..	选取当前节点的父节点
+    @	选取节点属性	
+
+    nodename 	        选取nodename下的所有节点
+    /nodename 	        选取根节点
+    nodename/subnode    选取nodename的下所有子节点subnode
+    //node		选取所有node节点不管它在什么位置
+    nodename//node	选取所有nodename的所有node节点 不管他们位于相对nodename下的什么位置
+    
+    //@lang		选取名为lang的所有属性
+
+    /node1/subnode[1]	            选取node1的子元素subnode的第一个
+    /node1/subnode[last()]	    最后一个
+    /node1/subnode[last()-1]        倒数第二个
+    /node1/subnode[position()<3]    前面两个
+    //title[@lang]		    选取所有title节点下的名为lang的属性
+    //title[@lang='abc']	    在上一条选取的集合中再挑选出其值为'abc'的lang属性
+    /node1/subnode[contains(@lang, 'abc')]	选取位于node1下的子元素subnode 同时它的lang属性包含abc
+    /node1/subnode[somenode>123]                选取位于node1下的subnode子元素 并且somenode元素的值要大于123
+    
+    //nodeA | //nodeB	选取所有nodeA和nodeB元素节点

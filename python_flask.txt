@@ -132,36 +132,31 @@ full_dispatch_request(self)
 
 #后记
 	1. 阅读Flask代码的过程
-	基本看懂 是否需要细看接口 深入需要看werkzeug 甚至需要考虑是否看HTTP权威指南
-	或者尝试自己造一个web开发框架
+            基本看懂 是否需要细看接口 深入需要看werkzeug 甚至需要考虑是否看HTTP权威指南
+            或者尝试自己造一个web开发框架
 
 	1. flask的测试部分:
-	1.阅读unittest 							
-	仅有model级别的测试	已阅读test case
-	2.阅读june的测试部分					
-	发现是使用flask自带client
+            1.阅读unittest 							
+                仅有model级别的测试	已阅读test case
+            2.阅读june的测试部分					
+                发现是使用flask自带client
 
 	2.完善bbs 并做相应测试:
-	1.编写前端代码
-	1.研究几个网站的前端 
-	36kr.com
-	taobao.com
-	2.编写测试代码	
 
 	2. Flask的缺点:
-	1. 感觉性能上可能就那样子，而且目前版本不到1.0,很多写起来其实不是很爽
+	    1. 感觉性能上可能就那样子，而且目前版本不到1.0,很多写起来其实不是很爽
 
 	2. Flask 不适合搞大型网站
-	做论坛 不需要搞blog 因为blog需求都想不明白，也不能算是是产品，除非是blog平台,
-	模仿36kr的北极社区 或者 django china
+            做论坛 不需要搞blog 因为blog需求都想不明白，也不能算是是产品，除非是blog平台,
+            模仿36kr的北极社区 或者 django china
 
 	3. flask的学习目的:
-	1.重要的是后台部分快速敏捷的开发
-	2.旨在于小型网站 做论坛看起来似乎都很费劲
+            1.重要的是后台部分快速敏捷的开发
+            2.旨在于小型网站 做论坛看起来似乎都很费劲
 
 	4. 对比一下Tornado 和 flask
-	第一感觉Tornado更方便些
-	准备明天使用Tornado来写一下小blog
+            第一感觉Tornado更方便些
+            准备明天使用Tornado来写一下小blog
 
 	同时django和flask 在写小网站时候的各自优势所在
 	flask 提供的东西少 很多时候要自己写，但是也因为这样自己写才能学习 更多的东西

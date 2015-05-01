@@ -205,6 +205,10 @@ list.append(x)
 list.pop()
 list.extend()
 
+删除元素
+list.pop(key)
+list.remove(key)
+
 让python使用浮点计数法
 from __future__ import division
 

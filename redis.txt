@@ -34,6 +34,7 @@ http://blog.nosqlfan.com/html/3139.html?ref=rediszt
 
 6. 中文文档
    http://origin.redisbook.com/
+
 7.
   redisObject
   数据指针+type+encoding
@@ -81,13 +82,13 @@ http://blog.nosqlfan.com/html/3139.html?ref=rediszt
   John
 
   2.list
-  base on linked list
-  lpush students "John Doe"
-  rpush 
-  llen	求list长度
-  lrange student 0 2 获取0-2位置上的元素 
-  lpop students	     去掉并返回第一个元素
-  lrem 		     去掉元素，详查命令文档 
+    base on linked list
+    lpush students "John Doe"
+    rpush 
+    llen	求list长度
+    lrange student 0 2 获取0-2位置上的元素 
+    lpop students	     去掉并返回第一个元素
+    lrem 		     去掉元素，详查命令文档 
 
   3.set 
   unordered
