@@ -1,0 +1,153 @@
+##Go语言
+0. ready
+	1. 下载和安装
+		1. [国内下载](http://www.golangtc.com/download)
+		2. 设置
+			1. linux下设置		
+				设置 Go 环境变量
+				我们在 Linux 系统下一般通过文件 $HOME/.bashrc 配置自定义环境变量，根据不同的发行版也可能是文件 $HOME/.profile，然后使用 gedit 或 vi 来编辑文件内容。
+
+				export GOROOT=$HOME/go
+				export PATH=$PATH:$GOROOT/bin
+				export GOPATH=$HOME/Applications/Go
+
+				source .bashrc
+
+				输入 go env 和 env 来检查环境变量是否设置正确。
+
+				安装 C 工具
+				sudo apt-get install bison ed gawk gcc libc6-dev make
+
+				构建 Go
+				cd $GOROOT/src
+				./all.bash
+
+		3. 安装包
+			go install
+			go fix 用于将你的 Go 代码从旧的发行版迁移到最新的发行版
+
+	2. Reference
+		1. [E文](http://www.golang-book.com/)
+		2. 找package[go search](http://go-search.org/)
+		3. [网站合集](http://golangtc.com/sites)
+		4. [go command](https://github.com/hyper-carrot/go_command_tutorial)
+		5. [go 并发实战](http://www.ituring.com.cn/book/1525)
+			[代码](https://github.com/hyper-carrot/goc2p)
+		6. [go web 编程](https://github.com/astaxie/build-web-application-with-golang/blob/master/zh/preface.md)
+		7. [标准库tc版本](http://godoc.golangtc.com/pkg/)
+		8. [标库教程](https://github.com/Unknwon/the-way-to-go_ZH_CN/blob/master/eBook/09.1.md)
+		9. [StudyGolang](http://www.golangtc.com/)
+		10. [golang中国](http://www.golangtc.com/)
+		11. [go友团](http://golanghome.com/)
+		12. [Go daily](http://godaily.org/)
+
+1. 引入包
+	```
+	import "fmt"
+	import (
+		"fmt"
+	)
+	```
+	```
+		fmt.Println(...)
+		//引入之后就可以这样使用了
+	```
+2. 函数
+	```
+	func (param1, param2 param_type) return_type {
+		
+	} 
+
+	```
+
+3. 类型
+	```
+	int、float、bool、string
+	struct、array、slice、map、channel
+	interface
+	```
+
+4. 定义变量
+	```
+	var v int = 5
+	```
+
+5. 类型转换
+	不允许隐式转换
+	```
+	a := 5.0
+	b := int(a)
+	//自动推导类型的赋值
+	a, b, c := 5, 7, "abc"
+	```
+
+6. 常量
+	```
+	const Pi = 3.14159
+	const b string = "abc"
+	const b = "abc"
+	```
+
+组合(继承)
+
+	定义Base类
+	type Base struct {
+		Name string
+	}
+
+	定义Base的方法
+	func (*base Base) Foo {...}
+	func (*base Base) Bar {...}
+
+	定义Foo子类
+	type Foo struct {
+		Base
+		...
+	}
+
+	定义其他成员
+	func (foo *Foo) Bar() {
+		foo.base.Bar()
+		...
+	}
+
+	在上述例子中， Foo类的Bar被定义
+	Foo函数可以直接调用 foo.Foo() 效果等同于foo.bar.Foo()
+
+goroutine
+
+go func()
+
+channel
+var chanName chan ElementType
+var ch chan int
+var m map[string] chan bool
+ch := make(chan int)
+向channel中写入数据 通常会导致程序阻塞 直到有其他goroutine从channel中读取数据
+ch <- value
+从channel读取数据 如果没有数据写入， 这样进行的读取操作会导致程序阻塞 直到channel被写入数据
+value := <-ch
+
+
+创建一个带缓冲的channel
+c := make(chan int, 1024)
+将缓冲区大小作为第二个参数传入
+即使没有读取方操作，写入方也可以一直向channel中写入 在缓冲区被填充完整之前都不会阻塞
+
+从缓冲的channel中读取数据
+与常规channel中读取完全一致 
+可以使用range 更加方便的进行读取操作
+c := make(chan in, 1024)
+for i := range c {
+	fmt.Println("Received:", i)
+}
+
+单向channel
+var ch1 chan int
+var ch2 chan<- float64  单向写入channel
+var ch3 <-chan int      单向输出channel
+
+关闭channel
+close(ch)
+判断一个channel是否关闭
+x,ok := <-ch
