@@ -29,6 +29,7 @@
 	2. Reference
 		1. [E文](http://www.golang-book.com/)
 		2. 找package[go search](http://go-search.org/)
+			[go doc](http://godoc.org/)
 		3. [网站合集](http://golangtc.com/sites)
 		4. [go command](https://github.com/hyper-carrot/go_command_tutorial)
 		5. [go 并发实战](http://www.ituring.com.cn/book/1525)
