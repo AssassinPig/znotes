@@ -79,7 +79,11 @@
 
 4. 选择器
 	1. 自定义选择符
-		$('div.horizontal:eq(1)') javascript的数组是从0开始的编号方式，eq(1)取得是集合中第2个元素,	而CSS中则是从1开始的，因此CSS选择符$('div.nth-child(1)')取得的是作为父元素的第一个元素的所有div(也可以使用$('div:first-child')来替代
+		1. 选择数组中的元素
+			$('div.horizontal:eq(1)') javascript的数组是从0开始的编号方式，eq(1)取得是集合中第2个元素,	
+
+		2. 选择子元素数组中的元素
+			而CSS中则是从1开始的，因此CSS选择符$('div.nth-child(1)')取得的是作为父元素的第一个元素的所有div(也可以使用$('div:first-child')来替代
 
 	2. 进行奇偶行的选择 :odd :even 使用javascript内置的索引，从0开始编号，所以第一行为0(偶数)
 		$('tr:odd').addClass('alt');
