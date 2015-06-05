@@ -117,23 +117,23 @@
   ```python
   from nltk.corpus import inaugural #就职演说
 
-  fileids()			#语料库中的文件
+  fileids()			          #语料库中的文件
   fileids([categories])		#指定分类对应的语料库中的文件
-  categories()			#语料库中的分类
+  categories()			      #语料库中的分类
   categories([fileids])		#指定文件对应语料库中的分类
-  raw()				#语料库中的原始预料
+  raw()				            #语料库中的原始预料
   raw(fileids=[f1,f2,f3]	#指定文件的原始内容
   raw(categories=[c1,c2,c3]	#指定分类的原始内容
-  words()			#整个语料库中的词汇
+  words()			              #整个语料库中的词汇
   words(fileids=[f1,f2,f3])	#指定文件中的词汇
   words(categories=[c1,c2])	#指定分类中的词汇
-  sents()			#指定分类中的句子
+  sents()			              #指定分类中的句子
   sents(fileids=[f1,f2,f3])	#指定文件中的句子
   sents(categories=[c1,c2])	#指定分类中的句子
-  abspath(fileid)		#指定文件在磁盘上的位置
-  encoding(fileid)		#文件编码
-  open(fileid)			#打开指定语料文件的文件流
-  root()			#到本地安装的语料库根目录的路径
+  abspath(fileid)             #指定文件在磁盘上的位置
+  encoding(fileid)            #文件编码
+  open(fileid)                #打开指定语料文件的文件流
+  root()                      #到本地安装的语料库根目录的路径
   root()
   ```
 
@@ -149,14 +149,14 @@
 
    ```python
     cfdist = ConditionalFreqDist(paris)	#从配对链表中创建条件概率分布
-    cfdist.conditions()			#将条件按字母排列
-    cfdist[condition]			#condition此条件下的概率分布
-    cfdist[condition][sample]		#condition此条件下的样本频率
-    cfdist.tabulate()			#为条件概率分布制表
+    cfdist.conditions()			            #将条件按字母排列
+    cfdist[condition]			              #condition此条件下的概率分布
+    cfdist[condition][sample]             #condition此条件下的样本频率
+    cfdist.tabulate()			                #为条件概率分布制表
     cfdist.tabulate(samples, conditions)	#指定样本和条件限制下制表
-    cfdist.plot()				#为条件概率分布绘图
-    cfdist.plot(samples, conditions)	#指定样本和条件限制下绘图
-    cfdist1 < cfdist2			#测试样本在cfdist1中出现的次数是否小于在cfdist2中出现的次数
+    cfdist.plot()				                  #为条件概率分布绘图
+    cfdist.plot(samples, conditions)      #指定样本和条件限制下绘图
+    cfdist1 < cfdist2			                #测试样本在cfdist1中出现的次数是否小于在cfdist2中出现的次数
     ```
 11. 词典资源
   词典或者词典资源是一个词或者短语以及一些相关信息的集合
@@ -196,4 +196,11 @@
   将词汇按他们的词汇(parts-of-speech, POS)分类以及相应的标注他们的过程成为词性标注(POST tagging)或简称标注
   词性也成为词类或者词汇范畴 用于特定任务的标记的集合被成为一个标记集
 
+15. 句子分割器
+    nltk.sent_tokenize(document)
+    分词器
+    [nltk.word_tokenize(sent) for sent in sentences]
+    词性标注器
+    [nltk.pos_tag(sent) for sent in sentences]
 
+    
