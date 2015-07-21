@@ -44,7 +44,3 @@
 
 	输入格式 空格,TAB和回车符都是无关紧要的 在windows下先按enter然后ctrl+z 然后再Enter，即可结束输入
 	在linux下 输入完毕后按ctrl+D键即可结束输入
-
-	
-
-

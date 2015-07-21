@@ -172,7 +172,7 @@
 			context.strokeStyle = "blue";
 			context.lineWidth = 1;
 			context.fillRect(50, 50, 100, 100);
-			context.strokeStyle(50, 50, 100, 100);
+			context.strokeRect(50, 50, 100, 100);
 		}
 
 		window.onload = function() {
