@@ -179,6 +179,27 @@
 			draw('canvas');
 		}
 	```
+
+	4. 事件
+		事件是针对canvas而注册的
+		以下三个分别是鼠标点下/移动/抬起的事件注册
+		```
+		canvas.addEventListener('mousedown', handle_fun, false);
+		canvas.addEventListener('mousemove', handle_fun, false);
+		canvas.addEventListener('mouseup', handle_fun, false);
+		```
+		因为浏览器兼容性问题，所以处理函数中的处理可能会不一样
+		```
+			if (ev.layerX || ev.layerX == 0) {
+				var x = ev.layerX;
+				var y = ev.layerY;
+			} else if (ev.offsetX || ev.offsetX == 0) {
+				var x = ev.offsetX;
+				var y = ev.offsetY;
+			}
+
+		```
+
 7. 绘制路径
 	开始创建路径
 	context.beginPath()
@@ -192,10 +213,14 @@
 
 	moveTo	移动到某点
 	lineTo	绘制到某点的直线
+
+
 8. 变形绘制
 	计算机平面绘图以最左上角为坐标原点(0,0), 以像素为单位坐标
 	x是水平放大倍数
 	y是垂直放大倍数
+	可以使用context.save()和restore()来保存当前的坐标系(轴的位置和方向)
+
 	1. 平移
 		context.translate(x,y)
 		参数x,y分别是x,y轴上的移动坐标
@@ -247,3 +272,10 @@
 
 
 
+9. Image对象
+	1. 生成和绘制
+		``` 
+			var img = new Image();
+			img.src = "xxx";
+			ctx.drawImage(img, x, y, width, height);
+		```

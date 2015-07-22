@@ -20,34 +20,34 @@
 	URIError
 
 3. 一般对象和数组
-```
-var variable=1;
-var mood='happy';
-alert(mood);
+	```
+	var variable=1;
+	var mood='happy';
+	alert(mood);
 
-var beatles=Array(4);
-var beatles=Array(4);
-beatles[index]=element;
-beatles[0]="abc";
-beatles[1]="abc";
-var beatles=['abc','xxx'];
-var beatles=['abc', 122353, false];
+	var beatles=Array(4);
+	var beatles=Array(4);
+	beatles[index]=element;
+	beatles[0]="abc";
+	beatles[1]="abc";
+	var beatles=['abc','xxx'];
+	var beatles=['abc', 122353, false];
 
-var beatles2=Array();
-beatles[3]=beatles2;
-beatles[3][0] --数组的数组
+	var beatles2=Array();
+	beatles[3]=beatles2;
+	beatles[3][0] --数组的数组
 
-var lenon=Array();
-lenon['name']='John';
-lenon['year']=1940;
-```
+	var lenon=Array();
+	lenon['name']='John';
+	lenon['year']=1940;
+	```
 
 4. 对象
-```
-var jeremy=new Person
-jermy.age
-jermy.mood
-```
+	```
+	var jeremy=new Person
+	jermy.age
+	jermy.mood
+	```
 	javascript的对象分为3种
 		1. 用户定义的对象user defined object:	由程序员自己创建的对象
 		2. 内建对象native object			:	包括Array Math和Date
@@ -101,9 +101,9 @@ jermy.mood
 
 7. 事件处理的工作机制
 	在给某个元素添加事件处理机制之后，一旦发生预定事件，响应的javascript代码会得到执行，那些javascript的代码可以返回一个结果，而这个结果将被传递给那个事件处理函数。例如，我们可以给某链接添加onclick函数，并且让这个函数岁哦除法的javascript代码返回布尔值true或false，这样如果点击处理函数被调用，返回true意味着事件处理将被认为这个链接点击了，返回false表示请认为这个链接没有被点击
-
-	childNodes 		把元素的子元素检索出来并返回数组
-	document.body //body元素
+	
+	childNodes 			把元素的子元素检索出来并返回数组
+	document.body 		//body元素
 
 	element.nodeType	//返回当前元素的类型
 	元素类型:
@@ -117,237 +117,265 @@ jermy.mood
 	element.firstChild
 	element.lastChild
 
-function addLoadEvent()
-{
-	var oldload=window.onload;
-	if (typeof  window.onload != 'function') {
-		window.onload = func;
-	} else {
-		window.onload = function() {
-			oldonload();
-			func();
+	简单的事件处理实例
+	```
+	function addLoadEvent()
+	{
+		var oldload=window.onload;
+		if (typeof window.onload != 'function') {
+			window.onload = func;
+		} else {
+			window.onload = function() {
+				oldonload();
+				func();
+			}
 		}
 	}
-}
 
-addLoadEvent(firstFunction);
-addLoadEvent(secondFunction);
+	addLoadEvent(firstFunction);
+	addLoadEvent(secondFunction);
+	```
+8. 节点元素属性
+	1. 一般的DOM属性
+		node.innerHTML  直接获得node的html属性，可以进行更改
+		```
+			var param=document.createElement("p")
+			parent.addChild(child);
+			document.createTextNode()
 
-node.innerHTML  直接获得node的html属性，可以进行更改
+			parentElement.insertBefore(newElement, targetElement);
 
-var param=document.createElement("p")
-parent.addChild(child);
-document.createTextNode()
+			function insertAfter(newElement, targetElement) {
+				var parent = targetElement.parentNode;
+				if (parent.lastChild == targetElement) {
+					parent.appendChild(newElement);
+				} else { 
+					parent.insertBefore(newElement, targetElement.nextSibling);
+				}
+			}
+		```
+		其中用到的属性
+		node.parentNode
+		node.lastChild
+		node.nextSibling
 
-parentElement.insertBefore(newElement, targetElement);
+		node.previousSibling
+		node.ChildNodes
+		node.firstChild
+		node.lastChild
 
-function insertAfter(newElement, targetElement) {
-	var parent = targetElement.parentNode;
-	if (parent.lastChild == targetElement) {
-		parent.appendChild(newElement);
-	} else { 
-		parent.insertBefore(newElement, targetElement.nextSibling);
+		Dom操作函数
+		document.getElementById() 		//通过Id获取元素节点
+		document.getElementsByName() 	//通过name获取元素节点
+
+		document.getElementsByTagName 	//通过TagName来获得节点
+		document.getElementsByClassName
+
+		parentNode
+		childNodes
+		firstChild
+		lastChild
+		nextSibling
+		previoursSibling
+		nodeType
+		nodeValue
+		nodeName
+
+	2. 使用style来获取的属性 跟css中的class相关
+		网页的分层
+		结构层	由HTML表示
+		表现层	用css表示
+		行为层	用js控制
+
+		node.nodeName
+		node.style
+		node.style.xxx-property
+		node.style.color		
+		node.style.fontfamily	(javascript 使用camel记号来防止属性出现font-family，因为-会被误认为减号)
+		其中color font都是可以在CSS中
+
+		只有内嵌在html中的css样式才可以被DOM获取得到！！！
+		param.style.color = 'black';	//属性值必须放在引号内，不然会被解释成变量
+		如果想改变某个元素的呈现效果 选择CSS
+		如果想改变某个元素的行为 选择DOM
+		如果想根据某个元素的行为去改变他的呈现效果 没有标准做法
+		```
+		function addClass(element, value) {
+			if( !element.className) {
+				element.className = value;
+			} else {
+				newClassName = element.className;
+				newClassName += " ";
+				newClassName += value;
+				element.className = newClassName;
+			}
+		}
+
+		function styleElementSiblings(tag, theclass) {
+			if (!document.getElementsByTagName) return false;
+			var elems = document.getElementsByTagName(tag);
+			for (var i=0; i<elems.length; ++i) {
+				var elem = getNextElement(elems[i].nextSibling);
+				addClass(elem, theClass);
+			}
+		}
+		```
+9. 定时操作
+	```
+	fun = setTimeout("fun()", interval);
+	clrearTimeOut(fun);
+	```
+
+10. 数学处理
+	```
+	parseInt(string);
+	parseFloat(string);
+
+	Math.ceil(number);
+	Math.floor(number);
+	Math.round(number);
+	```
+11. 高级语法
+	1. 函数的包装
+		```
+		var calc = function(x){
+			return x*2;
+		}
+
+		calc(5);
+		10
+		```
+
+	2. 函数当做参数
+		```
+			function report(fn)
+			{
+				console.log("the return value of your application" + fn());
+			}
+
+			report( function(){ return "abcde"; } )
+		```
+	3. 匿名函数
+		使用()把function包围起来，使解释器把function(){}当做一个表达式
+		这样做的好处是防止污染顶级的命名空间
+		```
+		(function(x, y) { console.log(x+y); }) (5,6);
+		output:11
+		```
+
+		```
+		(function() {
+			//do some work
+		})();
+
+		(function(window, $){
+			//do some work
+		})(window, $);
+		```
+
+	4. 命名空间
+		```
+			(function(myapp, $, undefined){
+				
+			}(window.myapp = window.myapp || {}, jQuery));
+			可能会把问题复杂化
+		```
+
+12. Array的操作
+	1. 分离和连接数组
+		split
+		join
+
+	2. 类似栈的操作 FILO
+		push
+		pop
+
+	3. 队列的操作 FIFO
+		push
+		shift	//获取第一个元素并返回
+		unshift //在数组前端插入并返回元素个数
+
+13. 特殊函数方法
+	1. 排序方法
+	```
+	reverse 		 //反转数组排序
+	sort(compare_fun)//默认是asc排序，但是接受传入的函数
+	function compare_func(value1, value2) {
+		return -1;
+		return 0;
+		return 1;
 	}
-}
-其中用到的属性
-node.parentNode
-node.lastChild
-node.nextSibling
 
-node.previousSibling
-node.ChildNodes
-node.firstChild
-node.lastChild
+	slice(start, end) //其中[start, end)
 
-网页的分层
-结构层	由HTML表示
-表现层	用css表示
-行为层	用js控制
-
-node.nodeName
-node.style
-node.style.xxx-property
-node.style.color		
-node.style.fontfamily	(javascript 使用camel记号来防止属性出现font-family，因为-会被误认为减号)
-其中color font都是可以在CSS中
-
-只有内嵌在html中的css样式才可以被DOM获取得到！！！
-param.style.color = 'black';	//属性值必须放在引号内，不然会被解释成变量
-如果想改变某个元素的呈现效果 选择CSS
-如果想改变某个元素的行为 选择DOM
-如果想根据某个元素的行为去改变他的呈现效果 没有标准做法
-
-function addClass(element, value) {
-	if( !element.className) {
-		element.className = value;
-	} else {
-		newClassName = element.className;
-		newClassName += " ";
-		newClassName += value;
-		element.className = newClassName;
-	}
-}
-
-function styleElementSiblings(tag, theclass) {
-	if (!document.getElementsByTagName) return false;
-	var elems = document.getElementsByTagName(tag);
-	for (var i=0; i<elems.length; ++i) {
-		var elem = getNextElement(elems[i].nextSibling);
-		addClass(elem, theClass);
-	}
-}
-
-fun = setTimeout("fun()", interval);
-clrearTimeOut(fun);
-
-parseInt(string);
-parseFloat(string);
-
-Math.ceil(number)
-Math.floor(number)
-Math.round(number)
-
-函数的包装
-var calc = function(x){
-	return x*2;
-}
-
-calc(5);
-10
-
-函数当做参数
-function report(fn)
-{
-	console.log("the return value of your application" + fn());
-}
-
-report( function(){ return "abcde"; } )
-
-使用()把function包围起来，使解释器把function(){}当做一个表达式
-(function(x, y) { console.log(x+y); }) (5,6);
-output:11
-
-
-Array的操作
-分离和连接数组
-split
-join
-
-类似栈的操作 FILO
-push
-pop
-
-队列的操作 FIFO
-push
-shift	//获取第一个元素并返回
-unshift //在数组前端插入并返回元素个数
-
-排序方法
-reverse 		 //反转数组排序
-sort(compare_fun)//默认是asc排序，但是接受传入的函数
-function compare_func(value1, value2) {
-	return -1;
-	return 0;
-	return 1;
-}
-
-slice(start, end) //其中[start, end)
-
-splice
-
-迭代方法
-every()
-filter()
-forEach()
-map()
-some()
-
-正则表达式
-exgular expression
-/pattern/flags
-g:  global应用与所有字符串
-i:	忽略大小写
-m:  表示多行
-
-以下所有的符号都要转义:
-{} [] \ ^ $ | ? * + .
-
-闭包
-closure 闭包的严格定义是由函数环境极其封闭的自由变量组成的集合体
-javascript中的每一个函数都是闭包
-闭包不但包括被返回的函数，还包括这个函数的定义环境
-
-=================================
-匿名函数
-防止污染顶级的命名空间
-(function() {
-	//do some work
-})();
-
-(function(window, $){
-	//do some work
-})(window, $);
-
-==================================
-命名空间
-(function(myapp, $, undefined){
+	splice
+	```
 	
-}(window.myapp = window.myapp || {}, jQuery));
-可能会把问题复杂化
-=================================
-模块模式
-所有定义的在模块内的数据都是私有的，可以把所有暴漏在模块外部的内容放在一个对象中，再返回这个对象
-var myModule = (function($,undefined){
-	var myVar1 = '',
-	myVar2 = '';
+	2. 迭代方法
+	```
+	every()
+	filter()
+	forEach()
+	map()
+	some()
+	```
 
-	var someFunction = function() {
-		return myVar1 + " " + myVar2;
+14. 正则表达式
+	```
+	exgular expression
+	/pattern/flags
+	g:  global应用与所有字符串
+	i:	忽略大小写
+	m:  表示多行
+
+	以下所有的符号都要转义:
+	{} [] \ ^ $ | ? * + .
+	```
+
+15. 闭包
+	closure 闭包的严格定义是由函数环境极其封闭的自由变量组成的集合体
+	javascript中的每一个函数都是闭包
+	闭包不但包括被返回的函数，还包括这个函数的定义环境
+
+16. 模块模式
+	所有定义的在模块内的数据都是私有的，可以把所有暴漏在模块外部的内容放在一个对象中，再返回这个对象
+	```
+		var myModule = (function($,undefined){
+			var myVar1 = '',
+			myVar2 = '';
+
+			var someFunction = function() {
+				return myVar1 + " " + myVar2;
+			};
+
+			return {
+					getMyVar1: function() { return myVar1; }
+					setMyVar1: function(var1) { myVar1 = var1; }
+					someFunction: someFunction
+			}
+		})(jQuery);
+	```
+	
+17. 类函数和prototype函数
+	```
+	var Person = function(firstName, lastName, age) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.age = age;
+		//this.fullName = function(){ //.. }	//虽然这个样子也可以，但是会给每个Person对象添加了一个fullname()函数副本的,所以使用下面的方式来定义函数
+	}
+
+	Person.prototype.fullName = function(){
+		return this.firstName + " " + this.lastName;
 	};
 
-	return {
-			getMyVar1: function() { return myVar1; }
-			setMyVar1: function(var1) { myVar1 = var1; }
-			someFunction: someFunction
+	var Spy = function(...){
+		
+	};
+	Spy.prototype = new Person();	//注意这里
+	Spy.prototype.spy = function(){
+		//..
 	}
-})(jQuery);
-
-====================================
-var Person = function(firstName, lastName, age) {
-	this.firstName = firstName;
-	this.lastName = lastName;
-	this.age = age;
-	//this.fullName = function(){ //.. }	//虽然这个样子也可以，但是会给每个Person对象添加了一个fullname()函数副本的,所以使用下面的方式来定义函数
-}
-
-Person.prototype.fullName = function(){
-	return this.firstName + " " + this.lastName;
-};
-
-var Spy = function(...){
-	
-};
-Spy.prototype = new Person();	//注意这里
-Spy.prototype.spy = function(){
-	//..
-}
-var mySpy = new Spy(...);
-mySpy.spy();
-
-======================================
-Dom操作
-document.getElementById() 通过Id获取元素节点
-document.getElementsByName() 通过name获取元素节点
-
-document.getElementsByTagName 通过TagName来获得节点
-document.getElementsByClassName
-
-parentNode
-childNodes
-firstChild
-lastChild
-nextSibling
-previoursSibling
-nodeType
-nodeValue
-nodeName
+	var mySpy = new Spy(...);
+	mySpy.spy();
+	```
