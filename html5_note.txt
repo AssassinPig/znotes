@@ -279,3 +279,11 @@
 			img.src = "xxx";
 			ctx.drawImage(img, x, y, width, height);
 		```
+
+10. 文本对象
+	首先设定字体信息，包括大小和字体等，然后使用fillText()函数来绘制
+	```
+	ctx.font = "15px Lucida Handwriting";
+	ctx.fillText("this is Lucida Handwriting", 10, 20);
+	```
+	
