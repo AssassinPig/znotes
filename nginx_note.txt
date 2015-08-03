@@ -1,0 +1,41 @@
+nginx
+1. apt安装
+	sudo apt-add-repository ppa:nginx/development
+	sudo apt-get update
+	sudo apt-get install nginx
+
+2. apt卸载
+	1. 方法1
+		删除nginx保留配置
+		sudo apt-get remove nginx
+
+		删除配置
+		rm -rf /etc/nginx
+
+	2. 方法2
+		删除nginx 包括配置文件
+		sudo apt-get purge nginx # Removes everything.
+
+		卸载不需要的nginx的依赖程序文件
+		sudo apt-get autoremove
+
+
+3. nginx 基本参数
+	http://www.nginx.cn/76.html
+
+4. nginx 全局参数
+	http://www.cnblogs.com/AloneSword/archive/2011/12/10/2283483.html
+	http://www.cnblogs.com/shineshqw/articles/1828295.html
+
+5. nginx-fpm
+	http://www.nginx.cn/231.html
+
+6. nginx location
+	http://www.nginx.cn/115.html
+	http://blog.sina.com.cn/s/blog_97688f8e0100zws5.html
+
+7. nginx rewrite
+	http://www.nginx.cn/216.html
+	http://www.th7.cn/system/lin/201412/79029.shtml
+	http://blog.csdn.net/adparking/article/details/7255536
+	http://www.nginx.cn/216.html

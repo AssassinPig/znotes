@@ -1,0 +1,150 @@
+PHP笔记
+1. 全局超级变量superglobal
+	1. 如果表单是通过POST方式提交的
+	```
+	$_POST['field1']  来获得表单中对应field1的对象的值
+	$_GET['field1'] 	来获得表单中对应field1的对象的值
+	```
+	2. 参考
+	```
+		$_GET	表单数组
+		$_POST
+		$GLOBALS 所有全局变量的数组 可以使用$GLOBALS['my_var']的形式来访问所有全局变量
+		$_SERVER 服务器环境变量数组
+		$COOKIE		cookie数组
+		$SESSION	会话数组
+		$ENV		环境变量数组
+		$FILES		与文件上传相关数组
+	```
+
+2. 字符串
+	1. 字符串类型
+		```
+		''	单引号
+		""	双引号
+		```
+		其中单引号被认为是真正的文本
+
+	2. 字符串连接
+		```
+		echo 'abc'. $def. 'jhi';
+		```
+		其中.是字符串连接符号
+
+		```
+			echo <<theEnd
+				line1
+				line2
+				line3
+			theEnd
+		```
+3. 数据类型
+	php目前支持如下
+	Integer
+	Float
+	String
+	Boolean
+	Array
+	Object
+
+	NULL	
+	resource	来自于外部 如数据库链接
+4. 类型
+	1. php是弱类型语言 声明变量的时候不需要附带类型 而转换的时候要注意隐式转换
+
+	2. 类型转换
+		$total_amout = (float)$total_xxx
+
+	3. 可变变量
+		```
+		$var = 5
+		$$varname = var
+		$varname = 5 
+		```
+		这样做是把var 的变量名字赋值给了varname, 第三句的意思就等价于 $var = 5
+
+5. 声明和使用常量
+	```
+	define('PER_PRICE', 100);
+	echo PER_PRICE;
+	```
+	定义和使用常量
+
+6. 操作
+	1. 赋值
+		```
+		$a = 5;
+		```
+		将5赋值给a
+
+		```
+		$a = 5;
+		$b = $a;
+		```
+		这样做是生成两个值为5的变量，分别叫做a和b
+		```
+		$a = 5;
+		$b = &$a;
+		```
+		这样做的话，就只有一个变量的值，但是有两个名字分别叫做a和b
+		引用就是一个别名 而不是一个指针
+
+		$a和$b都指向了内存的相同地址,可以通过重置它们来改变指向
+		```
+			$a = 5;
+			$b = &$a;
+			unset($a);
+		```
+		这样做就打断了a与变量值5之间的联系
+
+	2. 复合操作
+		```
+			$a = $a + 5;
+		```
+	3. 自增自减
+		```
+			echo ++$a;
+			echo $a++;
+		```
+	4. 比较操作符
+		```
+			$a == $b 
+		```
+		结果是true 或者 false
+		```
+			$a == $b 
+		```
+		只有相同值且相同类型的时候才是true
+
+	5. 逻辑操作
+		```
+			!		非
+			&&		与
+			||		或
+			not		非
+			and		与
+			or		或
+			xor		异或
+		```
+		其中and or 等操作符运算级别比较低
+
+	6. 位操作
+		```
+			&			按位 与
+			|				 或
+			~					非
+			^					异或
+			<<					左移
+			>>					右移
+		```
+	7. 其他
+		```
+		new 		生成对象
+		->			访问对象成员
+		instanceof  判断对象是否是某类的实例
+		$myObject = new SampleClass()
+		if ($myObject instanceof SampleClass)
+			echo 'true'
+		```
+	
+
