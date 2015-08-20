@@ -87,3 +87,8 @@
 	mysql_escape_string()
 
 	http://www.cnblogs.com/sherlockhua/archive/2012/03/31/2426399.html
+9. 处理datetime时间
+```
+	$sql = "insert into table(datetime) values('".date("Y-m-d h:i:s",time())."')"
+	".date("Y-m-d h:i:s",time())."
+```

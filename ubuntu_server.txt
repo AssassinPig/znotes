@@ -65,3 +65,28 @@
     切换
     switchdesk gnome
     switchdesk kde
+
+9. 添加用户
+    useradd -g root -m -s /bin/bash assassinpig
+    -g 添加到用户组
+    -m 创建用户目录
+    -s 新用户使用的shell
+
+10. 配置vsftp
+    (参考)[http://www.2cto.com/os/201203/124528.html]
+    (还有这里)[http://blog.slogra.com/post-387.html]
+    
+    ```
+    /var/ftpuser中注释掉root
+    ```
+    权限问题详解
+    系统有两类用户，一个是本地用户，一个是虚拟用户
+    本地用户可以在本地登录主机，然后进行操作
+    而虚拟用户就被规定不能在本地登录主机，只能在特定条件下扮演一个角色，进行特定的操作，比如说ftp中扮演用户，这个用户能进行ftp的上传下载等操作。
+
+    在权限这里就要进行区分这两种用户了，这是因为linux认为能上传的用户还具有在自己目录下执行文件的权利，这样太不安全
+    以前的/var/www/归属还是本机的root 权限是700
+    /var/www/user1/ 目录归属就要改成ftpuser 同时创建者最好也是ftpuser 权限也是700
+    然后在/var/www/user1/目录下再新建目录这个目录权限没啥要求 但是用户仍然是ftpuser 在这个目录下就可以进行上传和下载的操作了
+
+    留下疑问是pam.d是啥东东

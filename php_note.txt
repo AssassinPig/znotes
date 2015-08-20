@@ -1,4 +1,12 @@
 PHP笔记
+0. php安装
+	sudo apt-get install php5
+	sudo apt-get install php5-fpm
+	sudo apt-get install nginx
+
+	/etc/init.d/nginx start
+	/etc/init.d/php5-fpm start
+
 1. 全局超级变量superglobal
 	1. 如果表单是通过POST方式提交的
 	```
@@ -15,6 +23,7 @@ PHP笔记
 		$SESSION	会话数组
 		$ENV		环境变量数组
 		$FILES		与文件上传相关数组
+		$_REQUEST[] 
 	```
 
 2. 字符串
@@ -146,5 +155,205 @@ PHP笔记
 		if ($myObject instanceof SampleClass)
 			echo 'true'
 		```
-	
+7. 可变函数
+	1. 测试和设置变量类型
+		```
+		gettype()
+		settype()
+		$a = 56;
+		echo gettype($a)
+		settype($a, 'double')
+		echo gettype($a)
+		```
+	2. 其他函数
+		is_array()
+		is_double()
+		is_float()
+		is_real()
+		is_long() is_int() is_integer()
+		is_string()
+		is_bool()
+		is_object()
+		is_resource()
+		is_null()
+		is_scalar()
+		is_numeric()
+		is_callable()
 
+	3. 测试变量状态
+		```
+		bool isset(mixed var)	如果var这个变量存在则返回true 反之false
+		void unset(mixed var)	销毁var变量
+		empty()
+		```
+
+8. 文件读写
+	fread
+	fgets
+	fwrite
+	fputs	file_put_contents
+
+	fclsoe
+
+	while(!feof($fp)) {
+		$xxx = fgets($fp, 999);
+	}
+
+	一次读取一行
+	fgets
+	fgetss	可以过滤php和html标记
+
+	读取整个文件
+	readfile
+	file
+
+	一次读取一个字符
+	fgetc()
+	while(!feof($fp)) {
+		if (!feof($fp)) {
+			//使用fgetc函数的唯一缺点就是它返回文件结束符EOF
+		}
+	}
+
+	读取任意长度
+	fread($fp, len)
+
+	判断文件是否存在
+	file_exists()
+
+	确定文件大小
+	filesize()
+	```
+		fread($fp, filesize('xxxx'));
+	```
+
+	删除一个文件
+	unlink()
+
+	rewind()	将文件指针复位到文件开始
+	ftell()		以字节为单位返回文件指针当前在文件中的位置
+	fseek($fp, int offset, int where)
+			将指针从where位置移动offset个字节
+			where:	SEEK_SET	从开始位置
+					SEEK_CUR	从目前位置
+					SEEK_END	文件的结束
+9. 数组
+	1. 一般数组
+	```
+		$a = range(start_value, end_value);
+		for($i=0; $i<10; ++$i) {
+			echo $a[$i];
+		}
+	```
+	2. 关联数组
+	```
+		$spieces = array( 'Tires'=>100, 'Oli'=>10, 'Spark'=>8);
+		foreach($spieces as $key => $value) {
+		}
+	```
+	```
+		reset($sprices);
+		while( list($product, $price) each($prices)) 
+			echo $product."-".$price
+	```
+		需要注意的是使用each()函数的时候 数组将记录当前元素, 如果希望在相同的脚本中两次使用该数组，就必须使用reset()将当前元素重新设置到数组开始处
+	3. 数组的操作
+		```
+			$a + $b  将$b中元素加到$a中，冲突元素不会被添加
+			$a == $b 如果$a和$b中的元素相等 返回true
+			$a === $b 在==的基础上，顺序和类型也相同，返回true
+			!=
+			<>
+			!===
+		```
+
+	4. 多维数组
+		```
+			$produts = array(
+								array('Tir', 'Tires', 100),
+								array('Tir', 'Oil', 10),
+								array('Tir', 'Spark Plugs', 6),
+							);
+
+			for ($row = 0; $row < 3; $row++) 
+				for ($column = 0; $column < 3; $column++) {
+					echo $products[$row][$column];
+				}
+		```
+
+	5. 数组函数
+		1. 排序
+		```
+			sort() 数组排序
+			asort()	针对关联数组使用，针对其值排序
+			ksort()	同上， 只是针对其key排序
+		```
+		2. 反向排序
+		```
+			rsort()
+			arsort()
+			krsort()
+		```
+		3. 多维数组排序
+			自己定义compare函数
+
+		4. shuffle()函数
+		5. array_reverse()函数 返回一个内容与参数数组相同但是顺序相反的数组
+		6. array_push()
+		7. 数组统计
+		```
+			count()
+			sizeof()
+			$ac = array_count_values()  返回$ac是一个统计数组 统计列举所有值出现的次数
+		```
+
+10. 字符串
+	1. 字符串整理
+	```
+		chop()
+		ltrim()
+		rtrim()
+		trim()
+	```
+	其中trim去除字符串左右两边的, 并将结果字符串返回。默认情况下 除去的字符是换行符和回车符(\n和\r), 水平制表符和垂直制表符(\t \x0B) 字符串结束符(\0)和空格
+
+	2. HTML格式化函数 
+	```
+		nl2br()
+	```
+	3. 格式化输出
+		```
+			printf()
+			sprintf()
+			vprintf()	接受一个格式化字符串和数组
+			vsrpintf()
+		```
+	4. 大小写转换
+		```
+			strupper()
+			strlower()
+			ucfrist()
+			ucwords()
+		```
+	5. 转义字符格式化
+		```
+			addslashes()
+			stripslashes()
+		```
+		对于字符串来说，当作为数据存入数据库里面的时候可能会引起转义字符带来的问题, 如单引号和双引号 反斜杠(\) 和NULL字符
+	6. 字符串的连接和分割
+		```
+			explode()
+
+			implode()
+			join()
+		```
+		
+11. 代码重用
+	1. require和include
+		不同之处是：在函数失败之后，require将给出一个致命的错误， 而inlcude只是给出一个警告
+	
+	2. require_once和include_once
+		确保一个被包含的文件只被引用一次
+
+	
