@@ -1,4 +1,4 @@
-﻿##css学习
+##css学习
 0. 教程 & 资源
 	[1](http://www.w3school.com.cn/html/html_layout.asp)
 	[2](http://www.aa25.cn/special/10day/index.shtml)
@@ -228,3 +228,8 @@
 		font-family设定字体　如：font-family : "Lucida Grande", Verdana, Lucida, Arial, Helvetica, 宋体,sans-serif;
 
 	[字体参考](http://www.divcss5.com/rumen/r74.shtml)
+
+12. z-index
+	[参考文档](http://www.neoease.com/css-z-index-property-and-layering-tree/)
+	1. W3C 对 z-index 属性的描述中提到 在 z-index 属性仅在节点的 position 属性为 relative, absolute 或者 fixed 时生效
+	2. 

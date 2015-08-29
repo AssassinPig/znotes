@@ -1,0 +1,130 @@
+thinkphp
+1. 一般的view显示
+	View类命名规范
+
+View/控制器名/操作名.html
+View/Index/hello.html
+
+hello.html
+```
+	<html>
+	<head>
+	<title>hello {$name}</title>
+	</head>
+	<body>
+	    hello, {$name}!
+	</body>
+	</html>
+```
+
+```
+	namespace Home\Controller;
+	use Think\Controller;
+	class IndexController extends Controller{
+    public function index(){
+	        $Data     = M('Data');// 实例化Data数据模型
+	        $result     = $Data->find(1);
+	        $this->assign('result',$result);
+	        $this->display();
+    	}
+	}
+```
+
+```
+	<html>
+	<head>
+	<title></title>
+	</head>
+	<body>
+	{$result.id}--{$result.data}
+	</body>
+	</html>
+```
+2. CURD操作
+	D('Form')
+	M('Form')
+
+	Model模型类命名规范
+	模型名+Model.class.php （模型名的定义采用驼峰法并且首字母大写）
+	在Home模块的Model目录下面创建FormModel.class.php文件
+	
+	查询某一行数据
+	```
+		public function read($id=0){
+	    $Form   =   M('Form');
+	    // 读取数据
+	    $data =   $Form->find($id);
+	    if($data) {
+	        $this->assign('data',$data);// 模板变量赋值
+	    }else{
+	        $this->error('数据错误');
+	    }
+	    $this->display();
+	 }
+
+	```
+
+	查询某一个字段
+	```
+		$Form = M("Form"); 
+		 // 获取标题 
+		$title = $Form->where('id=3')->getField('title');
+	```
+
+	修改字段并保存
+	```
+		$Form = M("Form"); 
+		 // 要修改的数据对象属性赋值
+		$data['id'] = 5;
+		$data['title'] = 'ThinkPHP';
+		$data['content'] = 'ThinkPHP3.2.3版本发布';
+		$Form->save($data); // 根据条件保存修改的数据
+	```
+
+	根据调价保存字段
+	```
+		$Form = M("Form"); 
+		// 要修改的数据对象属性赋值
+		$data['title'] = 'ThinkPHP';
+		$data['content'] = 'ThinkPHP3.2.3版本发布';
+		$Form->where('id=5')->save($data); // 根据条件保存修改的数据
+	```
+	
+	使用对象的方式来保存 自动识别数据 save就不需要参数了
+	```
+		$Form = M("Form"); 
+		 // 要修改的数据对象属性赋值
+		$Form->title = 'ThinkPHP';
+		$Form->content = 'ThinkPHP3.2.3版本发布';
+		$Form->where('id=5')->save(); // 根据条件保存修改的数据
+	```
+
+	更新字段
+	```
+		$Form = M("Form"); 
+		 // 更改title值
+		$Form->where('id=5')->setField('title','ThinkPHP');
+	```
+
+	针对字段的操作
+	```
+		$User = M("User"); // 实例化User对象
+		$User->where('id=5')->setInc('score',3); // 用户的积分加3
+		$User->where('id=5')->setInc('score'); // 用户的积分加1
+		$User->where('id=5')->setDec('score',5); // 用户的积分减5
+		$User->where('id=5')->setDec('score'); // 用户的积分减1
+	```
+
+	删除记录
+	```
+		$Form = M('Form');
+		$Form->delete(5);
+	```
+
+	根据条件删除
+	```
+		$User = M("User"); // 实例化User对象
+		$User->where('id=5')->delete(); // 删除id为5的用户数据
+		$User->delete('1,2,5'); // 删除主键为1,2和5的用户数据
+		$User->where('status=0')->delete(); // 删除所有状态为0的用户数据
+	```

@@ -92,3 +92,8 @@
 	$sql = "insert into table(datetime) values('".date("Y-m-d h:i:s",time())."')"
 	".date("Y-m-d h:i:s",time())."
 ```
+
+10. 手动开启mysql
+	./mysqld_safe --defaults-file=/alidata/server/mysql/my.cnf --basedir=/alidata/server/mysql --datadir=/alidata/server/mysql/data/ --user=mysql
+
+	./mysqld --defaults-file=/alidata/server/mysql/my.cnf --basedir=/alidata/server/mysql --datadir=/alidata/server/mysql/data/ --user=mysql
