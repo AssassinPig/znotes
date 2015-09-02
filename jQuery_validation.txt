@@ -1,0 +1,40 @@
+jQuery validation
+
+0. 引入
+```
+<script src="jquery.js"></script>
+<script src="jquery.validate.js"></script>
+```
+1. 简单的登录表单验证
+```
+	$(document).ready(function(){
+		$('#form').validate({
+			rules: {
+				username: {
+					required:true,
+					minlength:2,
+					maxlength:16
+				},
+				password: {
+					required:true,
+					minlength:2,
+					maxlength:16
+				}
+			},
+
+			messages: {
+				username: {
+				required:"必须填写用户名",
+				minlength:"用户名最小为2位",
+				maxlength:"用户名最大为10位"
+				},
+				password: {
+					required:"必须填写密码",
+					minlength:"密码最小为2位",
+					maxlength:"密码最大为10位"
+				}
+
+			}
+		});
+	});
+```

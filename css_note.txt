@@ -233,3 +233,52 @@
 	[参考文档](http://www.neoease.com/css-z-index-property-and-layering-tree/)
 	1. W3C 对 z-index 属性的描述中提到 在 z-index 属性仅在节点的 position 属性为 relative, absolute 或者 fixed 时生效
 	2. 
+
+13. 使用css来截取显示的字符串
+	1. 指定容器长度的
+		```
+			<div style="width:300px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;"> 任意长度的字符串 </div>
+		```
+	2. 自动截取
+	```
+	<input type=”text” style=”width:100%; cursor:default; border-width:0; border-style:none; background-color:transparent;” value=”任意长度的字符串” readonly/>
+	```
+
+	```
+	div.test{
+
+	width:200px;
+
+	height:14px;
+
+	overflow:hidden;
+
+	white-space:nowrap;
+
+	text-overflow:ellipsis;
+
+	text-overflow: ellipsis;/* IE/Safari */
+
+	-ms-text-overflow: ellipsis;
+
+	-o-text-overflow: ellipsis;/* Opera */
+
+	-moz-binding: url("ellipsis.xml#ellipsis");/*FireFox*/
+
+	}
+	```
+
+	关键是text-overflow,其语法如下：
+	text-overflow:clip | ellipsis
+	clip：不显示省略标记(...)，而是简单的裁切
+	ellipsis：当对象向内文本溢出时显示省略标记(...)
+
+	white-space : normal | pre | nowrap
+
+	[原文链接在此](http://www.cnblogs.com/meihua/articles/1943310.html)
+
+	$('.td_p b').each(function(i, e){ console.log($(this).offsetWidth); });
+
+	$(this).offsetWidth;
+
+	$(this).parent().offsetWidth;
