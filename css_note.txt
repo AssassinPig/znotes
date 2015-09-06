@@ -109,6 +109,8 @@
 		1. clear:left/right/both
 			表示在该标签元素左边/右边/两边没有浮动元素
 		2. clear:both
+		[具体例子的讲解](http://www.cnblogs.com/dolphinX/p/3508869.html)
+
 
 8. 选择器
 	1. 派生选择器	

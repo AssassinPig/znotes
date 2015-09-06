@@ -208,7 +208,7 @@
 	关闭路径
 	context.closePath()
 	绘制图形样式
-	context.fillStyel = 'rgba(255, 0, 0, 0.25)';
+	context.fillStyle = 'rgba(255, 0, 0, 0.25)';
 	context.fill()
 
 	moveTo	移动到某点

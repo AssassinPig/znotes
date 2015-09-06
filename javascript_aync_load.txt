@@ -1,0 +1,49 @@
+javascript_aync_load
+1. 如果可以保证样式的基本效果，则可以将script放在最后进行加载
+2. 如果需要放在html的前面位置的话， 可以使用defer
+	```
+	<body>
+		<script defer>
+			alert("defer");
+		</script>
+		<script>
+			alert("script");
+		</script>
+		<script>
+			window.onload = function() {
+				alert('load');
+			}
+		</script>
+	</body>
+	```
+	如果浏览器支持defer 则弹出顺序为 script defer load
+	如果浏览器不支持defet 则弹出顺序为 defer script load
+3. 动态加载script节点 来达到目的
+	```
+		var script = document.createElement("script");
+		script.type = "text/javascript";
+		script.src = "file1.js";
+		document.getElementsByTagName_r("head")[0].appendChild(script);
+	```
+
+4. 使用XHR对象来进行注入
+	```
+		var xhr = new XMLHttpRequest();
+		xhr.open("get", 'file1.js', true);
+		xhr.onreadystatechange = function() {
+			if(xhr.readyState == 4) {
+				if(xhr.status >= 200 && xhr.status < 300 || xhr.status == 304) {
+					var script = document.createElement("script");
+					script.type = "text/javascript";
+					script.text = xhr.responseText;
+					document.body.appendChild(script);
+				}
+			}
+		}
+		xhr.send(null);
+	```
+5. 推荐的非阻塞的加载方式
+	1. 首先包含动态加载的javascript所需的代码 这部分代码尽量小， 可能只包含loadscript函数，它的下载和运行非常的迅速，不会对页面造成大的干扰
+	2. 当初始化代码准备好之后，用他来加载其他的javascript函数
+	推荐的库
+	LazyLoad.js

@@ -42,6 +42,9 @@
 		11. [go友团](http://golanghome.com/)
 		12. [Go daily](http://godaily.org/)
 
+	3. 安装部分
+		1. [golang中国安装包](http://golangtc.com/download/package)
+
 1. 引入包
 	```
 	import "fmt"
@@ -56,8 +59,7 @@
 2. 函数
 	```
 	func (param1, param2 param_type) return_type {
-		
-	} 
+	}
 
 	```
 

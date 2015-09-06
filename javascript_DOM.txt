@@ -1,0 +1,20 @@
+javascript DOM操作 
+1. 获取元素
+	按照对应属性来获取元素集合
+	```
+		document.getElementsByName()
+		document.getElementsByClassName()
+		document.getElementsByTagName_r()
+	```
+
+	document.images页面中素有<img>元素
+
+	document.links 所有<a>元素
+	document.forms
+	document.forms[0].elements 页面中第一个表单的所有字段
+2. 遍历元素
+	每次迭代过程访问length属性的时候，它导致集合器更新，在所有浏览器上都会产生明显的性能损失，优化方法很简单，只要将集合的length属性缓存到一个变量之中，然后在循环判断条件中使用这个变量
+
+	childNode
+	nextSibling
+	

@@ -352,6 +352,21 @@
 	closure 闭包的严格定义是由函数环境极其封闭的自由变量组成的集合体
 	javascript中的每一个函数都是闭包
 	闭包不但包括被返回的函数，还包括这个函数的定义环境
+	```
+		with(obj) {
+
+		}
+
+		(function(xx){
+
+		})(xx);
+
+		try(){
+
+		}catch(e){
+
+		}	
+	```
 
 16. 模块模式
 	所有定义的在模块内的数据都是私有的，可以把所有暴漏在模块外部的内容放在一个对象中，再返回这个对象
@@ -373,6 +388,7 @@
 	```
 
 17. 类函数和prototype函数
+	[详细的文章](http://www.cnblogs.com/dolphinX/p/4385862.html)
 	```
 	var Person = function(firstName, lastName, age) {
 		this.firstName = firstName;
@@ -388,7 +404,7 @@
 	var Spy = function(...){
 		
 	};
-	Spy.prototype = new Person();	//注意这里
+	Spy.prototype = new Person();	//注意这里 实际上等同于继承了
 	Spy.prototype.spy = function(){
 		//..
 	}
