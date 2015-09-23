@@ -15,6 +15,75 @@ javascript DOM操作
 2. 遍历元素
 	每次迭代过程访问length属性的时候，它导致集合器更新，在所有浏览器上都会产生明显的性能损失，优化方法很简单，只要将集合的length属性缓存到一个变量之中，然后在循环判断条件中使用这个变量
 
-	childNode
-	nextSibling
-	
+	childNode集合 	来获取节点下的所有子节点
+	firstChild 		第一个子节点
+	nextSibling		来获取所有的兄弟节点
+
+	```
+	function testNextSibling() {
+		var el = document.getElementById('mydiv');
+		ch = el.firstChild,
+		name = "";
+		do {
+			name = ch.nodeName;
+		} while(ch = ch.nextSibling);
+
+		return name;
+	}
+
+	function testChildNodes() {
+		var el = document.getElementById('mydiv');
+		ch = el.childNodes,
+		len = ch.length,
+		name = "";
+
+		for(var count=0; count<len; count++) {
+			name = ch[count].nodeName;
+		}
+
+		return name;
+	}
+	```
+3. 浏览器工作步骤
+	1. 当浏览器下载完所有的页面和HTML标记
+		javascript CSS 和 图片之后 
+		它解析文件并创建两个内部数据结构
+		A DOM tree	表示页面结构
+		A render tree	表示DOM节点如何显示
+		每一个节点都符合一个模型盒标准
+
+	2.	重排和重绘
+		当有操作改变了元素的几何属性的时候，浏览器会进行重拍，
+		之后进行重绘
+
+		所有的操作不一定都改变集合属性 如果只是改变颜色 则不会触发重绘
+
+	3. 重排版时候发生的事情
+		添加和删除可见的DOM元素
+		元素位置改变
+		元素尺寸改变(边距 填充边框 宽度 高度等属性改变)
+		内容改变
+		最初的页面渲染
+		浏览器窗口尺寸
+
+	4. 使用以下步骤避免对大部分页面进行重排
+		1. 使用绝对坐标定位页面动画元素 使它位于页面布局流之外
+		2. 启动元素动画 当它扩大的时候 它临时覆盖部分网页 这是一个 重绘过程 但只影像页面的一小部分 避免重排并重绘一大块页面
+		3. 当动画结束的时候 重新定位 从而只一次下移文档其他元素的位置
+
+	5. DOM标准 事件处理过程
+		1. capturing 捕获
+		2. At target 到达目标
+		3. Bubbing 冒泡
+		```
+			<body>
+				<div>
+					<ul>
+						<li>
+							<a href="xxx"></a>
+						</li>
+					</ul>
+				</div>
+			</body>
+		```
+		在这个代码之中 当用户点击了a之后，点击事件首先被a收到 然后他沿着DOM树冒泡，被li ul div 最后直到文档顶层 甚至window 这使得你可以只在父元素上面接受一个事件句柄 来接收所有子元素产生的事件通知

@@ -1,0 +1,36 @@
+javascript performance 性能
+1. 字符串
+	1. 链接的四种方式
+		```
+			str = "a" + "b" + "c";
+			str = "a";
+			
+			str += "b";
+			str += "c";
+
+			array.join()
+			str = ['a', 'b', 'c'].join('');
+
+			string.concat()
+			str = "a";
+			str = str.concat('b', 'c');
+		```
+
+	2. +和+=的时候发生了什么
+		```
+			str += "one" + "two";
+		```
+		1. 内存中创建了一个临时字符串
+		2. 临时字符串的值被赋予"onetwo"
+		3. 临时字符串和str的值进行链接
+		4. 结果赋予str
+
+		由于临时字符串的存在,所以速度会稍显慢了一点
+		所以用以下的两段更好
+		```
+			str += "one";
+			str += "two";
+		```
+		```
+			str = str+"one"+"two";
+		```

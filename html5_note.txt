@@ -1,4 +1,7 @@
 ##html5
+0. reference
+	[一个不错的教程](http://www.html5canvastutorials.com/)
+
 1. 语法
 	1. 内容类型ContentType
 		后缀名仍然是'html' 或 'htm', 内容类型仍然是'text/html'
@@ -156,6 +159,21 @@
 	3. 填充与绘制边框
 		fill   是指填满图形内部
 		stroke 是指不填满内部只绘制图形外框
+		外线框的宽度
+		context.lineWidth = 15;
+
+		外线框的颜色
+		// set line color
+      	context.strokeStyle = '#ff0000';
+
+      	进行绘制
+      	context.stroke();
+
+      	//cap模式限定 线段的节点头部
+      	context.lineCap = 'butt';
+      	context.lineCap = 'round';
+      	context.lineCap = 'square';
+
 	```html
 		<canvas id="canvas"></canvas>
 	```

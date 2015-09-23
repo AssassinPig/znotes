@@ -1,4 +1,14 @@
 ##CSS3
+0. 模块
+	选择器
+	框模型
+	背景和边框
+	文本和效果
+	2D/3D转换
+	动画
+	多列布局
+	用户界面
+
 1. 选择器
 	1. 属性选择器
 		[att=val]
@@ -30,6 +40,7 @@
 		:indeterminate
 		:selection
 2. 边框
+	border角的半径
 	border-radius
 		```
 			div
@@ -39,6 +50,7 @@
 				-moz-border-radius:25px; /* Old Firefox */
 			}
 		```
+	阴影
 	box-shadow
 		```
 			div
@@ -46,6 +58,7 @@
 				box-shadow: 10px 10px 5px #888888;
 			}
 		```
+	背景图片
 	border-image
 		```
 			div
@@ -56,3 +69,10 @@
 				-o-border-image:url(border.png) 30 30 round; /* Opera */
 			}
 		```
+3. 背景
+	background-size
+		规定背景图片的尺寸
+	background-origin
+		规定背景图片的定位区域
+
+	

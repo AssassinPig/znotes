@@ -1,0 +1,405 @@
+html5 effection
+0. category
+	basic animation 基本动画效果
+	trigonometry for animation 动画的三角学
+
+	velocity and acceleration 速度和加速度
+	Boundaries and friction	边界和摩擦
+
+	easing and springing 缓动和跳动
+	Collision detection 碰撞检测
+
+	Coordinate rotation and bouncing off angles 坐标系旋转和按角度跳动
+
+	billiard ball physics 撞球物理
+
+	particel attraction and gravity 粒子攻击和引力
+
+1. 动画循环函数
+	```
+	(function drawFrame() {
+		window.requestAnimationFrame(drawFrame, canvas);
+		//animation code...
+	}());
+	```
+	```
+	if(!window.requestAnimationFrame) {
+		window.requestAnimationFrame = (window.webkitRequestAnimationFrame||
+										window.mozRequestanimationFrame || 
+										window.oRequestAnimationFrame || 
+										window.msRequestAnimationFrame ||
+										function(callback) {
+											return window.setTimeout(callback, 1000/60);
+										}
+									);
+	}
+	```
+
+
+2. 事件处理
+
+	element.addEventListener(type, handler_fun, [, useCapture]);
+	其中type可以取以下的值:
+
+	1. 鼠标事件
+		mousedown
+		mouseup
+		click
+		dblclick
+		mousewheel
+		mousemove
+		mouseover
+		mouseout
+
+	2. 触摸事件
+		touchestart
+		touchend
+		touchmove
+	
+	3. 键盘事件
+		keydown
+		keyup
+		其中键盘按键的键值
+		event.keyCode
+
+3. 三角学
+	1. 常用重要的函数
+		Math.sin(r) 接受弧度
+		Math.cos
+		Math.PI 	常量
+
+		Math.tan(r)
+		Math.atan(r)
+		Math.atan2(x,y)		接受对边和邻边
+
+		角度与弧度互转
+		radians = degrees * Math.PI / 180
+		degrees = radians * 180 / Math.PI
+
+	2. canvas坐标系
+		1. 坐标原点
+			原点(0,0)在左上角
+			水平方向是x轴
+			垂直方向是y轴
+
+		2. 方向
+			正常坐标系之中 逆时针方向是正角度
+			而在canvas坐标系之中 顺时针方向是正角度
+
+	3. 元素的旋转
+		element.ratote = 接受的是弧度
+
+	4. 图形的创建
+		1. 波型
+			value = center + Math.sin(angle) * range;
+			angle += speed;
+
+		2. 圆形
+			xposition = centerX + Math.cos(angle) * radius;
+			yposition = centerY + Math.sin(angle) * radius;
+
+		3. 椭圆形
+			xposition = centerX + Math.cos(angle) * radiusX;
+			yposition = centerY + Math.sin(angle) * radiusY;
+
+		4. 两点间的距离
+			dx = x2 - x1;
+			dy = y2 - y1;
+			dist = Math.sqrt(dx*dx + dy*dy);
+4. 颜色
+	#RRGGBB
+	#RGB
+	rgb(R,G,B)
+	rgba(R,G,B,A)
+
+5. 绘图API
+	strokeStyle
+	fillStyle
+	lineWidth
+	save()
+	restore()
+	beginPath()
+	closePath()
+	stroke()
+	lineTo(x,y)
+	moveTo(x,y)
+	quadraticCurveTo(cpx, cpy, x, y)
+	bezierCurveTo(cp1x, cp1y, cp2x, cp2y)
+	arcTo(x1, y1, x2, y2, radius)
+	arc(x, y, radius, startAngle, endAngle, [, anticlockwise])
+	createLinearGradient(x0, y0, x1, y1)
+	createRadialGradient(x0, y0, r0, x1, y1, r1)
+	clearRect(x, y, width, height)
+	fillRect(x, y, width, height)
+
+	其中clearRect函数 是把像素设置为全透明的黑色 擦除指定区域的每一个像素
+
+	strokeStyle		指定属性用于指定线条的颜色
+	lineWidth		指定线条在其路径上宽度
+	lineCap			指定线条的终点
+	lineJoin		决定两条相连的线段如何连接
+	miterLimit		当lineJoin属性设置为miter时候
+
+6. 图像
+	1. 图像绘制
+		1. 在脚本运行过程之中加载一个URL
+			没有html标签
+			在图片加载完成之后 调用image的onload函数 进行绘制
+			```
+				window.onload = function() {
+					var canvas = document.getElemnetById('canvas'),
+					context = canvas.getContext('2d'),
+					image = new Image();
+
+					image.src = "picture.jpg";
+					image.onload = function(){
+						context.drawImage(image, 0, 0);
+					}
+				}
+			```
+
+			context.drawImage(image, dx, dy);
+			context.drawImage(image, dx, dy, dw, dh);
+			context.drawImage(image, sx, sy, sw, sh, dx, dy, dw, dh);
+
+		2. 在DOM接口访问一个内嵌在HTML中的图片元素
+			拥有一个html的img标签
+			```
+				<canvas id="canvas"></canvas>
+				<img id="picture" src="pic.jpg">
+				<script>
+					...
+				</script>
+			```
+
+	2. 图像像素的获取和设置
+		1. 获取
+			```
+				var imagedata = context.getImageData(x, y, width, height);
+			```
+		2. 创建空白的imageData
+			```
+				var imagedata = context.createImageData(width, height);
+			```
+		3. 操作
+			```
+				var pixels = imagedata.data;
+				//其中下一行中的4就是一个跨度 如果只有rgb三个通道则 +=3
+				for(var offset=0; offset < pixels.length; offset+=4) {
+					//在此就可以针对pixels进行取值和赋值了
+					pixels[offset]
+					pixels[offset+1]
+					pixels[offset+2]
+					pixels[offset+3]
+				}
+
+				//最后设置
+				context.putImageData(imagedata, 0, 0);
+			```
+7. 速度和加速度
+	1. 将角速度分解
+		```
+			vx = speed * Math.cos(angle);
+			vy = spedd * Math.sin(angle);
+		```
+	2. 将角加速度 分解为x,y轴上的加速度
+		```
+			ax = force * Math.cos(angle);
+			ay = force * Math.sin(angle);
+		```
+	3. 将加速度加入速度向量
+		```
+		vx += ax;
+		vy += ay;
+		```
+	4. 将速度向量加入位置坐标
+		```
+			object.x += vx;
+			object.y += vy;
+		```
+
+8. 边界与摩擦
+	1. 移除越界物体
+		判断物体的包围盒边界与容器边界来判定
+
+	2. 重置越界物体
+		如果物体越界之后 放回初始位置
+
+	3. 越界物体的屏幕环绕
+		如果物体越界之后 判断是在哪个方向(xy)超出 后将对应坐标设置为对边屏幕的值
+		```
+		if(object.x - object.width /2 > right) { //超过右边 从左边进入
+			object.x = left - object.width / 2;
+		} else if (object.x + object.width/2 < left) {
+			object.x = right + object.width /2;
+		} else if (object.y - object.height/2 > bottom) {
+			object.y = top - object.height/2;
+		} else if (object.y + object.height/2 < top) {
+			object.y = bottom + object.height/2;
+		}
+		```
+
+	4. 应用摩擦力(正确的详细方法)
+		```
+		speed = Math.sqrt(vx*vx, vy*vy);
+		angle = Math.atan2(vy, vx);
+		if (speed > firction) {
+			speed -= friction;
+		} else {
+			speed = 0;
+		}
+
+		vx = Math.cos(angle) * speed;
+		vy = Math.sin(angle) * speed;
+		```
+
+	5. 简单应用摩擦力
+		```
+		vx *= friction;
+		vy *= friction;
+		```
+
+9. 交互事件
+	1. 添加和删除事件处理函数
+	```
+	canvas.addEventListener('mousedown', function(){
+
+	}, false);
+
+	canvas.removeEventListener('mousedown', function(){
+
+	}, false);
+
+	canvas.addEventListener('mouseup', function(){
+
+	}, false);
+
+	canvas.addEventListener('mousemove', function(){
+
+	}, false);
+
+	```
+10. 投掷
+	旧位置 + 速度向量 = 新的位置
+	velocity = new_position - old_position
+
+11. 缓动和弹动 easing and springing
+	1. 定义和区别
+		缓动和弹动关系密切， 这两种技术都是把对象从已有位置移动到目标的方法。
+		缓动是物体欢动到目标点就停止下来
+		弹动是指物体来回的反弹一会, 最终停在目标点的运动
+
+	2. 共同点
+		需要设定目标点
+		需要确定物体到目标点的距离
+		运动和距离是成正比的 距离越远 运动的程度越大
+
+	3. easing
+		1. 设计和实现的策略
+			为运动确定一个比例系数, 这是一个小于1且大于0的小数
+			确定目标点
+			计算出物体与目标点的位置
+			计算速度 速度=距离*比例系数
+			用当前的位置加上速度来计算出新的位置
+			重复3~5步骤
+
+		2. 高级缓动
+			robert penner
+			http://robertpenner.com
+			http://github.com/lamberta/html5-animation
+
+	4. springing
+		基本策略跟缓动差不多, 区别是要计算加速度
+
+	5. 总结公式
+		1. 简单easing
+			```
+			var dx = targetX - object.x;
+			var dy = targetY - object.y;
+			vx *= easing;
+			vy *= easing;
+			object.x += vx;
+			object.y += vy;
+			```
+		2. 缩略easing
+			```
+			vx = (targetX - object.x) * easing;
+			vy = (targetY - ojbect.y) * easing;
+			object.x += vx;
+			object.y += vy;
+			```
+		3. 简易easing
+			```
+			object.x += (targetX - object.x) * easing;
+			object.y += (targetY - object.y) * easing;
+			```
+
+		4. 弹动springing
+			```
+				var ax = (targetX - object.x) * spring;
+				var ay = (targetY - object.y) * spring;
+				vx += ax;
+				vy += ay;
+				vx *= friction;
+				vy *= friction;
+				object.x += vx;
+				object.y += vy;
+			```
+		5. 缩略版springing
+			```
+				vx += (targetX - object.x) * spring;
+				vy += (targetY - object.y) * spring;
+				vx *= friction;
+				vy *= friction;
+				object.x += vx;
+				object.y += vy;
+			```
+		6. 简易版springing
+			```
+				vx += (targetX - object.x) * spring;
+				vy += (targetY - object.y) * spring;
+				vx *= friction;
+				vy *= friction;
+				object.x += (vx *= friction);
+				object.y += (vy *= friction);
+			```
+		7. 有偏移量的弹动
+			```
+				var dx = object.x - fixedX;
+				var dy = object.y - fixedY;
+				angle = Math.atan2(dy, dx);
+				targetX = fixedX + Math.cos(angle) * springLength;
+				targetY = fixedY + Math.sin(angle) * springLength;
+
+				...
+
+			```
+
+12. 碰撞检测
+	这种简单的碰撞检测分为两种:
+	一种是AABB包围盒方式来检测
+	一种是根据物体中心点距离来进行检测
+
+	1. 基于距离的碰撞检测
+		```
+		var dx = objectB.x - objectA.x,
+			dy = objectB.y - objectA.y,
+			dist = Math.sqrt(dx*dx, dy*dy);
+			if(dist < objectA.radius+objectB.radius) {
+				//handle collision
+			}
+		```
+
+	2. 多物体碰撞检测
+		```
+			objects.forEach(function(objectA, i){
+				//剔除了一部分不必要的检测
+				for(var j=i+1; j<objects.length; ++j) {
+					var objectB = objects[j];
+					//perform collision detection between objectA and objectB
+				}
+			});
+		```
+
+13. 旋转平面上的各种运动
+	

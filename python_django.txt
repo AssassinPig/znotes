@@ -90,3 +90,17 @@
 
 11. test case
 	python manage.py test polls
+
+12. create an admin user
+	python manage.py createsuperuser
+
+	add app to admin
+
+	```
+		apps/admin.py
+
+		from django.contrib import admin
+		from .models import Question
+		admin.site.register(Question)
+	```
+	
