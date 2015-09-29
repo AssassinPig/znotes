@@ -3,7 +3,7 @@
 	1. 下载和安装
 		1. [国内下载](http://www.golangtc.com/download)
 		2. 设置
-			1. linux下设置		
+			1. linux下设置
 				设置 Go 环境变量
 				我们在 Linux 系统下一般通过文件 $HOME/.bashrc 配置自定义环境变量，根据不同的发行版也可能是文件 $HOME/.profile，然后使用 gedit 或 vi 来编辑文件内容。
 
@@ -58,21 +58,49 @@
 	```
 2. 函数
 	```
-	func (param1, param2 param_type) return_type {
+	func func_name (param1, param2 param_type) return_type {
 	}
 
 	```
 
+	多返回值
+	```
+		func getName() {
+			return "first-name", "middle-name", "famliy-name";
+		}
+
+		first-name, middle-name, famliy-name := getName();
+
+	```
+
+	占位符 _
+	```
+		first-name, _, famliy-name := getName();
+	```
+
+	匿名函数和闭包
+	在Go中所有的函数也都是值类型, 可以进行赋值操作
+	```
+		f := func(x, y int) int {
+			return x+y;
+		}
+	```
+
 3. 类型
 	```
-	int、float、bool、string
-	struct、array、slice、map、channel
+	int float bool string
+	struct array slice map channel
 	interface
 	```
 
 4. 定义变量
 	```
 	var v int = 5
+	var (
+		v1 int
+		v2 string
+	)
+
 	```
 
 5. 类型转换
@@ -91,7 +119,7 @@
 	const b = "abc"
 	```
 
-组合(继承)
+7. 组合(继承)
 
 	定义Base类
 	type Base struct {
@@ -117,40 +145,65 @@
 	在上述例子中， Foo类的Bar被定义
 	Foo函数可以直接调用 foo.Foo() 效果等同于foo.bar.Foo()
 
-goroutine
+8. 并发
+	1. goroutine
+		Go引入了goroutine概念，使并发变得非常简单, 通过使用goroutine而不是裸用操作系统的并发机制，以及使用消息传递来共享内存而不是使用共享内存来通信,让并发编程变得更加轻盈和安全
 
-go func()
+		```
+		go func()
+		```
+	2. channel
+		var chanName chan ElementType
+		var ch chan int
+		var m map[string] chan bool
+		ch := make(chan int)
+		向channel中写入数据 通常会导致程序阻塞 直到有其他goroutine从channel中读取数据
+		ch <- value
+		从channel读取数据 如果没有数据写入， 这样进行的读取操作会导致程序阻塞 直到channel被写入数据
+		value := <-ch
 
-channel
-var chanName chan ElementType
-var ch chan int
-var m map[string] chan bool
-ch := make(chan int)
-向channel中写入数据 通常会导致程序阻塞 直到有其他goroutine从channel中读取数据
-ch <- value
-从channel读取数据 如果没有数据写入， 这样进行的读取操作会导致程序阻塞 直到channel被写入数据
-value := <-ch
+		创建一个带缓冲的channel
+		c := make(chan int, 1024)
+		将缓冲区大小作为第二个参数传入
+		即使没有读取方操作，写入方也可以一直向channel中写入 在缓冲区被填充完整之前都不会阻塞
 
+		从缓冲的channel中读取数据
+		与常规channel中读取完全一致
+		可以使用range 更加方便的进行读取操作
+		c := make(chan in, 1024)
+		for i := range c {
+			fmt.Println("Received:", i)
+		}
 
-创建一个带缓冲的channel
-c := make(chan int, 1024)
-将缓冲区大小作为第二个参数传入
-即使没有读取方操作，写入方也可以一直向channel中写入 在缓冲区被填充完整之前都不会阻塞
+		单向channel
+		var ch1 chan int
+		var ch2 chan<- float64  单向写入channel
+		var ch3 <-chan int      单向输出channel
 
-从缓冲的channel中读取数据
-与常规channel中读取完全一致 
-可以使用range 更加方便的进行读取操作
-c := make(chan in, 1024)
-for i := range c {
-	fmt.Println("Received:", i)
-}
+		关闭channel
+		close(ch)
+		判断一个channel是否关闭
+		x,ok := <-ch
 
-单向channel
-var ch1 chan int
-var ch2 chan<- float64  单向写入channel
-var ch3 <-chan int      单向输出channel
+9. 错误处理
+	defer
 
-关闭channel
-close(ch)
-判断一个channel是否关闭
-x,ok := <-ch
+10. 接口interface
+	```
+		type Bird struct {
+
+		}
+
+		func (b *Bird) Fly() {
+
+		}
+
+		type IFly interface {
+			Fly()
+		}
+
+		func main() {
+			var fly IFly = new(Bird)
+			fly.Fly()
+		}
+	```
