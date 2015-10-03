@@ -38,7 +38,7 @@
 
 		aside	表示article元素内容之外的
 		header  表示页面中的一个内容块或者整个页面的标题
-		hgroup	
+		hgroup	标题部分中可能有主标题 也可能有辅助标题 使用hgroup把副标题标记起来
 		footer  页面的底部
 		nav		页面的导航链接部分
 		figure	表示一段独立的流内容

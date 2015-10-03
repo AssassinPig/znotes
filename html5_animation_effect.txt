@@ -402,4 +402,48 @@ html5 effection
 		```
 
 13. 旋转平面上的各种运动
-	
+	1. 知道物体相对于中心点的x,y坐标和旋转角度, 可以计算出物体旋转后的x,y位置
+	```
+		x1 = x*cos(rotation) - y*sin(rotation)
+		y1 = y*cos(rotation) + x*sin(rotation)
+
+		x1 = (x - centerX) * cos(rotation) - (y - centerY) * sin(rotation)
+		y1 = (y - centerY) * cos(rotation) + (x - centerX) * sin(rotation)
+	```
+
+	2. 推导 利用两角之和的余弦
+	```
+		cos(a+b) = cos(a) * cos(b) - sin(a) * sin(b)
+		sin(a+b) = sin(a) * cos(b) + cos(a) * sin(b)
+
+		x1 = radisu * cos(angle) * cos(rotation) - radius*sin(angle)*sin(rotation)
+		y1 = radisu * sin(angle) * cos(rotation) + radius*cos(angle)*sin(rotation)
+
+		x1 = x*cos(rotation) - y*sin(rotation)
+		y1 = y*cos(rotation) + x*sin(rotation)
+	```
+
+	3. 斜面反弹
+		斜面反弹的思路是 旋转整个系统，使反弹面水平，随后进行反弹操作，最后再旋转回来.
+
+		坐标旋转
+	```
+		x1 = x*Math.cos(rotation) - y*Math.sin(rotation)
+		y1 = y*Math.cos(rotation) + x*Math.sin(rotation)
+	```
+
+		反坐标旋转
+	```
+		x1 = x*Math.cos(rotation) + y*Math.sin(rotation)
+		y1 = y*Math.cos(rotation) - x*Math.sin(rotation)
+	```
+
+14. 动量 撞球
+	m0 v0 是物体0的质量和速度
+	m1 v1 是物体1的质量和速度
+	v0Final 是物体0碰撞之后的速度
+	v1Final 是物体1碰撞之后的速度
+	```
+		v0Final = [(m0-m1)*v0 + 2*mv1*v1] / (m0+m1)
+		v1Final = [(m1-m0)*v1 + 2*m0*v0] / (m0+m1)
+	```
