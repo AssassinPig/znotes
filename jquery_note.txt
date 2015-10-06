@@ -209,11 +209,39 @@
 		});
 	```
 10. 常见封装
-	
-	http://www.2cto.com/kf/201104/87600.html	
+	http://www.2cto.com/kf/201104/87600.html
+	```
 	var self = this;
 	this.timer = setInterval(function (){ self.show_next(); }, opts.interval);
 
 	slider.prototype.show_next = function() {
     	this.show(this.index+1);
 	}
+	```
+11. 效果effection
+	1. 渐变
+		```
+		fadeIn()	//淡入效果
+		fadeOut()	//淡出效果
+		fadeTo()	//调整透明度
+		fadeToggle()	//通过透明度来显示或隐藏他们
+		.fadeOut( [duration ] [, easing ] [, complete ] )
+		```
+		其中duration 持续效果
+		easing	弹动效果
+		complete 函数
+	2. 动画
+		```
+			.animate( properties [, duration ] [, easing ] [, complete ] )
+		```
+		其中
+		properties中属性
+		```
+			{
+				left: '+=50',	//加50
+	    		height: 'toggle'//触发
+    		}
+		```
+		duration
+		easing
+		complete

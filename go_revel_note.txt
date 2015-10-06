@@ -1,0 +1,34 @@
+Go Revel
+
+0. setup
+	1. set GOPATH
+		mkdir ~/gocode
+		GOPATH: export GOPATH=~/gocode
+		echo GOPATH=$GOPATH >> .bash_profile
+
+	2. get revel
+		go get github.com/revel/cmd/revel
+
+	3. validate setup correct
+		revel help
+
+1. create new project
+	1. create
+		cd $GOPATH
+		revel new myapp
+
+	2. run
+		revel run myapp
+
+2. dir文件用途
+	Revel监视 app/ 目录，当发现文件变动时，会自动重新编译
+	app/controller
+	app/models
+	app/views
+
+	conf/app.conf
+	conf/routes
+
+	messages 目录包含了本地化消息文件
+
+	public 静态资源文件存放到 public 目录

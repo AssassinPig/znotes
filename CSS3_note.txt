@@ -41,6 +41,8 @@
 		:selection
 2. 边框
 	border角的半径
+	同时衍生出
+	border-left-radius之类的针对单个角的配置
 	border-radius
 		```
 			div
@@ -64,9 +66,9 @@
 			div
 			{
 				border-image:url(border.png) 30 30 round;
-				-moz-border-image:url(border.png) 30 30 round; /* 老的 Firefox */
-				-webkit-border-image:url(border.png) 30 30 round; /* Safari 和 Chrome */
-				-o-border-image:url(border.png) 30 30 round; /* Opera */
+				-moz-border-image:url(border.png) 30 30 round; 		/* 老的 Firefox */
+				-webkit-border-image:url(border.png) 30 30 round; 	/* Safari 和 Chrome */
+				-o-border-image:url(border.png) 30 30 round; 		/* Opera */
 			}
 		```
 3. 背景
@@ -75,4 +77,48 @@
 	background-origin
 		规定背景图片的定位区域
 
-	
+4. 动画
+	HTML5的动画 是配置关键帧来实现的， 关键帧之中是对应的状态， CSS3会自动补全中间过程
+
+	帧的定义
+	```
+		@keyframes myfirst
+		{
+			from { 初始属性 }
+			to { 结束的属性 }
+			或者
+			0% { ... }
+			50% { ... }
+			100% { ... }
+		}
+
+		@-moz-keyframes myfirst  /* Firefox */
+		{
+			from { }
+			to { }
+		}
+
+		@-webkit-keyframes myfirst /* Safari 和 Chrome */
+		{
+			from { }
+			to { }
+		}
+
+		@-o-keyframes myfirst  /* Opera */
+		{
+			from { }
+			to { }
+		}
+	```
+
+	动画定义
+	```
+		div
+		{
+			animation: myfirst 5s;		// 注意名字myfirst
+			-moz-animation: myfirst 5s;	/* Firefox */
+			-webkit-animation: myfirst 5s;	/* Safari 和 Chrome */
+			-o-animation: myfirst 5s;	/* Opera */
+		}
+	```
+

@@ -41,6 +41,7 @@
 		10. [golang中国](http://www.golangtc.com/)
 		11. [go友团](http://golanghome.com/)
 		12. [Go daily](http://godaily.org/)
+		13. [go example代码](https://gobyexample.com/)
 
 	3. 安装部分
 		1. [golang中国安装包](http://golangtc.com/download/package)
