@@ -1,5 +1,6 @@
-##Go语言
-0. ready
+Go语言
+======
+* ready
 	1. 下载和安装
 		1. [国内下载](http://www.golangtc.com/download)
 		2. 设置
@@ -46,59 +47,94 @@
 	3. 安装部分
 		1. [golang中国安装包](http://golangtc.com/download/package)
 
-1. 引入包
+* 引入包
+
 	```
 	import "fmt"
 	import (
 		"fmt"
 	)
 	```
+
 	```
 		fmt.Println(...)
 		//引入之后就可以这样使用了
 	```
-2. 函数
-	```
-	func func_name (param1, param2 param_type) return_type {
-	}
+* 函数
 
+	* 一般定义
 	```
-
-	多返回值
-	```
-		func getName() {
-			return "first-name", "middle-name", "famliy-name";
+		func func_name (param1, param2 param_type) return_type {
 		}
 
-		first-name, middle-name, famliy-name := getName();
-
 	```
 
-	占位符 _
-	```
-		first-name, _, famliy-name := getName();
-	```
+	* 多返回值的情况
 
-	匿名函数和闭包
-	在Go中所有的函数也都是值类型, 可以进行赋值操作
-	```
-		f := func(x, y int) int {
-			return x+y;
-		}
-	```
+		```
+			func getName() {
+				return "first-name", "middle-name", "famliy-name";
+			}
 
-3. 类型
+			first-name, middle-name, famliy-name := getName();
+
+		```
+
+	* 占位符"_"
+
+		```
+			first-name, _, famliy-name := getName();
+		```
+
+	* 匿名函数和闭包
+		在Go中所有的函数也都是值类型, 可以进行赋值操作
+		```
+			f := func(x, y int) int {
+				return x+y;
+			}
+		```
+
+* 类型
+
 	```
-	int float bool string
-	struct array slice map channel
+	int
+	float
+	bool
+	string
+	struct
+	array
+	slice
+	map
+	channel
 	interface
 	```
+
 	array
+	```
+		var v1 int
+		var v2 string
+		var v3[10] int
+		var a [5]int
+		定义了一个大小为5的int类型的数组
+
+		var v4 []int
+		不定长数组
+	```
+	```
+		var v5 struct {
+			f int
+		}
+
+		var v6 *int  //指针
+
+		var v7 map[string]int  //map[key] value
+		var v8 func(a int) int //函数
+	```
 
 	struct
 	go语言里面struct里面变量如果大写则是public,如果是小写则是private的，private的时候通过反射不能获取其值
 
-4. 定义变量
+* 定义变量
 	```
 	var v int = 5
 	var (
@@ -108,8 +144,13 @@
 
 	```
 
-5. 类型转换
-	不允许隐式转换
+* 类型转换
+	一般转换方法 使用显示转换
+	```
+		var a float32 = float32(b)
+	```
+
+	Go不允许隐式转换
 	```
 	a := 5.0
 	b := int(a)
@@ -117,14 +158,210 @@
 	a, b, c := 5, 7, "abc"
 	```
 
-6. 常量
+* 常量
 	```
 	const Pi = 3.14159
 	const b string = "abc"
 	const b = "abc"
 	```
 
-7. 组合(继承)
+* 循环
+	在Go语言之中只有for循环
+	```
+		for ; ; {
+
+		}
+
+		for {
+
+		}
+	```
+
+* 字符串
+	```
+		var str string
+		str = "Hello world"
+		ch := str[0]        //取第一个字符
+		len(str)
+	```
+	* 字符串操作
+	```
+		x + y  //字符串链接
+		len(s) //计算长度
+		s[i]   //取某位字符
+	```
+
+	* 字符串遍历
+		* 使用字节数组方式遍历
+		```
+		   str := "hello, 世界"
+		   n := len(str)
+		   for i := 0; i<n; i++ {
+			   	ch := str[i]  //依据下表取字符 类型为byte
+			   	fmt.Println(i, ch)
+		   }
+		```
+
+		* 使用unicode字符遍历
+		```
+			str := "hello, 世界"
+			for i, ch := range str {
+				fmt.Println(i, ch) //ch的类型为rune
+			}
+		```
+
+		在Go之后总支持两个字符类型 一个是byte(uint8的别名), 代表UTF-8字符串的单个字节的值
+		一个是rune 代表单个Unicode字符
+
+* 数组和数组切片
+	* 数组的声明
+	```
+		[size]type
+	```
+	* 数组的长度
+	```
+		arrLength := len(arr)
+	```
+	* 遍历
+	```
+		for i := 0; i<len(array); i++ {
+			//array[i]
+		}
+		for i,v := range array {
+			// i, v
+		}
+	```
+	* 数组也是值类型
+		在赋值的时候也会产生一次复制操作
+	```
+		func modify(array [10]int) {
+			array[0] = 10
+		}
+
+		func main() {
+			array := [5]int {1,2,3,4,5}
+			modify(array)
+			fmt.Println("In main(), array values:", array)
+		}
+	```
+	经过modify的执行, array的内容是不会改变的
+	所以要注意这里是传值的
+
+	* 数组切片slice
+		* 数组的缺点
+			在数组长度确定之后无法再次修改
+			数组是值类型那个 每次传递都将产生一个副本
+
+		* 数组切片的数据结构抽象:
+			1. 指向原生数组的指针
+			2. 数组切片中的元素个数
+			3. 数组切片中已经分配的存储空间
+
+		* 创建
+			* 基于数组
+				```
+					var myArray [10]int = [10]int{1,2,3,4... 10}
+					var mySlice []int = myArray[:5]
+
+					//切法跟python数组一样 [:end] [start:] [start:end]
+				```
+
+			* 直接创建
+				```
+					mySlice := make([]int, 5)	//建立初始元素为5的数组切片 元素初始值为0
+					make([]int, 5, 10)          //建立初始元素为5的数组切片 元素初始值为0 并预留10个元素的空间
+
+					mySlice := []int{1,2,3,4,5} //直接创建并初始化 中间还有一个匿名数组 但是不必关心
+
+				```
+
+			* 动态增减元素
+				数组切片相比数组还具有存储能力capacity的概念
+				即元素个数和分配的空间可以是两个不同的值
+				```
+					cap()  //返回分配的空间大小
+					len()  //返回数组长度
+				```
+
+				```
+					mySlice = append(mySlice, 1,2,3)   //在末端加上3个数
+					mySlice2 := []int{8,9,10}
+					mySlice = append(mySlice, mySlice2, ...)
+				```
+
+				数组切片会自动处理存储不足的问题，如果追加长度超过分配空间，数组切片会自动分配一块足够大的内存
+
+			* 内容复制
+				将内容从一个数组切片复制到另一个数组切片
+				```
+					slice1 := []int{1,2,3,4,5}
+					slice2 := []int{5,4,3}
+					copy(slice2, slice1) //只会赋值slice1的前3个元素到slice2之中
+					copy(slice1, slice2) //只会复制slice2的前3个元素到slice1的前3个位置
+				```
+* map
+	```
+		type PersonInfo struct {
+			ID string
+			Name string
+			Address string
+		}
+
+		var personDB map[string] PersonInfo
+			personDB = make(map[string] PersonInfo)
+
+			//插入数据
+			personDB["12345"] = PersonInfo{"123", "Tom", "Room 203..."}
+
+			//从map中查找数据
+			person, ok := personDB["1234"]
+			if ok {
+
+			} else {
+
+			}
+
+	```
+	* 变量声明
+		```
+			var myMap map[string] PersonInfo
+		```
+
+	* 创建
+		```
+			//创建
+			myMap = make(map[string] PersonInfo)
+			//附带100的容量
+			myMap = make(map[string] PersonInfo, 100)
+			//创建并初始化
+			myMap = map[string] PersonInfo {
+				"1234": PersonInfo{"1", "Jack", "Room 101, ..."},
+			}
+		```
+
+	* 元素赋值
+		```
+			myMap["1234"] = PersonInfo{"1", "Jack", "Room 101, ..."}
+		```
+	* 元素删除
+		```
+			delete(myMap, "1234")
+		```
+		如果"1234"的值不存在，什么都不会发生，也没有什么副作用，但如果传入nil，则将会抛出异常panic
+
+	* 元素查找
+		```
+			//从map中查找数据
+			person, ok := personDB["1234"]
+			if ok {
+
+			} else {
+
+			}
+		```
+		只要判断ok的值即可
+
+* 组合(继承)
 
 	定义Base类
 	type Base struct {
@@ -150,7 +387,7 @@
 	在上述例子中， Foo类的Bar被定义
 	Foo函数可以直接调用 foo.Foo() 效果等同于foo.bar.Foo()
 
-8. 并发
+* 并发
 	1. goroutine
 		Go引入了goroutine概念，使并发变得非常简单, 通过使用goroutine而不是裸用操作系统的并发机制，以及使用消息传递来共享内存而不是使用共享内存来通信,让并发编程变得更加轻盈和安全
 
@@ -190,10 +427,11 @@
 		判断一个channel是否关闭
 		x,ok := <-ch
 
-9. 错误处理
+* 错误处理
 	defer
+	panic
 
-10. 接口interface
+* 接口interface
 	```
 		type Bird struct {
 

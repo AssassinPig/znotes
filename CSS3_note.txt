@@ -42,7 +42,7 @@
 2. 边框
 	border角的半径
 	同时衍生出
-	border-left-radius之类的针对单个角的配置
+	border-top-left-radius之类的针对单个角的配置
 	border-radius
 		```
 			div
@@ -122,3 +122,175 @@
 		}
 	```
 
+5. 针对移动设备的识别
+	针对宽度为480px 的设备所使用的样式
+	```
+		<link rel="stylesheet" media="(max-device-width: 480px)" href="mobile_style.css">
+	```
+	针对 1.宽度为480px 2. 缩放率为2 的设备所使用的样式
+	```
+		<link rel="stylesheet" media="(max-device-width: 480px) and (-webkit-min-device-pixel-radio:2"
+		href="mobile_style.css">
+	```
+	针对横竖屏
+	```
+		<link rel="stylesheet" media="(max-device-width: 480px) and (orientation: portrait)"
+		href="mobile_style.css">
+	```
+	```
+		<link rel="stylesheet" media="(max-device-width: 480px) and (orientation: landscape)"
+		href="mobile_style.css">
+	```
+
+6. box盒子的应用
+	1. 透明度
+		1. 使用rgba()
+			取值在[0, 1]之间 0-完全透明 1-完全不透明
+			疑问: 似乎255也可以的样子???
+		2. 使用opacity
+			取值在[0, 1]之间
+	2. 圆角
+		```
+			box-radius
+		```
+			box-top-left-radius		左上角
+			box-top-right-radius	右上角
+		```
+	3. 背景
+		针对一个元素 使用多张图片 拼凑背景
+		左上角 和 右下角
+		```
+			.decoratedBox {
+				...
+				background-image: url("top-left.png"), url("bottom-right.png");
+				background-position: left top, right bottom;
+				background-repeat: no-repeat, no-repeat;
+			}
+		```
+
+		左右两边 特殊处理 适合于tab按钮之类的
+		```
+			.decoratedBox {
+				...
+				background-image: url("left.png"), url("middle.png"), url("right.png");
+				background-position: left top, left top, right bottom;
+				background-repeat: no-repeat, repeat-x, no-repeat;
+			}
+		```
+
+	4. 阴影盒子
+		1. box-shadow
+			box-radius: 5px 5px gray;
+			box-radius: 5px 5px 10px 5px lime inset;
+			参数:
+			水平 偏移量	如果是正值 则阴影向右偏移
+			竖直 偏移量 如果是正值 则阴影向下偏移
+			模糊距离
+			伸展范围
+			颜色
+			inset 表示在元素内部而不是外部创建阴影
+
+		2. text-shadow
+			text-shadow: gray 10px 10px 7px;
+			参数
+			颜色
+			水平 偏移量	如果是正值 则阴影向右偏移
+			竖直 偏移量 如果是正值 则阴影向下偏移
+			模糊值
+
+	5. 渐变盒子
+		1. 背景渐变
+			1. 线性渐变
+				-moz-liner-gradient(top, white, blue);
+			2. 放射渐变
+				-moz-radial-gradient(circle, white, blue);
+		```
+			.colorBlendBox {
+				background: -moz-liner-gradient(top, white, blue);
+			}
+
+			.colorBlendBox {
+				background: -moz-liner-gradient(top left, white, lightblue);
+			}
+
+			.colorBlendBox {
+				background: -moz-liner-gradient(top left, white, lightblue);
+			}
+		```
+7. 过渡和变换效果
+	1. transition
+	伪类
+	:hover
+	:focus
+	.slickButton {
+		color: white;
+		font-weight: blod;
+		padding: 10px;
+		border: solid 1px black;
+		background: lightgreen;
+		cursor: poinster;
+
+		-webkit-transition: background 0.5s, color 0.5s;
+		-moz-transition: background 0.5s, color 0.5s;
+		-o-transition: background 0.5s, color 0.5s;
+	}
+
+	.slickButton:hover {
+		color: black;
+		background: yellow;
+	}
+
+	在hover之中设置触发的时候的终点属性 中间的过渡效果由css3补齐
+	使用xxx-transition来进行设置变动的属性 如background等属性 同时也可以设置过渡时间
+	或者-webkit-transition: all 0.5s; 来设置所有的属性变动
+
+	其他可以设置过渡的属性
+	opacity
+	box-shadow
+	渐变 把线性过渡变成线性过渡
+	变形 不建议 设置 因为会影响浏览器重绘 从而影响效率
+
+	2. 变换transform
+		-moz-transform: rotate(45deg);
+		-webkit-transform: rotate(45deg);
+		-o-transform: rotate(45deg);
+
+		可用的其他函数:
+		scale
+		scaleX
+		skew
+
+		示例 设置某张图片的hover效果 当鼠标hover的时候 图片会在1s之内完成变换(放大2.2并旋转10degree)
+		```
+			<div class="gallery">
+				<img src="..." />
+				<img src="..." />
+				<img src="..." />
+			</div>
+
+			.gallery {
+				margin: 0px 30px 0px 30px;
+				background: #D8EEFE;
+				padding: 10px;
+			}
+
+			.gallery img {
+				margin: 5px;
+				padding: 5px;
+				width: 75px;
+				border: solid 1px black;
+				background: white;
+
+				//设置变换效果
+				-webkit-transition: all 1s;
+				-moz-transition: all 1s;
+				-o-transition: all 1s;
+			}
+
+			.gallery img:hover {
+				//变换属性的设置
+				-webkit-transform: scale(2.2) rotate(10deg)
+				-moz-transform: scale(2.2) rotate(10deg)
+				-o-transform: scale(2.2) rotate(10deg)
+			}
+		```
