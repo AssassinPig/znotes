@@ -1,0 +1,26 @@
+Go Martini
+==========
+
+0. startup
+	[go-martini](https://github.com/go-martini/martini)
+	1. install
+		go get github.com/go-martini/martini
+
+	2. run example
+
+		```
+			package main
+
+			import "github.com/go-martini/martini"
+
+			func main() {
+			  m := martini.Classic()
+			  m.Get("/", func() string {
+			    return "Hello world!"
+			  })
+			  m.Run()
+			}
+		```
+
+		go run server.go
+1. 

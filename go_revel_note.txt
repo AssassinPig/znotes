@@ -7,6 +7,7 @@ Go Revel
 		echo GOPATH=$GOPATH >> .bash_profile
 
 	2. get revel
+		go get github.com/revel/revel
 		go get github.com/revel/cmd/revel
 
 	3. validate setup correct

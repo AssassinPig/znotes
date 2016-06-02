@@ -28,6 +28,8 @@ Go语言
 			go fix 用于将你的 Go 代码从旧的发行版迁移到最新的发行版
 
 	2. Reference
+		0. [Go 入门指南](https://github.com/Unknwon/the-way-to-go_ZH_CN/blob/master/eBook/directory.md)
+			[Go 入门指南](http://wiki.jikexueyuan.com/project/the-way-to-go/)
 		1. [E文](http://www.golang-book.com/)
 		2. 找package[go search](http://go-search.org/)
 			[go doc](http://godoc.org/)
@@ -37,11 +39,10 @@ Go语言
 			[代码](https://github.com/hyper-carrot/goc2p)
 		6. [go web 编程](https://github.com/astaxie/build-web-application-with-golang/blob/master/zh/preface.md)
 		7. [标准库tc版本](http://godoc.golangtc.com/pkg/)
-		8. [标库教程](https://github.com/Unknwon/the-way-to-go_ZH_CN/blob/master/eBook/09.1.md)
+		8. [标库教程2](https://github.com/polaris1119/The-Golang-Standard-Library-by-Example)
 		9. [StudyGolang](http://www.golangtc.com/)
 		10. [golang中国](http://www.golangtc.com/)
 		11. [go友团](http://golanghome.com/)
-		12. [Go daily](http://godaily.org/)
 		13. [go example代码](https://gobyexample.com/)
 
 	3. 安装部分
@@ -50,10 +51,10 @@ Go语言
 * 引入包
 
 	```
-	import "fmt"
-	import (
-		"fmt"
-	)
+		import "fmt"
+		import (
+			"fmt"
+		)
 	```
 
 	```
@@ -66,7 +67,6 @@ Go语言
 	```
 		func func_name (param1, param2 param_type) return_type {
 		}
-
 	```
 
 	* 多返回值的情况
@@ -94,32 +94,56 @@ Go语言
 			}
 		```
 
+	* 不定参数variadic functions
+		```
+			func sum(nums...int) {
+				total := 0
+				for _, num := range nums {
+        			total += num
+    			}
+
+    			fmt.Println(total)
+			}
+
+			sum(1, 2)
+			sum(1, 2, 3)
+
+			nums := []int{1, 2, 3, 4}
+			sum(nums...)				//使用数组的方式
+		```
+
 * 类型
 
 	```
-	int
-	float
-	bool
-	string
-	struct
-	array
-	slice
-	map
-	channel
-	interface
+		int
+		float
+		bool
+		string
+		struct
+		array
+		slice
+		map
+		channel
+		interface
 	```
 
 	array
 	```
 		var v1 int
 		var v2 string
-		var v3[10] int
+		var v3 [10]int
 		var a [5]int
 		定义了一个大小为5的int类型的数组
 
 		var v4 []int
 		不定长数组
+
+		v5 := make([]string, 3) //声明一个string数组并分配3个空间
+
+		v5 = append(v5, "a")	//给v5数组添加一个元素
+
 	```
+
 	```
 		var v5 struct {
 			f int
@@ -184,6 +208,7 @@ Go语言
 		ch := str[0]        //取第一个字符
 		len(str)
 	```
+
 	* 字符串操作
 	```
 		x + y  //字符串链接
@@ -361,31 +386,195 @@ Go语言
 		```
 		只要判断ok的值即可
 
-* 组合(继承)
+* Go的对象 类型等
+	Go语言之中大多数都是值语义 并且都包含对应的操作方法
+	在实现某个接口的时候 无需继承 只要实现它所有的方法即可
 
-	定义Base类
-	type Base struct {
-		Name string
-	}
+	任何类型都可以被Any类型所引用，也就是说Any类型是空接口 interface{}
 
-	定义Base的方法
-	func (*base Base) Foo {...}
-	func (*base Base) Bar {...}
+	* 为某类型添加方法
+		```
+			type Integer int
+			func (a Integer) Less(b Integer) bool {
+				return a < b
+			}
+		```
+		其实这样做就是为底层的方法传递a Integer 就类似说cpp和java的方法传递this一样
 
-	定义Foo子类
-	type Foo struct {
-		Base
-		...
-	}
+	* 什么时候要求传递指针
+		传递指针其实有一点代价 除非你想修改原对象的内容
+		```
+			func (a *Integer) Add(b Integer) bool {
+				*a += b
+			}
+		```
+	* 值语义和引用语义
+		```
+			b = a
+			b.modify()
+		```
+		如果b.modify之后 a的值没有改变 则说明b=a是值语义 否则是引用语义
 
-	定义其他成员
-	func (foo *Foo) Bar() {
-		foo.base.Bar()
-		...
-	}
 
-	在上述例子中， Foo类的Bar被定义
-	Foo函数可以直接调用 foo.Foo() 效果等同于foo.bar.Foo()
+	*组合
+		* 定义
+		```
+			type Rect struct {
+				x,y float64
+				width, height float64
+			}
+
+			func (r *Rect) Area() float64 {
+				return r.width * r.height
+			}
+		```
+
+		* 初始化
+		```
+			rect1 := new(Rect)
+			rect2 := &Rect{}
+			rect3 := &Rect{ 0, 0, 100, 200 }
+			rect4 := &Rect{width: 100, height: 200}
+		```
+		Go语言之中没有构造函数的概念 所以一般使用一个全局函数进行构造对象
+		```
+			func NewRect(x,y,width,height, float64) *Rect {
+				return &Rect{x,y,width,height}
+			}
+		```
+
+		* 继承
+			* 一般的用法
+				定义Base类
+				```
+				type Base struct {
+					Name string
+				}
+				```
+
+				定义Base的方法
+				```
+				func (*base Base) Foo {...}
+				func (*base Base) Bar {...}
+				```
+				定义Foo子类
+				```
+				type Foo struct {
+					Base
+					...
+				}
+				```
+				定义其他成员
+				```
+				func (foo *Foo) Bar() {
+					foo.base.Bar()
+					...
+				}
+				```
+
+				在上述例子中，Foo类的Bar函数被重新定义了
+				而Foo则没有 在没有重写Foo函数的情况下, 调用foo.Foo()效果等同于foo.bar.Foo()
+				在调用Foo类Bar()函数的层级上，基本不要注意底下Base的存在
+
+
+			* 也可以传入一个指针 但是需要合适的构造
+				```
+					type Foo struct {
+						*Base
+					}
+				```
+			* 名字冲突的问题
+				如果父类和子类存在相同名字的成员的话 这可能就是个冲突
+				需要慎重考虑，默认行为是只访问到最外层的为准
+
+* 接口interface
+	* 定义和用法
+		Go语言的接口是非侵入式的，也就是说一个类如果实现了某interface要求的所有接口，那就说它实现了该接口，当然也同时可以实现更多的interface要求的接口，那也就是说实现了其他接口
+
+		实现一个接口
+		```
+			type Bird struct {
+
+			}
+
+			func (b *Bird) Fly() {
+
+			}
+
+			type IFly interface {
+				Fly()
+			}
+
+			func main() {
+				var fly IFly = new(Bird)
+				fly.Fly()
+			}
+		```
+
+		同时实现多个接口
+		```
+			type Bird struct {
+
+			}
+
+			func (b *Bird) Fly() {
+
+			}
+
+			func (b *Bird) Eat() {
+
+			}
+
+			type IFly interface {
+				Fly()
+			}
+
+			type IEat interface {
+				Eat()
+			}
+
+			func main() {
+				var fly IFly = new(Bird)
+				fly.Fly()
+
+				var eat IEat = new(Bird)
+				eat.Eat()
+			}
+		```
+	* 接口赋值
+		* 将对象实例赋值给接口
+
+		* 将一个接口赋值给另一个接口
+
+	* 接口查询
+		```
+		var v1 interface{} = ...
+		switch v := v1.(type) {
+			case int:
+			case string:
+			...
+		}
+		```
+	* 接口组合
+		```
+			type ReadWriter interface {
+				Reader
+				Writer
+			}
+		```
+		完全等于以下写法
+		```
+			type ReadWriter interface {
+				Read(p []byte) (n int, err error)
+				Write(p []byte) (n int, err error)
+			}
+		```
+
+	* Any类型
+		写为interface{}
+		```
+			func Printf(fmt string, args...interface{}) //可以接受任何类型
+		```
 
 * 并发
 	1. goroutine
@@ -394,6 +583,7 @@ Go语言
 		```
 		go func()
 		```
+
 	2. channel
 		var chanName chan ElementType
 		var ch chan int
@@ -430,23 +620,3 @@ Go语言
 * 错误处理
 	defer
 	panic
-
-* 接口interface
-	```
-		type Bird struct {
-
-		}
-
-		func (b *Bird) Fly() {
-
-		}
-
-		type IFly interface {
-			Fly()
-		}
-
-		func main() {
-			var fly IFly = new(Bird)
-			fly.Fly()
-		}
-	```

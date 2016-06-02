@@ -15,6 +15,35 @@ html5 effection
 
 	particel attraction and gravity 粒子攻击和引力
 
+	基于定时器和基于时间的动画
+	```
+		window.setInterval(function, 1000/fps)
+	```
+	其中function是定时启动的函数, 而fps可以自己设定（可以根据机器性能来设定）
+
+
+	```
+		window.onload = function(){
+			//初始化 记录变量
+			var start_time = new Date().getTime();
+			var time = getTimer();
+		}
+
+		function getTImer() {
+			return (new Date().getTime() - start_time);	//milliseconds
+		}
+
+		//动画处理函数
+		functio animateHandleFunction() {
+			var elapsed = getTimer() - time;
+			var time = getTimer();
+
+			//根据elapsed来计算位置(延伸到计算动画等状态)
+			ball.x += vx*elapsed / 1000;
+			ball.y += vy*elapsed / 1000;
+		}
+	```
+
 1. 动画循环函数
 	```
 	(function drawFrame() {
