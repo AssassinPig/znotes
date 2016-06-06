@@ -182,6 +182,11 @@ Go语言
 	a, b, c := 5, 7, "abc"
 	```
 
+	string byte conversation
+	```
+		[]byte("abcd")
+		string([]byte)
+	```
 * 常量
 	```
 	const Pi = 3.14159
@@ -259,18 +264,32 @@ Go语言
 	* 数组也是值类型
 		在赋值的时候也会产生一次复制操作
 	```
-		func modify(array [10]int) {
-			array[0] = 10
+		func modify(arr [5]int) {
+			arr[0] = 10
+		}
+
+		func modifyByRef(a []int){
+			l := len(a)
+			a[l-1] = a[l-1]*2
 		}
 
 		func main() {
-			array := [5]int {1,2,3,4,5}
-			modify(array)
-			fmt.Println("In main(), array values:", array)
+			arr := [5]int {1,2,3,4,5}
+			modify(arr)
+			fmt.Println("modify(), array values:", arr)
+
+			a := []int{1,2,3,4}
+			modifyByRef(a)
+			fmt.Println("modifyByRef(), array values:", a)
 		}
 	```
+	```
+		modify(), array values: [1 2 3 4 5]
+		modifyByRef(), array values: [1 2 3 8]
+	```
 	经过modify的执行, array的内容是不会改变的
-	所以要注意这里是传值的
+	但是经过modifyByRef(), 内容发生了变化
+	所以要注意有的是传值的 当然也可以传ref
 
 	* 数组切片slice
 		* 数组的缺点
@@ -345,7 +364,6 @@ Go语言
 			} else {
 
 			}
-
 	```
 	* 变量声明
 		```
@@ -442,6 +460,67 @@ Go语言
 				return &Rect{x,y,width,height}
 			}
 		```
+		```
+			type ST struct{
+				val int
+			}
+
+			func (st *ST) print() {
+				fmt.Println("ST print: ", st.val)
+			}
+
+			func (st *ST) modify() {
+				st.val += 10
+			}
+
+			func newSTObject(v int) *ST {
+				return &ST{v}
+			}
+
+			func main () {
+				a := new(ST)
+				fmt.Println("a print: ", a)
+
+				b := newSTObject(1)
+				fmt.Println("b print: ", b)
+
+				c := new(ST)
+				if c == a {
+					fmt.Println("c == a")
+				} else {
+					fmt.Println("c != a")
+				}
+
+				if c == b {
+					fmt.Println("c == b")
+				} else {
+					fmt.Println("c != b")
+				}
+
+				d := a
+				d.modify()
+				if d == a {
+					fmt.Println("d == a")
+				} else {
+					fmt.Println("d != a")
+				}
+				fmt.Println("a print: ", a)
+				fmt.Println("d print: ", d)
+
+				d.print()
+			}
+		```
+
+		```
+			a print:  &{0}
+			b print:  &{1}
+			c != a
+			c != b
+			d == a
+			a print:  &{10}
+			d print:  &{10}
+			ST print:  10
+		```
 
 		* 继承
 			* 一般的用法
@@ -473,9 +552,8 @@ Go语言
 				```
 
 				在上述例子中，Foo类的Bar函数被重新定义了
-				而Foo则没有 在没有重写Foo函数的情况下, 调用foo.Foo()效果等同于foo.bar.Foo()
+				而Foo()函数则没有被重新定义 在没有重写Foo函数的情况下, 调用foo.Foo()效果等同于foo.base.Foo()
 				在调用Foo类Bar()函数的层级上，基本不要注意底下Base的存在
-
 
 			* 也可以传入一个指针 但是需要合适的构造
 				```
@@ -607,7 +685,7 @@ Go语言
 			fmt.Println("Received:", i)
 		}
 
-		单向channel
+		单向channel的定义
 		var ch1 chan int
 		var ch2 chan<- float64  单向写入channel
 		var ch3 <-chan int      单向输出channel
