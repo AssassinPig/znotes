@@ -4,7 +4,7 @@
 	update-rc.d networking defaults
 
 1. 信息收集命令
-	1. dnsenum 
+	1. dnsenum
 	2. dnsmap
 
 	3. tcptrouteroute www.xxx.com

@@ -672,6 +672,9 @@ Go语言
 		从channel读取数据 如果没有数据写入， 这样进行的读取操作会导致程序阻塞 直到channel被写入数据
 		value := <-ch
 
+		带有结果判断的操作
+		v, ok := <-ch
+
 		创建一个带缓冲的channel
 		c := make(chan int, 1024)
 		将缓冲区大小作为第二个参数传入
@@ -698,3 +701,11 @@ Go语言
 * 错误处理
 	defer
 	panic
+
+* goto
+	```
+		goto L
+		fmt.Println("common execute")
+		L:
+		fmt.Println("here with goto")
+	```

@@ -12,7 +12,7 @@
 4. 清理hack痕迹 登录的记录
 
 kali linux install on laptop				已安装
-metapolit					
+metapolit
 nnamp
 sqlmap
 =======================================================
