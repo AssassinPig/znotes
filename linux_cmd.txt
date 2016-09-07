@@ -195,3 +195,9 @@
 
 	写入CMOS!!!
 	clock -w
+
+17. 挂载
+	df -h 查看设备
+	将/media/(u盘)挂载成cdrom
+	mkdir /dev/cdrom
+	mount -t auto /media/ /dev/cdrom
