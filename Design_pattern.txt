@@ -1,0 +1,54 @@
+Design pattern
+==============
+1. factory
+```
+	class Factory {
+		createGoods()
+	}
+
+	class ConcreteFactory : public Factory {
+		createGoods() { ... }
+	}
+
+	factoryInstance = new ConcreteFactory()
+    factoryInstance.createGoods()
+```
+	when you want to get goods, just invoke createGoods(). It is no neceassary to know what ConcreteFactory is
+
+2.abstract factory
+```
+	class AbstractFactory {
+		createGoods()
+	}
+
+	class ConcreteFactoryA : public AbstractFactory {
+		createGoods1() { ... }
+		createGoods2() { ... }
+	}
+
+	class ConcreteFactoryB : public AbstractFactory {
+		createGoods1() { ... }
+		createGoods2() { ... }
+	}
+
+	factoryInstance = new ConcreteFactoryA()
+	factoryInstance.createGoods1()
+	factoryInstance = new ConcreteFactoryB()
+    factoryInstance.createGoods1()
+```
+	you will get different things(Goods) within two times when invoking createGoods1()
+
+3. builder
+4. prototype
+5. singleton
+
+
+bridge
+proxy/warp
+
+meditor
+fade
+
+observer
+
+template strategy
