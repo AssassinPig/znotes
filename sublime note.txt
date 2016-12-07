@@ -27,3 +27,9 @@ ctrl + `
 package control
 
 tutsplus.com
+
+add indent
+select part then tab
+
+reduce indent
+select part then ctrl+[

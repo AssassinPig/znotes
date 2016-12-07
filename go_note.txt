@@ -1,3 +1,4 @@
+
 Go语言
 ======
 * ready
@@ -187,6 +188,18 @@ Go语言
 		[]byte("abcd")
 		string([]byte)
 	```
+
+	interface conversation
+	use type assertion
+	```
+		v, ok := interface.(int)
+		if ok != nil {
+
+		} else {
+
+		}
+	```
+
 * 常量
 	```
 	const Pi = 3.14159
