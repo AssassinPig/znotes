@@ -83,7 +83,7 @@
 	python manage.py startapp books
 
 	python manage.py syncdb
-	python manage.py dbshell 
+	python manage.py dbshell
 
 	create an admin user
 	python manage.py createsuperuser
@@ -103,4 +103,3 @@
 		from .models import Question
 		admin.site.register(Question)
 	```
-	

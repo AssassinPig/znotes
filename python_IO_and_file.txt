@@ -1,0 +1,51 @@
+python IO and file
+
+1. read text data from file
+
+	```
+		# Read the entire file as a single string
+		with open('somefile.txt', 'rt') as f:
+		    data = f.read()
+
+		# Iterate over the lines of the file
+		with open('somefile.txt', 'rt') as f:
+		    for line in f:
+		        # process line
+		        ...
+	```
+
+2. write text data into file
+	```
+		# Write chunks of text data
+	with open('somefile.txt', 'wt') as f:
+	    f.write(text1)
+	    f.write(text2)
+	    ...
+
+	# Redirected print statement
+	with open('somefile.txt', 'wt') as f:
+	    print(line1, file=f)
+	    print(line2, file=f)
+	    ...
+	```
+
+3. 如果是在已存在文件中添加内容，使用模式为at 的open()函数
+
+4. 指定編碼
+	獲取編碼
+	```
+	sys.getdefaultencoding()
+	```
+
+5. 打開的時候設置編碼
+	```
+	with open('somefile.txt', 'rt', encoding='latin-1') as f:
+	```
+
+6. 换行符的识别问题
+	在 Unix 和 Windows 中是不一样的(分别是 n 和 rn)。 默认情况下，Python 会以统一模式处理换行符。 这种模式下，在读取文本的时候，Python 可以识别所有的普通换行符并将其转换为单个\n 字符。 类似的，在输出时会将换行符\n转换为系统默认的换行符。 如果你不希望这种默认的处理方式，可以给open()函数传入参数newline=''
+	```
+	# Read with disabled newline translation
+		with open('somefile.txt', 'rt', newline='') as f:
+    		...
+    ```
