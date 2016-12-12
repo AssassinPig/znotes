@@ -1,0 +1,99 @@
+python filename and path
+1. os.path
+	```
+	import os
+	path = '/users/xxx/data/data.csv'
+	os.path.basename(path)
+
+	os.path.dirname(path)
+
+	os.path.join('tmp', 'data', os.path.basename(path))
+
+	path = '~/Data/data.csv'
+	os.path.expanduser(path)
+	#'/users/beazley/data/data.csv'
+
+	os.path.splitext(path)
+	#('~/Data/data', '.csv')
+
+2. test file wether exist
+	```
+		os.path.exists(path)
+	```
+
+3. test file type
+	```
+		# is a regular file
+		os.path.isfile(path)
+
+		#is a directory
+		os.path.isdir(path)
+
+		#is a symbolic link
+		os.path.islink(path)
+
+		#get the file linked to
+		os.path.realpath(path)
+	```
+
+4. get file info
+	```
+		os.path.getsize(path)
+		os.path.getmtime(path)
+
+		import time
+		time.ctime(os.path.getmtime(file))
+	```
+	notice Permission
+
+5. get dir list
+	```
+		import os
+		names = os.listdir('somedir')
+	```
+	filter files
+	```
+		import os.path
+
+		#get all regular files
+		names = [name for name in os.listdir('somedir') if os.path.isfile(os.path.join('somedir', name))]
+
+		#get all dirs
+		names = [name for name in os.listdir('somedir') if os.path.isdir(os.path.join('somedir'), name)]
+	```
+
+	```
+		pyfiles = [name for name in os.listdir('somedir')
+            if name.endswith('.py')]
+	```
+
+	use glob and fnmatch to match file name
+	```
+		import glob
+		pyfiles = glob.glob('somedir/*.py')
+
+		from fnmatch import fnmatch
+		pyfiles = [name for name in os.listdir('somedir')
+		            if fnmatch(name, '*.py')]
+	```
+6. tempfile
+
+	```
+		from tempfile import TemporaryFile
+
+		with TemporaryFile('w+t') as f:
+		    # Read/write to the file
+		    f.write('Hello World\n')
+		    f.write('Testing\n')
+
+		    # Seek back to beginning and read the data
+		    f.seek(0)
+		    data = f.read()
+
+		# Temporary file is destroyed
+	```
+
+	create named temp file use NamedTemporaryFile()
+
+	create temp directory
+	tempfile.TemporaryDirectory()

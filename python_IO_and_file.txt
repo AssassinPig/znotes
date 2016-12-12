@@ -49,3 +49,79 @@ python IO and file
 		with open('somefile.txt', 'rt', newline='') as f:
     		...
     ```
+
+7. read and write bytes
+	```
+		# Read the entire file as a single byte string
+		with open('somefile.bin', 'rb') as f:
+		    data = f.read()
+
+		# Write binary data to a file
+		with open('somefile.bin', 'wb') as f:
+		    f.write(b'Hello World')
+	```
+
+	```
+		b = b'Hello world'
+		b[0]
+		72
+	```
+	output is the value of this byte
+
+	read and binary data as string
+	```
+		with open('somefile.bin', 'rb') as f:
+		    data = f.read(16)
+		    text = data.decode('utf-8')
+
+		with open('somefile.bin', 'wb') as f:
+		    text = 'Hello World'
+		    f.write(text.encode('utf-8'))
+	```
+
+8. write when file doesnot exist
+	可以在 open() 函数中使用 x 模式来代替 w 模式的方法来解决这个问题
+	```
+	with open('somefile', 'wt') as f:
+    	f.write('Hello\n')
+
+	with open('somefile', 'xt') as f:
+		f.write('Hello\n')
+	```
+
+	version 2:
+	```
+		import os
+		if not os.path.exists('somefile'):
+			with open('somefile', 'wt') as f:
+				f.write('hello\n')
+		else:
+			print('file already exists!')
+
+	```
+9. mmap
+
+10. wrap a fd with file
+	```
+		# Open a low-level file descriptor
+		import os
+		fd = os.open('somefile.txt', os.O_WRONLY | os.O_CREAT)
+
+		# Turn into a proper file
+		f = open(fd, 'wt')
+		f.write('hello world\n')
+		f.close()
+	```
+11. other fun to get file info
+	os.path
+	os.stat()
+
+12. communicate with serial port
+	```
+		import serial
+		ser = serial.Serial('/dev/tty.usbmodem641', # Device name varies
+		                    baudrate=9600,
+		                    bytesize=8,
+		                    parity='N',
+		                    stopbits=1)
+	```

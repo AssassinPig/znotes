@@ -1,0 +1,32 @@
+序列化python对象
+================
+1. use pickle package
+	```
+		import pickle
+
+		data = ... # Some Python object
+		f = open('somefile', 'wb')
+
+		#save into a file
+		pickle.dump(data, f)
+
+		#save as a string
+		s = pickle.dumps(data)
+	```
+
+	```
+		# Restore from a file
+		f = open('somefile', 'rb')
+		data = pickle.load(f)
+
+		# Restore from a string
+		data = pickle.loads(s)
+	```
+
+	you can serializing many things in python such as obj class interface array
+
+	do not serializing data you don't trust
+
+	有些类型的对象是不能被序列化的。这些通常是那些依赖外部系统状态的对象， 比如打开的文件，网络连接，线程，进程，栈帧等等 
+	用户自定义类可以通过提供 __getstate__() 和 __setstate__() 方法来绕过这些限制。 如果定义了这两个方法，pickle.dump()就会调用 __getstate__() 获取序列化的对象。 类似的，__setstate__() 在反序列化时被调用
+
