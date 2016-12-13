@@ -1,0 +1,135 @@
+django form
+===========
+1. request object
+	request.path
+	request.get_host()
+	get_full_path()
+	is_secure()
+
+	request.META	it is a map that contains header info of http request
+	request['key']
+
+	key:
+	HTTP_REFETER
+	HTTP_USER_AGENT
+	REMOTE_ADDR     if request send through proxy server, it contains multiple ip address "12.345.67.23, 23.234.49.90"
+
+	good ways to get data from META
+	```
+		try:
+			ua = request.META['HTTP_USER_AGENT']
+		except KeyError:
+			ua = 'unknow'
+		return HttpResponse("your browser is %s" % ua)
+	```
+
+	```
+		ua = request.META.get('HTTP_USER_AGENT', 'unknow')
+		return HttpResponse("your browser is %s" % ua)
+	```
+
+2. good ways to get data from request
+
+	```
+		<form action="/search/" method="get">
+			<input type="text" id="q">
+			<input type="submit" value="search">
+		</form>
+	```
+	```
+		def search(request):
+			if 'q' in request.GET:
+				message = "you search for: %r" % request.GET['q']
+			else:
+				message = "you submit an empty form"
+
+			return HttpResponse(message)
+	```
+
+3. validation
+	
+4. form lib
+	1. first thing that Form class do
+	is to generate HTML
+	```
+		from django import forms
+		class ContactForm(forms.Form):
+			subject = forms.CharField()
+			email = forms.EmailField(required=False)
+			message = forms.CharField()
+	```
+
+	from contact.forms import ContactForm
+	f = ContactForm()
+	print f
+
+	3. sencond thing is to validate data
+	```
+		f = ContactForm({
+				'subject': 'hello',
+				'email': 'xxx@gmail.com',
+				'message': 'xxxx'
+			})
+	```
+
+	wether f is bound 
+	wether f is valid 
+	```
+	f.is_bound
+	True
+
+	f.is_valid()
+	True
+	```
+
+	3. output errors info
+	```
+		f['message'].errors
+		[u'xxxxxxx is required']
+
+		f['subject'].errors
+		[]
+	```
+
+	4. cleaned data
+		```
+		f.cleaned_data
+		```
+5. use Form in view
+	```
+		def contact(request):
+			if request.method == 'POST':
+				form = ContactForm(request.POST)
+				if form.is_valid():
+					cd = form.cleaned_data
+					send_mail(
+						cd['subject'],
+						cd['message'],
+						cd.get('email', 'noreply@example.com'),
+						['siteowner@example.com'],
+					)
+
+					return HttpResponseRedirect('/contact/thanks/')
+			else:
+				form = ContactForm()
+
+			return render_to_response('contact_form.html', {'form': form})
+	```
+	contact_form.html
+	```
+	<body>
+			{% if form.errors %}
+				<p style="color:red;">
+					please correct the error{{form.errors|pluralize}} below.
+				</p>
+
+				<form action="" method="">
+					<table>
+						{{form.as_table}}
+					</table>
+					<input type="submit" value="submit">
+				</form>
+
+			{% endif %}
+	</body>
+	```

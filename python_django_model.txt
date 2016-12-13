@@ -1,0 +1,78 @@
+django model
+============
+1. settings
+	settings.py
+
+	DATABASE_ENGINE = ''
+	NAME
+	USER
+	PASSWORD
+	HOST
+	PORT
+
+2. Model class Query operation
+
+	Model.objects.all()
+	SELECT * from ...
+
+	m = Model.objects.new(...)
+	create object
+
+	m.save()
+	save data to database
+
+	filter
+	Model.objects.filter(key="column")
+	WHERE key='column'
+
+	Model.objects.filter(key1="column1", key2="column2")
+
+	WHERE key1="col1" AND key2="col2"
+
+	Model.objects.filter(name__contains="press")
+	WHERE name LIKE '%press%'
+
+	get
+	just one object
+	Publisher.objects.get(name="Apress")
+	return QuerySet
+
+	order_by
+	Publisher.objects.order_by("name")
+	select *
+	from publisher
+	order by name
+
+	Publisher.objects.order_by("state_province", "address")
+	multiple column sorted
+
+	Publisher.objects.order_by("-name")
+	desc sort order
+	notice this "-"
+
+3. Update object then save to database
+	Publisher.objects.filter(id=52).update(name="abcd")
+
+	update all column of one object
+	p = Publisher.objects.filter(id=42)
+	p.name = 'xxxx'
+	p.xxx = 'sdfdsf'
+	p.save()
+
+	update all column of all objects
+	Publisher.objects.all().update(country='adsdf')
+
+4. delete
+	p = Publisher.objects.get(name='namesdf')
+	p.delete()
+
+	delete all data
+	Publisher.objects.all().delete()
+
+	delete a part
+	Publisher.objects.filter(conson='sfddsf').delete()
+
+
+
+
+

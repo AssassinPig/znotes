@@ -1,0 +1,33 @@
+django admin
+============
+1. add data to settings
+	
+	INSTALLED_APPS
+	'django.contrib.admin'
+
+	'django.contrib.auth'
+	'django.contrib.contenttypes'
+	'django.contrib.sessions'
+
+	MIDDLEWARE_CLASSES
+	'django.middleware.common.CommonMiddleware'
+	'django.contrib.auth.middleware.AuthenticationMiddleware'
+
+2. create table and megre
+	python manage.py syncdb
+
+	then system will ask you to create a super user
+
+	or manully to create
+	python manage.py createsuperuser
+
+3. add some url in urls.py
+
+4. add some in admin.py
+	```
+		from django.contrib import admin
+
+		from .models import Question
+
+		admin.site.register(Question)
+	```

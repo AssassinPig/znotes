@@ -13,7 +13,7 @@
 3. install postgresql
 	sudo apt-get install postgresql-9.3
 
-4. install psyconpg2(postgresql adapater) 
+4. install psyconpg2(postgresql adapater)
 	http://initd.org/psycopg/docs/install.html
 	sudo apt-get install python-psycopg2
 
@@ -56,7 +56,8 @@
 8. database
 	setting
 	mysite/settings.py
-	ENGINE: 'django.db.backends.postgresql_psycopg2' 'django.db.backends.mysql'
+	ENGINE: 'django.db.backends.postgresql_psycopg2'
+			'django.db.backends.mysql'
 	NAME:
 
 	migrate
@@ -65,9 +66,9 @@
 	Run python manage.py makemigrations to create migrations for those changes
 	Run python manage.py migrate to apply those changes to the database
 
-		modify models
-		python manage.py validate 验证models中是否正确
-		python manage.py syncdb 同步更新db中的表的结构
+	modify models
+	python manage.py validate 验证models中是否正确
+	python manage.py syncdb 同步更新db中的表的结构
 
 9. console
 	python manage.py startapp polls
@@ -103,3 +104,6 @@
 		from .models import Question
 		admin.site.register(Question)
 	```
+
+	使用assert False來强制曝出運行堆棧信息
+	禁用debug模式

@@ -12,7 +12,7 @@
     切换到postgres用户
     sudo su - postgres
 
-2. 添加一个数据库 
+2. 添加一个数据库
     1. 打开控制台
         psql
         这相当于系统用户postgres使用同名的数据库用户名登陆数据库
@@ -43,7 +43,7 @@
     \c [database_name] 连接其他数据库
     \d 列出当前数据库的所有列表
     \d [table_name] 列出某一张表的结构
-    \d+ [table_name] 
+    \d+ [table_name]
     \du 列出所有的用户
     \e 打开文本编辑器
     \conninfo 列出当前数据库和连接的信息
@@ -62,6 +62,7 @@
     2. 删除schema.rb
             rm db/schema.rb
     3. rake db:migrate
+
 8. 注意user表
     ```
         select * from user;
