@@ -1,0 +1,213 @@
+python 3
+========
+1. build_in fun
+	setattr(object, name, value)
+	delattr(object, name)
+	getattr(object, name)
+	hasattr(object, name)
+
+	property(fget, fset, fel, doc=None)
+
+	classmethod
+	statccimethd
+
+	str
+	chr
+	int
+	byte
+	bytearrays
+
+	dir([object])
+	Without arguments, return the list of names in the current local scope. With an argument, attempt to return a list of valid attributes for that object
+
+	globals()
+	locals()
+
+	help(object)
+
+	id(object)
+	type(object)
+	vars([object])
+
+	isinstnce(object, classinfo)
+	issubclass(class, classinfo)
+
+	super(type, [object or type])
+
+	tuple([iterable])
+	zip(*iterable)
+	list
+	set
+	map
+	filter
+	len
+	max
+	min
+	sum
+
+	next
+
+	range()
+
+	reversed(seq)
+	sorted(iterable)
+
+	slice
+
+2. bulid_in constants
+	False
+	True
+	None
+	NotImplemented
+	Ellipsis
+	__debug__
+
+
+from timeit import timeit
+s = Stack()
+timeit('s.push(1); s.pop()', 'from __main__ import s')
+
+from collections import Iterable
+def flatten(items, ignore_types=(str, bytes)):
+    for x in items:
+        if isinstance(x, Iterable) and not isinstance(x, ignore_types):
+            yield from flatten(x)
+        else:
+            yield x
+
+items = [1, 2, [3, 4, [5, 6], 7], 8]
+# Produces 1 2 3 4 5 6 7 8
+for x in flatten(items):
+    print(x)
+
+
+def flatten(items, ignore_types=(str, bytes)):
+for x in items:
+    if isinstance(x, Iterable) and not isinstance(x, ignore_types):
+        for i in flatten(x):
+            yield i
+    else:
+        yield x
+
+__set__
+__get__
+__delete__
+
+show content of instance
+vars(instance)
+
+setattr(obj, key, value)
+getattr(obj, key)
+
+__dict__
+
+isinstance()
+
+类装饰器 @decorate
+def check_attributes(**kwargs):
+	def decorate(cls):
+		for key, value in kwargs.items():
+			if isinstance(value, Descriptor):
+				value.name = key
+				setattr(cls, key, value)
+			else:
+				setattr(cls, key, value(key))
+		return cls
+	
+	return decorate
+
+#check_attributes(name=SizeString(size=8, shares=UnsignedInteger, price=UnsignedFloat))
+
+元类metaclass
+class checkmeta(type):
+	def __new__(cls, clsname, bases, methods):
+		for key, value in methods.items():
+			if isinstance(value, Descriptor):
+				value.name = key
+		return type.__new__(cls, clsname, bases, methods)
+
+class Stock2(metaclass=checkmeta):
+	name = SizeString(size=8)
+	shares = UnsignedInteger()
+	price = UnsignedFloat()
+
+	def __init__(self, name, shares, price)
+		self.name = name
+		...
+
+
+抽象基类
+from abc import ABCMeta, abstractmethod
+
+class IStream(metaclass=ABCMeta):
+	@abstractmethod
+	def read(self, maxbytes-=1):
+		pass
+
+	@abstractmethod
+	def write(self, data):
+		pass
+
+a = IStream # TypeError
+
+用于定义接口
+class SocketStream(IStream):
+	def read(self, maxbytes=-1):
+		pass
+	def write(self, data):
+		pass
+
+实现接口类型检查
+def serialize(obj, stream):
+	if not isinstance(stream, IStream):
+		raise TypeError("Expected an IStream")
+	pass
+
+还可以使用注册的方式来实现抽象基类的接口
+import io
+Istream.register(io.IOBase)
+
+通过字符串调用对象方法
+import math
+class Point:
+	def __init__(self, x, y)：
+		self.x = x
+		self.y = y
+
+	def __repr__(self):
+		return "Point({!r:},{!r:})".format(self.x, self.y)
+
+	def distance(self, x, y):
+		return math.hypot(self.x - x, self.y - y)
+
+p = Point(2,3)
+d = getattr(p, 'distance')(0,0) #calls p.distance(0,0)
+
+import operator
+operator.methodcaller('distance', 0, 0)(p)
+
+d = operator.methodcaller('distance', 0, 0)
+d(p)
+
+
+
+			列举一个类的属性 方法
+			__dict__
+
+			列举一个对象的属性和方法
+
+			列举一个类的基类
+			一个装饰器到底干了什么
+			docorator
+
+			混入到底干了什么
+			__new__ 和　__init__的区别
+			这些building-in 函数的用法
+			https://docs.python.org/3/library/functions.html
+
+			这些descriptor的用法
+			https://docs.python.org/3/howto/descriptor.html
+
+			yield
+
+			closure

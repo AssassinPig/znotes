@@ -1,0 +1,25 @@
+switch python version and env
+http://www.cnblogs.com/npumenglei/p/3719412.html
+https://github.com/yyuu/pyenv
+
+virtualenv
+https://virtualenv.pypa.io/en/stable/
+
+virtualenvwarpper
+https://virtualenvwrapper.readthedocs.io/en/latest/
+
+pyenv install -list
+pyenv versions
+pyenv version
+
+pyenv install -v 3.5.2
+
+pyenv global
+
+pyenv global  3.5.2
+pyenv version 3.5.2
+
+pyenv new ENV352 3.5.2
+
+pyenv activate ENV352
+pyenv deactivate

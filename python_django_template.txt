@@ -1,0 +1,12 @@
+django template
+===============
+render
+	return render_to_response('xxxx.html', {'key': 'value'})
+
+filter
+	{{ book | length }} 	return length of book(s)
+
+	{{ book | pluralize}}	if books return s. if book, no s
+
+create template lib
+

@@ -1,0 +1,50 @@
+cookies session
+===============
+1. save and get data from cookie
+	```
+		#get
+		request.COOKIES['key']
+
+		#save
+		request.COOKIES['key'] = 'value'
+	```
+
+	```
+		response.set_cookie('key', 'value')
+	```
+
+2. session
+	session is deserved in server
+	```
+		request.session['key'] = 'value'
+
+		del request.session['key']
+
+		if key in request.session:
+	```
+	Session字典中以下划线开头的key值是Django内部保留key值
+	不要用一个新对象来替换掉 request.session ，也不要存取其属性
+
+3. test cookie
+
+	set_test_cookie
+	test_cookie_worked
+	del_test_cookie
+
+	first you can use set_test_cookie then invoke test_cookie_worded to test
+	last, make sure use del_test_cookie() after set_test_cookie
+
+	```
+		def login(request):
+			if request.method == 'POST':
+				if request.session.test_cookie_worked()
+					request.session.delete_test_cookie()
+					return HttpResponse("You are logged in.")
+			else:
+				return HttpResponse("Please enable cookies and try again.")
+
+			request.session.set_test_cookie()
+			return render_to_response('foo/login_form.html')
+	```
+
+4.

@@ -105,5 +105,54 @@
 		admin.site.register(Question)
 	```
 
-	使用assert False來强制曝出運行堆棧信息
-	禁用debug模式
+13.	使用assert False來强制曝出運行堆棧信息
+
+14.	禁用debug模式
+	settings.py 之中将DEBUG 设置为False
+
+15. deploy
+	https://www.digitalocean.com/community/tutorials/how-to-serve-django-applications-with-uwsgi-and-nginx-on-ubuntu-14-04
+
+16. i18n
+	USE_I18N = True
+
+	```
+		translated_text = ugettext_lazy("text")
+		translated_text = _("text")
+	```
+
+	```
+		class MyThing(models.Model):
+			name = models.CharField(_('name'), help_text=_('this is the xxx'))
+
+			class Meta:
+				verbose_name = _('my thing')
+				verbose_name_plural = _('mythings')
+	```
+
+	first put this code at the beginning of template code
+	```
+		{% load i18n %}
+	```
+	usage
+	```
+		<title>{% trans "this is the title" %}</title>
+
+		<title>{% trans myvar %}</title>
+	```
+
+	placeholders
+	```
+		{% blocktrans %} {{ value }} {% endblocktrans %}
+	```
+
+
+17. single and multiple num
+	ungettext('this is %(count)d object',
+		'there are %(count)d objects', count) % { 'count': count ,}
+	)
+
+18. use https to transport cookie
+	```
+		 SESSION_COOKIE_SECURE = True
+	```

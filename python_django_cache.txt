@@ -1,0 +1,30 @@
+python django cache
+===================
+
+```
+if the page is in the cache:
+	return the cached page
+else:
+	generate the page
+	save the generated page in the cache(for next time)
+	return the generated page
+```
+
+1. use memcahe
+settings.py
+	CACHE_BACKEND = 'memcahced://127.0.0.1:11211;127.0.0.1:11211'
+
+2. use database
+	CACHE_BACKEND = 'db://my_cache_table'
+
+3. file system
+	CACHE_BACKEND = 'file://var/tmp/django_cache'
+
+4. local memory
+	CACHE_BACKEND = 'locmem:///'
+
+5. optional cache system
+	better not to use
+
+6. option
+	timeout

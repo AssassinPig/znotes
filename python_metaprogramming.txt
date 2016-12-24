@@ -1,0 +1,134 @@
+python meta
+============
+MRO
+python2.3 以前的类实例函数 查找规则 从左到右 深度优先
+```
+	class BaseBase(object):
+	def method(self):
+		print("BaseBase")
+
+class Base1(BaseBase):
+	pass
+
+class Base2(BaseBase):
+	def method(self):
+		print("Base2")
+
+class MyClass(Base1, Base2):
+	pass
+
+def L(klass):
+		return [k.__name__ for k in klass.__mro__]
+
+if __name__ == "__main__":
+	# here = MyClass()
+	# here.method()
+	print(dir(MyClass))
+
+	print(L(MyClass))
+
+	print(MyClass.mro())
+```
+
+
+Class.__mro__
+Class.mro()
+ouput MRO table
+
+void to use multiple inheriting
+keep super use consistent
+don't mix using old and new method to invoke __init__
+when invoke BaseClass, you should look at MRO
+
+super is a class
+```
+	class A(object):
+	def __init__(self):
+		print("A")
+		super(A, self).__init__()
+
+class B(object):
+	def __init__(self):
+		print("B")
+		super(B, self).__init__()
+
+class C(A, B):
+	def __init__(self):
+		print("C")
+		A.__init__(self)
+		B.__init__(self)
+
+		#super(C, self).__init__() #using this line will output C A B
+
+if __name__ == "__main__":
+	print("MRO: {}", [x.__name__ for x in C.__mro__])
+	C() #Issue!!!!
+	# line14 A.__init__(self) will invoke super(A, self).__init__() then B __init__
+	# because at this time MRO is ['C', 'A', 'B', 'B']
+
+```
+
+
+prefix '__' will active name mangling(名称改编)
+prefix '_' means that it is a private attribute of a class
+
+1. 查找
+	```
+		if hasattr(MyClass, 'attribute'):
+			attribute = MyClass.attribute
+			AttributeClass = attribute.__class__
+	```
+
+2. 查看是否有定义setter(__set__)
+	```
+	if hasattr(AttributeClass, '__set__'):
+		AttributeClass.__set__(attribute, instance, value)
+	```
+3. 常规设置
+	```
+	instance.__dict__['attribute'] = value
+	writable = (hasattr(MyClass, 'attribute') or 'attribute' not in instance.__dict__)
+
+	if readable and writable:
+		AttributeClass.__set__(attribute, instance, value)
+	```
+4. 访问
+	```
+	instance.__dict__['attribute']
+	```
+
+
+
+attribute of instance
+attribute of class
+
+```
+class Spam(object):
+
+	a = 1
+
+	def __init__(self, b):
+		self.b = b
+
+	def imethod(self):
+		pass
+
+class Meta(type):
+
+		ma = 5
+
+class MyClass(object, metaclass=Meta):
+		pass
+
+if __name__ == "__main__":
+	Spam.a        	#got
+	s = Spam(3)
+	s.a             #got it but from Spam
+	s.a = xxx       #it will add a attribute to s as an attribute of instance
+
+	Meta.ma         #got
+	MyClass.ma      #got it but from Meta
+	MyClass.ma = xxx #it will add a attribute to MyClass as an attribute of class
+	instance = MyClass()
+	instance.ma     #AttributeError
+```
