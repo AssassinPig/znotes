@@ -1,0 +1,61 @@
+django views
+============
+* define a view 
+   * in polls/views.py
+    ```
+        def details(request, question_id):
+    	    return HttpResponse("xxxx %s" % question_id)
+    ```
+    * in polls/urls.py
+    	notice name='detail' which is name of this url match
+    ```
+        url(r'^(?P<question_id>[0-9]+)/$', polls.views.detail, name="detail")
+    ```
+* use HttpResponse to reander
+    ```
+        from django.http import HttpResponse
+        from django.template import loader
+
+        from .models import Question
+
+        def index(request):
+        	lastest_quest_list = Questions.objects。order_by('-pub_date')[:5]
+        	template = loader.get_template('polls/index.html')
+        	context = {
+        		'latest_question_list': latest_question_list,
+        	}
+    	return HttpResponse(template.render(context, request))
+    ```
+* use render to render
+       ```
+        from django.shutcuts import render
+        
+        def index(request):
+        	lastest_quest_list = Questions.objects。order_by('-pub_date')[:5]
+        	template = loader.get_template('polls/index.html')
+        	context = {
+        		'latest_question_list': latest_question_list,
+        	}
+    	return render(request, 'polls/index.html', context))
+       ```
+* raise a 404 error
+    ```
+        from django.http import Http404
+        
+        def detail(request, question_id):
+            try:
+                question = Question.objects.get(id=question_id)
+            except Question.DoesNotExist:
+                raise Http404('Question does not exist')
+            return render(request, 'polls/index.html', { 'question': question})
+    ```
+    
+    ```
+        from django.shortcuts import get_object_or_404, render
+
+        from .models import Question
+        
+        def detail(request, question_id):
+            question = get_object_or_404(Question, pk=question_id)
+            return render(request, 'polls/detail.html', {'question': question})
+    ```

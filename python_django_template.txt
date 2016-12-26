@@ -1,12 +1,54 @@
 django template
 ===============
-render
+* render in views
+```
 	return render_to_response('xxxx.html', {'key': 'value'})
+```
 
-filter
-	{{ book | length }} 	return length of book(s)
+* for loop
+```
+    <h1>{{ question.question_text }}</h1>
+    <ul>
+        {% for choice in question.choice_set.all %}
+            <li>{{ choice.choice_text }}</li>
+        {% endfor %}
+    </ul>
+```
 
-	{{ book | pluralize}}	if books return s. if book, no s
+* url
+    * in html file
+        ```
+        <li><a href="{% url 'detail' question.id %}">{{ question.question_text }}</a></li>
+        ```
+    * please notice url detail
+        ```
+        # the 'name' value as called by the {% url %} template tag
+        url(r'^(?P<question_id>[0-9]+)/$', views.detail, name='detail'),
+        ```
+    * or you can give namespace polls for a named url
+        ```
+            from django.conf.urls import url
+    
+            from . import views
+            
+            app_name = 'polls' #this line !!!
+            
+            urlpatterns = [
+                url(r'^$', views.index, name='index'),
+                url(r'^(?P<question_id>[0-9]+)/$', views.detail, name='detail'),
+                url(r'^(?P<question_id>[0-9]+)/results/$', views.results, name='results'),
+                url(r'^(?P<question_id>[0-9]+)/vote/$', views.vote, name='vote'),
+            ]
+        ```
+        ```
+            <li><a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a></li>
+        ```
 
-create template lib
+    * filter
+    ```
+    	{{ book | length }} 	return length of book(s)
+    
+    	{{ book | pluralize}}	if books return s. if book, no s just single num
+    ```
 
+* create template lib

@@ -1,0 +1,12 @@
+python pandas
+==============
+1. Series
+    array with index
+    index is from [0, N-1]
+    obj.values()    #value
+    obj.index()     #index
+    if index doesn't match with value, value will be signed  as NaN
+    And you can use isnull() and notnull() to validate whether value is null or notnull
+
+2. DataFrame
+    it is similiar with excel sheet.

@@ -1,0 +1,25 @@
+django path/url
+===============
+1. import
+	```
+		from app import views as app_views
+	```
+2. url patterns
+	```
+	urlpatterns = [
+		url(r'^$', app_views.xxx_method),
+		url(r'^/xxx', include('polls.urls')),
+
+		url(r'^/xxx', app_views.xxx_method, name='index'),
+	]
+	```
+3. in views.py
+	```
+	def details(request, question_id):
+		return HttpResponse("xxxx %s" % question_id)
+	```
+
+	in polls/urls.py
+	```
+	url(r'^(?P<question_id>[0-9]+)/$', polls.views.detail, name="detail")
+	```

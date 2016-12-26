@@ -190,18 +190,26 @@ d = operator.methodcaller('distance', 0, 0)
 d(p)
 
 
-
 			列举一个类的属性 方法
 			__dict__
+			var(instance)
 
 			列举一个对象的属性和方法
+			__dict__
 
 			列举一个类的基类
+			__bases__
+
 			一个装饰器到底干了什么
 			docorator
 
 			混入到底干了什么
+
 			__new__ 和　__init__的区别
+			__new__才是构造方法
+			__init__并不是
+
+
 			这些building-in 函数的用法
 			https://docs.python.org/3/library/functions.html
 
