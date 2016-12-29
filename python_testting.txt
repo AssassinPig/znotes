@@ -1,0 +1,30 @@
+python testting
+===============
+```
+import unittest
+
+class TestAddition(unittest.cast):  #inherit
+	
+	def setUp(self):				#before testting
+		print('set up the test')
+
+	def tearDown(self):				#after testting
+		print('tearDown')
+
+	def test_towPlusTwo(self):		#run it
+		total = 2+2
+		self.assertEqual(4, total)  #assert
+
+if __name__ == "__main__":
+	unittest.main()
+
+```
+
+1. Provide setUp and tearDown functions that run before and after each unit test. (EACH unit test!!!)
+2. Provide several types of “assert” statements to allow tests to pass or fail
+3. Run all functions that begin with test_ as unit tests, and ignore functions that
+are not prepended as tests
+
+
+	def setUpClass():
+	#this function will run only once at the start of the class 

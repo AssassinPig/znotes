@@ -33,3 +33,6 @@ select part then tab
 
 reduce indent
 select part then ctrl+[
+
+font resize
+ctrl+ '+' or '-'

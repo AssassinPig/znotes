@@ -56,5 +56,11 @@ http://docs.python-requests.org/en/latest/
    r.cookies['key']
 
 9. session
-   s = requests.Session()
-   
+   session = requests.Session()
+   sr = session.post("xxxx")
+
+
+10. cookies
+   r = request.get("xxx")
+   r.cookies.get_dict()
+   r = request.post('xxxx', cookies=r.cookies)

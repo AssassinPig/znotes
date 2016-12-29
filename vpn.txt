@@ -7,9 +7,27 @@ ip route
 route -n
 
 3.
+ip route before building vpn connection
+default via 192.168.0.1 dev wlxec888fc276fa  proto static  metric 600 
+169.254.0.0/16 dev wlxec888fc276fa  scope link  metric 1000 
+192.168.0.0/24 dev wlxec888fc276fa  proto kernel  scope link  src 192.168.0.108  metric 600 
+
+
+default dev ppp0  proto static  scope link  metric 50 
+default via 192.168.0.1 dev wlxec888fc276fa  proto static  metric 600 
+10.10.0.1 dev ppp0  proto kernel  scope link  src 10.10.0.7  metric 50 
+69.85.85.133 via 192.168.0.1 dev wlxec888fc276fa  src 192.168.0.108 
+106.187.90.133 via 192.168.0.1 dev wlxec888fc276fa  src 192.168.0.108 
+169.254.0.0/16 dev wlxec888fc276fa  scope link  metric 1000 
+192.168.0.0/24 dev wlxec888fc276fa  proto kernel  scope link  src 192.168.0.108  metric 600 
+209.198.8.211 via 192.168.0.1 dev wlxec888fc276fa  src 192.168.0.108 
+
+
 sudo ip route del default 
 sudo ip route add default dev ppp0
 
 4.
 stop vpn
 sudo poff myvpn
+
+

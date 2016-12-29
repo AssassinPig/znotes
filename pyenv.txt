@@ -1,14 +1,30 @@
 switch python version and env
-http://www.cnblogs.com/npumenglei/p/3719412.html
-https://github.com/yyuu/pyenv
 
+https://amaral.northwestern.edu/resources/guides/pyenv-tutorial
+
+installation
+https://github.com/yyuu/pyenv
+https://github.com/yyuu/pyenv-installer
+
+setup
+https://github.com/yyuu/pyenv-virtualenv
+
+
+it is unnecessary beause both of them is belong to pyenv as plugins
 virtualenv
 https://virtualenv.pypa.io/en/stable/
 
 virtualenvwarpper
 https://virtualenvwrapper.readthedocs.io/en/latest/
 
+
+Zsh note: Modify your ~/.zshenv file instead of ~/.bash_profile.
+Ubuntu and Fedora note: Modify your ~/.bashrc file instead of ~/.bash_profile.
+
+show all version you can get to install 
 pyenv install -list
+
+
 pyenv versions
 pyenv version
 
@@ -20,6 +36,7 @@ pyenv global  3.5.2
 pyenv version 3.5.2
 
 pyenv new ENV352 3.5.2
+pyenv virtualenv venv352
 
 pyenv activate ENV352
 pyenv deactivate

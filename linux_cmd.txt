@@ -1,4 +1,4 @@
-﻿1. export环境变量
+1. export环境变量
 	1. 临时
 		export PATH=$PATH:/opt/au1200_rm/build_tools/bin	重启之后失效
 	2. 永久针对所有用户
@@ -201,3 +201,7 @@
 	将/media/(u盘)挂载成cdrom
 	mkdir /dev/cdrom
 	mount -t auto /media/ /dev/cdrom
+
+18. system service
+	service xxxx start/restart/stop
+	service --status-all

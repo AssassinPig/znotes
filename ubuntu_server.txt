@@ -90,3 +90,18 @@
     然后在/var/www/user1/目录下再新建目录这个目录权限没啥要求 但是用户仍然是ftpuser 在这个目录下就可以进行上传和下载的操作了
 
     留下疑问是pam.d是啥东东
+
+11. dns
+    method 1
+    ```
+        /etc/networking/interfaces
+        dns-nameservers 8.8.8.8
+        dns-nameservers 8.8.4.4
+    ```
+
+    method 2
+    ```
+        /etc/resolvconf/resolv.conf.d/base
+        nameserver 8.8.8.8
+        nameserver 8.8.4.4
+    ```
