@@ -29,5 +29,3 @@ sudo ip route add default dev ppp0
 4.
 stop vpn
 sudo poff myvpn
-
-

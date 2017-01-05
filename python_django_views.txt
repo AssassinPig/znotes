@@ -11,7 +11,7 @@ django views
     ```
         url(r'^(?P<question_id>[0-9]+)/$', polls.views.detail, name="detail")
     ```
-* use HttpResponse to reander
+* use HttpResponse to render
     ```
         from django.http import HttpResponse
         from django.template import loader
@@ -28,7 +28,7 @@ django views
     ```
 * use render to render
        ```
-        from django.shutcuts import render
+        from django.shortcuts import render
         
         def index(request):
         	lastest_quest_list = Questions.objects。order_by('-pub_date')[:5]
